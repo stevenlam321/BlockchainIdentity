@@ -13,10 +13,15 @@ class UserContract extends Contract {
         return (!!buffer && buffer.length > 0);
     }
 
-    async createUser(ctx, username, value) {
+    async createUser(ctx, username) {
         const exists = await this.userExists(ctx, username);
         if (exists) {
             throw new Error(`The user ${username} already exists`);
+        }
+        var value = {
+            username,
+            firstName:"Steven",
+            lastName: "Lam"
         }
         const asset = { value };
         const buffer = Buffer.from(JSON.stringify(asset));
