@@ -13,19 +13,39 @@ var data = "New File Contents";
 //     res.end(); //end the response
 //   }).listen(8080); //the server object listens on port 8080
 
-var rsa = forge.pki.rsa;
+// var rsa = forge.pki.rsa;
+// var md = forge.md.md5.create();
+// md.update('The quick brown fox jumps over the lazy dog');
+// console.log(md.digest().toHex());
+
+
 
 var content = fs.readFileSync("id_rsa.pub", "utf-8");
 var publicKey = forge.pki.publicKeyFromPem(content);
 content = fs.readFileSync("id_rsa", "utf-8");
 var privateKey = forge.pki.privateKeyFromPem(content);
-var message = 'Hello fuck';
-var encrypted = publicKey.encrypt(message);
- console.log(encrypted);
-// decrypt data with a private key (defaults to RSAES PKCS#1 v1.5)
-var decrypted = privateKey.decrypt(encrypted);
-console.log(decrypted);
+// var message = 'Hello fuck';
+// var encrypted = publicKey.encrypt(message);
+//  console.log(encrypted);
+// // decrypt data with a private key (defaults to RSAES PKCS#1 v1.5)
+// var decrypted = privateKey.decrypt(encrypted);
+// console.log(decrypted);
 
+
+var md = forge.md.sha1.create();
+md.update('sign this', 'utf8');
+var signature = privateKey.sign(md);
+
+fs.writeFile("signature", signature.toString('utf-8'), (err) => {
+    if (err) console.log(err);
+    console.log("Successfully Written to File.");
+});
+
+ console.log(signature);
+// verify data with a public key
+// (defaults to RSASSA PKCS#1 v1.5)
+var verified = publicKey.verify(md.digest().bytes(), signature);
+console.log(verified);
 
 // console.log(publicKey,privateKey);
 // var keypair = rsa.generateKeyPair({bits: 2048, e: 0x10001});
