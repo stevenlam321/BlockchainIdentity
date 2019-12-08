@@ -24,6 +24,23 @@ var content = fs.readFileSync("id_rsa.pub", "utf-8");
 var publicKey = forge.pki.publicKeyFromPem(content);
 content = fs.readFileSync("id_rsa", "utf-8");
 var privateKey = forge.pki.privateKeyFromPem(content);
+content = fs.readFileSync("signature", "utf-8");
+var signature = Buffer.from(content,'hex');
+console.log(signature);
+
+var md = forge.md.sha1.create();
+md.update('sign this', 'utf8');
+// var signature = privateKey.sign(md);
+// console.log(md);
+// console.log(signature);
+
+// var verified = keypair.publicKey.verify(md.digest().bytes(), signature);
+// console.log(verified);
+
+var verified = publicKey.verify(md.digest().bytes(), signature);
+console.log(verified);
+
+
 // var message = 'Hello fuck';
 // var encrypted = publicKey.encrypt(message);
 //  console.log(encrypted);
@@ -32,20 +49,22 @@ var privateKey = forge.pki.privateKeyFromPem(content);
 // console.log(decrypted);
 
 
-var md = forge.md.sha1.create();
-md.update('sign this', 'utf8');
-var signature = privateKey.sign(md);
+// var md = forge.md.sha1.create();
+// md.update('sign this', 'utf8');
+// var signature = privateKey.sign(md);
+// const signature_str = Buffer.from(forge.util.binary.raw.decode(signature)).toString('hex');
+// fs.writeFile("signature", signature_str, (err) => {
+//     if (err) console.log(err);
+//     console.log("Successfully Written to File.");
+// });
 
-fs.writeFile("signature", signature.toString('utf-8'), (err) => {
-    if (err) console.log(err);
-    console.log("Successfully Written to File.");
-});
 
- console.log(signature);
+//  const r2 = forge.util.binary.raw.decode(signature);
+//  console.log(r2);
 // verify data with a public key
 // (defaults to RSASSA PKCS#1 v1.5)
-var verified = publicKey.verify(md.digest().bytes(), signature);
-console.log(verified);
+// var verified = publicKey.verify(md.digest().bytes(), signature);
+// console.log(verified);
 
 // console.log(publicKey,privateKey);
 // var keypair = rsa.generateKeyPair({bits: 2048, e: 0x10001});
