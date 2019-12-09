@@ -9,15 +9,6 @@ var caCert = forge.pki.certificateFromPem(caCertPem);
 const csrPem = fs.readFileSync("client-csr.pem");
 // convert a Forge certification request from PEM-format
 var csr = forge.pki.certificationRequestFromPem(csrPem);
- 
-// get an attribute
-const a = csr.getAttribute({name: 'challengePassword'});
- 
-// get extensions array
-const b = csr.getAttribute({name: 'extensionRequest'}).extensions;
-
-// console.log(a);
-// console.log(b);
 
 var cert = pki.createCertificate();
 cert.publicKey = csr.publicKey;
