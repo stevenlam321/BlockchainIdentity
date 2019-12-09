@@ -14,26 +14,25 @@ const caKeyPath = keyPath  + caKeyName;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get('/authenticate', (req, res) => {
-	const cert = req.connection.getPeerCertificate()
-// The `req.client.authorized` flag will be true if the certificate is valid and was issued by a CA we white-listed
-// earlier in `opts.ca`. We display the name of our user (CN = Common Name) and the name of the issuer, which is
-// `localhost`.
 
-	if (req.client.authorized) {
-		res.send(`Hello ${cert.subject.CN}, your certificate was issued by ${cert.issuer.CN}!`)
-// They can still provide a certificate which is not accepted by us. Unfortunately, the `cert` object will be an empty
-// object instead of `null` if there is no certificate at all, so we have to check for a known field rather than
-// truthiness.
+function authed(req, res, next) {
+    const cert = req.connection.getPeerCertificate()
+    // The `req.client.authorized` flag will be true if the certificate is valid and was issued by a CA we white-listed
+    // earlier in `opts.ca`. We display the name of our user (CN = Common Name) and the name of the issuer, which is
+    // `localhost`.
+    //res.send(`Hello ${cert.subject.CN}, your certificate was issued by ${cert.issuer.CN}!`)
+        if (!req.client.authorized) {
+            // res.send('not authorized');
+            const err = new Error("Not authorized! Go back!");
+            err.status = 400;
+           next(err); // This will be caught by error handler 
+        }else{
+            next();  
+        }
+  };
 
-	} else if (cert.subject) {
-		res.status(403)
-		   .send(`Sorry ${cert.subject.CN}, certificates from ${cert.issuer.CN} are not welcome here.`)
-// And last, they can come to us with no certificate at all:
-	} else {
-		res.status(401)
-		   .send(`Sorry, but you need to provide a client certificate to continue.`)
-	}
+app.get('/authenticate', authed,(req, res) => {
+    res.send('you are passed');
 })
 
 app.get('/download_ca_cert', (req, res) => {
