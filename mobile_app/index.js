@@ -51,7 +51,7 @@ var https = require('https');
 var options = { 
     hostname: 'localhost', 
     port: 4444, 
-    path: '/', 
+    path: '/authenticate', 
     method: 'GET', 
     key: fs.readFileSync('client-private.pem'), 
     cert: fs.readFileSync('client-crt.pem'), 
