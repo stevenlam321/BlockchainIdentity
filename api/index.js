@@ -79,6 +79,7 @@ var privateKey = forge.pki.decryptRsaPrivateKey(caPrivateKeyPem, 'password');
 cert.sign(privateKey);
 // convert a Forge certificate to PEM
 var cert_pem = forge.pki.certificateToPem(cert);
+var userId = forge.pki.getPublicKeyFingerprint(csr.publicKey, {encoding: 'hex'});
 res.send(cert_pem);
 //fs.writeFileSync("client-crt.pem",cert_pem);
    // console.log(req.body.csr);
