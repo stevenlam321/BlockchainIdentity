@@ -5,6 +5,6 @@
 'use strict';
 
 const UserContract = require('./lib/user-contract');
-
-module.exports.UserContract = UserContract;
-module.exports.contracts = [ UserContract ];
+// const OrganizationContract = require('./lib/organization-contract');
+// module.exports.UserContract = UserContract;
+module.exports.contracts = [UserContract];

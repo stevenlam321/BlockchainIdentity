@@ -26,7 +26,7 @@ class UserContract extends Contract {
     }
 
     async createUser(ctx, username,certificate = null) {
-        username = crypto.randomBytes(5).toString('hex');
+        //username = crypto.randomBytes(5).toString('hex');
         const exists = await this.userExists(ctx, username);
         if (exists) {
             throw new Error(`The user ${username} already exists`);
