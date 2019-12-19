@@ -4,7 +4,7 @@
 
 'use strict';
 
-const PersonContractContract = require('./lib/person-contract-contract');
-
-module.exports.PersonContractContract = PersonContractContract;
-module.exports.contracts = [ PersonContractContract ];
+const UserContract = require('./lib/user-contract');
+// const OrganizationContract = require('./lib/organization-contract');
+// module.exports.UserContract = UserContract;
+module.exports.contracts = [UserContract];

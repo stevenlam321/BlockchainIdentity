@@ -1,5 +1,5 @@
 {
-    "name": "UserContract",
+    "name": "IdentityContract",
     "version": "0.0.1",
     "description": "My Smart Contract",
     "main": "index.js",

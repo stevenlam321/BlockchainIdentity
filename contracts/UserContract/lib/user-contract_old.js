@@ -5,18 +5,6 @@
 'use strict';
 
 const { Contract } = require('fabric-contract-api');
-var crypto = require("crypto");
-
-class User{
-    constructor(obj){
-        this.username = crypto.randomBytes(5).toString('hex');
-        Object.assign(this,obj);
-    }
-    // set username(){
-
-    // }
-    
-}
 
 class UserContract extends Contract {
 
@@ -25,16 +13,19 @@ class UserContract extends Contract {
         return (!!buffer && buffer.length > 0);
     }
 
-    async createUser(ctx, username,certificate = null) {
-        //username = crypto.randomBytes(5).toString('hex');
+    async createUser(ctx, username) {
         const exists = await this.userExists(ctx, username);
         if (exists) {
             throw new Error(`The user ${username} already exists`);
         }
-        const user = new User({username,certificate});
-        const buffer = Buffer.from(JSON.stringify(user));
+        var value = {
+            username,
+            firstName:"Steven",
+            lastName: "Lam"
+        }
+        const asset = { value };
+        const buffer = Buffer.from(JSON.stringify(asset));
         await ctx.stub.putState(username, buffer);
-        return user;
     }
 
     async readUser(ctx, username) {
