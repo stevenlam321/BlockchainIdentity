@@ -28,18 +28,18 @@ describe('Participant', () => {
     adapter.addUser('Test');
   });
   
-  it('should create a default model', async () => {
-    const modelSample = new Participant({
-      id: uuid(),
-      name: 'Test',
-      created: Date.now(),
-      modified: Date.now()
-    });
+  // it('should create a default model', async () => {
+  //   const modelSample = new Participant({
+  //     id: uuid(),
+  //     name: 'Test',
+  //     created: Date.now(),
+  //     modified: Date.now()
+  //   });
 
-    await participantCtrl.$withUser('Test').create(modelSample);
+  //   await participantCtrl.$withUser('Test').create(modelSample);
   
-    const justSavedModel = await adapter.getById<Participant>(modelSample.id);
+  //   const justSavedModel = await adapter.getById<Participant>(modelSample.id);
   
-    expect(justSavedModel.id).to.exist;
-  });
+  //   expect(justSavedModel.id).to.exist;
+  // });
 });
