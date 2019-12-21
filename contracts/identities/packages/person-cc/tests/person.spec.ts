@@ -6,8 +6,7 @@ import { ClientFactory, ConvectorControllerClient } from '@worldsibu/convector-c
 import * as chai from 'chai';
 import { expect } from 'chai';
 import 'mocha';
-//  import * as chaiAsPromised from 'chai-as-promised';
-var chaiAsPromised = require("chai-as-promised");
+import * as chaiAsPromised from 'chai-as-promised';
 import { ParticipantController, Participant } from 'participant-cc';
 
 import { Person, PersonController, Attribute } from '../src';
