@@ -2,11 +2,10 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { port as serverPort } from './env';
-import { ParticipantExpressController } from './controllers';
+import { ParticipantExpressController, PersonExpressController } from './controllers';
 
 const app: express.Application = express();
 const port = serverPort;
-
 
 app.use(bodyParser.urlencoded({
   extended: true,
@@ -15,9 +14,8 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json({ limit: '40mb' }));
 
-app.get('/', (req, res) => res.send('Hello shit!'));
-
 app.use('/participant', ParticipantExpressController);
+app.use('/person', PersonExpressController);
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
