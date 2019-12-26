@@ -1,7 +1,7 @@
 {
-  "name": "organication-cc",
+  "name": "organization-cc",
   "version": "0.1.0",
-  "description": "Chaincodes package for organication",
+  "description": "Chaincodes package for organization",
   "main": "./dist/src/index.js",
   "typings": "./dist/src/index.d.ts",
   "files": [

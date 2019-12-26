@@ -1,4 +1,4 @@
-# identities - organication
+# identities - organization
 
 This awesome project was created automatically with <a href="https://github.com/worldsibu/convector-cli" target="_blank">Convector CLI</a>.
 By default new Convector projects locally include <a href="https://github.com/worldsibu/hurley">Hurley</a> to manage your development environment seamlessly, so you don't have to worry about setting up the network and hard ways to install  and upgrade your chaincodes.
@@ -11,10 +11,10 @@ npm i
 # Create a new development blockchain network  - From the root of your project
 npm run env:restart
 # Install your smart contract
-npm run cc:start -- organication
+npm run cc:start -- organization
 # Make a testing call to create a record in the ledger
 # Beware that the first call may fail with a timeout! Just happens the first time
-hurl invoke organication organication_create "{\"name\":\"my first request\",\"id\":\"0001\",\"created\":0,\"modified\":0}"
+hurl invoke organization organization_create "{\"name\":\"my first request\",\"id\":\"0001\",\"created\":0,\"modified\":0}"
 ```
 
 ## About Hurley
@@ -58,14 +58,14 @@ hurl new
 
 ```
 # Package your smart contract's code  - From the root of your project
-npm run cc:package -- organication org1
+npm run cc:package -- organization org1
 # Install to your blockchain - From the root of your project
-hurl install organication node -P ./chaincode-organication
+hurl install organization node -P ./chaincode-organization
 # Install in debug mode, this will run the chaincode server locally so you can debug
-hurl install organication node -P ./chaincode-organication --debug
+hurl install organization node -P ./chaincode-organization --debug
 
 # Upgrade your existing chaincode - From the root of your project
-hurl upgrade organication node 1.2 -P ./chaincode-organication
+hurl upgrade organization node 1.2 -P ./chaincode-organization
 ```
 
 ## Start - if you don't have Hurley globally
@@ -83,10 +83,10 @@ npm run env:restart
 
 ```
 # Install to your blockchain - From the root of your project
-npm run cc:start -- organication
+npm run cc:start -- organization
 
 # Upgrade your existing chaincode - From the root of your project
-npm run cc:upgrade -- organication 1.2
+npm run cc:upgrade -- organization 1.2
 ```
 
 ## Tests

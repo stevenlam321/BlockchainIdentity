@@ -7,11 +7,11 @@ import {
   BaseStorage
 } from '@worldsibu/convector-core';
 import * as yup from 'yup';
-import { Organication } from './organication.model';
+import { Organization } from './organization.model';
 import { ClientIdentity } from 'fabric-shim';
 
-@Controller('organication')
-export class OrganicationController extends ConvectorController<ChaincodeTx> {
+@Controller('organization')
+export class OrganizationController extends ConvectorController<ChaincodeTx> {
   
   get fullIdentity(): ClientIdentity {
     const stub = (BaseStorage.current as any).stubHelper;
@@ -20,11 +20,11 @@ export class OrganicationController extends ConvectorController<ChaincodeTx> {
 
   @Invokable()
   public async create(
-    @Param(Organication)
-    organication: Organication
+    @Param(Organization)
+    organization: Organization
   ) {
     
-    await organication.save();
+    await organization.save();
   }
 
   @Invokable()
@@ -37,20 +37,20 @@ export class OrganicationController extends ConvectorController<ChaincodeTx> {
     logo: string,
   ) {
     // Retrieve to see if exists
-    const existing = await Organication.getOne(id);
+    const existing = await Organization.getOne(id);
 
     if (!existing || !existing.id) {
-      let organication = new Organication();
-      organication.id = id;
-      organication.logo = logo;
-      organication.name = name || id;
-      organication.msp = this.fullIdentity.getMSPID();
+      let organization = new Organization();
+      organization.id = id;
+      organization.logo = logo;
+      organization.name = name || id;
+      organization.msp = this.fullIdentity.getMSPID();
       // Create a new identity
-      organication.identities = [{
+      organization.identities = [{
         fingerprint: this.sender,
         status: true
       }];
-      await organication.save();
+      await organization.save();
     } else {
       throw new Error('Identity exists already, please call changeIdentity fn for updates');
     }

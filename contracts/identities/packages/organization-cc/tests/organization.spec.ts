@@ -7,16 +7,16 @@ import { ClientFactory, ConvectorControllerClient } from '@worldsibu/convector-c
 import 'mocha';
 import * as chaiAsPromised from 'chai-as-promised';
 import * as chai from 'chai';
-import { Organication, OrganicationController } from '../src';
+import { Organization, OrganizationController } from '../src';
 import * as fs from 'fs';
 import * as path from 'path';
 
 const assetPath = path.resolve('../../','assets');    
 
-describe('Organication', () => {
+describe('Organization', () => {
   chai.use(chaiAsPromised);
   let adapter: MockControllerAdapter;
-  let organicationCtrl: ConvectorControllerClient<OrganicationController>;
+  let organizationCtrl: ConvectorControllerClient<OrganizationController>;
   const mockIdentity = 'B6:0B:37:7C:DF:D2:7A:08:0B:98:BF:52:A4:2C:DC:4E:CC:70:91:E1';
 
 
@@ -27,20 +27,20 @@ describe('Organication', () => {
     await adapter.init([
       {
         version: '*',
-        controller: 'OrganicationController',
+        controller: 'OrganizationController',
         name: join(__dirname, '..')
       }
     ]);
     adapter.stub['fingerprint'] = mockIdentity;
    // adapter.addUser('Test');
-   organicationCtrl = ClientFactory(OrganicationController, adapter);
+   organizationCtrl = ClientFactory(OrganizationController, adapter);
   });
   
   it('should create the government identity', async () => {
    const imageAsBase64 = fs.readFileSync(assetPath+'/hksar.png', 'base64');
-    await organicationCtrl.register('gov', 'Big Gov',imageAsBase64);
+    await organizationCtrl.register('gov', 'Big Gov',imageAsBase64);
 
-    const justSavedModel = await adapter.getById<Organication>('gov');
+    const justSavedModel = await adapter.getById<Organization>('gov');
 
     expect(justSavedModel.id).to.exist;
   });

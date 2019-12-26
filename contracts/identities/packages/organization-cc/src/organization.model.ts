@@ -20,10 +20,10 @@ export class x509Identities extends ConvectorModel<x509Identities>{
   fingerprint: string;
 }
 
-export class Organication extends ConvectorModel<Organication> {
+export class Organization extends ConvectorModel<Organization> {
   @ReadOnly()
   @Required()
-  public readonly type = 'com.codefifa.did.organication';
+  public readonly type = 'com.codefifa.did.organization';
 
   @ReadOnly()
   @Required()
