@@ -7,11 +7,11 @@ import { CouchDBStorage } from '@worldsibu/convector-storage-couchdb';
 import { FabricControllerAdapter } from '@worldsibu/convector-platform-fabric';
 import { BaseStorage, ClientFactory, ConvectorControllerClient } from '@worldsibu/convector-core';
 
-import { Organization, OrganizationController } from '../src';
+import { Attribute, AttributeController } from '../src';
 
-describe('Organization', () => {
+describe('Attribute', () => {
   let adapter: FabricControllerAdapter;
-  let organizationCtrl: ConvectorControllerClient<OrganizationController>;
+  let attributeCtrl: ConvectorControllerClient<AttributeController>;
 
   before(async () => {
       adapter = new FabricControllerAdapter({
@@ -19,20 +19,20 @@ describe('Organization', () => {
         txTimeout: 300000,
         user: 'user1',
         channel: 'ch1',
-        chaincode: 'organization',
+        chaincode: 'attribute',
         keyStore: '$HOME/hyperledger-fabric-network/.hfc-org1',
         networkProfile: '$HOME/hyperledger-fabric-network/network-profiles/org1.network-profile.yaml',
         userMspPath: '$HOME/hyperledger-fabric-network/artifacts/crypto-config/peerOrganizations/org1.hurley.lab/users/User1@org1.hurley.lab/msp',
         userMsp: 'org1MSP'
       });
-      organizationCtrl = ClientFactory(OrganizationController, adapter);
+      attributeCtrl = ClientFactory(AttributeController, adapter);
       await adapter.init(true);
 
       BaseStorage.current = new CouchDBStorage({
         host: 'localhost',
         protocol: 'http',
         port: '5084'
-      }, 'ch1_organization');
+      }, 'ch1_attribute');
   });
 
   after(() => {
@@ -41,16 +41,16 @@ describe('Organization', () => {
   });
 
   it('should create a default model', async () => {
-    const modelSample = new Organization({
+    const modelSample = new Attribute({
       // id: uuid(),
       // name: 'Test',
       // created: Date.now(),
       // modified: Date.now()
     });
 
-    await organizationCtrl.create(modelSample);
+    await attributeCtrl.create(modelSample);
 
-    const justSavedModel = await Organization.getOne(modelSample.id);
+    const justSavedModel = await Attribute.getOne(modelSample.id);
     expect(justSavedModel.id).to.exist;
   });
 });
