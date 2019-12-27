@@ -28,26 +28,37 @@ describe('Attribute', () => {
     adapter.addUser('Test');
   });
   
+  // it('should create a default model', async () => {
+  //   const modelSample = new Attribute({
+  //       id: "email",
+  //       name: "email",
+  //       value: "stevenlam123@yahoo.com.hk",
+  //   });
+
+  //   await attributeCtrl.$withUser('Test').create(modelSample);
+  
+  //   const justSavedModel = await adapter.getById<Attribute>(modelSample.id);
+  
+  //   expect(justSavedModel.id).to.exist;
+  // });
+
   it('should create a default model', async () => {
-    const modelSample = new Attribute({
-        id: "email",
-        name: "email",
-        value: "stevenlam123@yahoo.com.hk",
-    });
+    const attribute_fields = new AttributeField(
+      {
+        id: "first_name",
+        name: "First Name",
+        field_type:"string",
+        required: true
+      }
+  )
+});
 
-    await attributeCtrl.$withUser('Test').create(modelSample);
+  // it('should create multiple attribute field', async () => {
+  //   await attributeCtrl.$withUser('Test').init();
+  //   // await attributeCtrl.$withUser('Test').create(modelSample);
   
-    const justSavedModel = await adapter.getById<Attribute>(modelSample.id);
+  //   // const justSavedModel = await adapter.getById<Attribute>(modelSample.id);
   
-    expect(justSavedModel.id).to.exist;
-  });
-
-  it('should create multiple attribute field', async () => {
-    await attributeCtrl.$withUser('Test').init();
-    // await attributeCtrl.$withUser('Test').create(modelSample);
-  
-    // const justSavedModel = await adapter.getById<Attribute>(modelSample.id);
-  
-    // expect(justSavedModel.id).to.exist;
-  });
+  //   // expect(justSavedModel.id).to.exist;
+  // });
 });

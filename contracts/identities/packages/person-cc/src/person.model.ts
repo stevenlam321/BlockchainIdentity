@@ -4,9 +4,10 @@ import {
   Default,
   ReadOnly,
   Required,
-  Validate
+  Validate,
+  FlatConvectorModel
 } from '@worldsibu/convector-core-model';
-
+import {Credential} from 'credential-cc';
 export class Person extends ConvectorModel<Person> {
   @ReadOnly()
   @Required()
@@ -29,7 +30,7 @@ export class Person extends ConvectorModel<Person> {
   @Validate(yup.date())
   public readonly created_at: Date;
  
-  // @Validate(yup.array(x509Identities.schema()))
-  // public credentials: Array<FlatConvectorModel<x509Identities>>;
+  @Validate(yup.array(Credential.schema()))
+  public credentials: Array<FlatConvectorModel<Credential>>;
 
 }
