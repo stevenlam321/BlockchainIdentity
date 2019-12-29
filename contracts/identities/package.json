@@ -21,7 +21,8 @@
     "cc:install": "f() { hurl install ${2:-$1} node -P ./chaincode-$1; }; f",
     "cc:install:debug": "f() { hurl install ${2:-$1} node -P ./chaincode-$1 --debug; }; f",
     "lerna:test": "lerna run test --stream",
-    "lerna:test:e2e": "lerna run test:e2e --stream"
+    "lerna:test:e2e": "lerna run test:e2e --stream",
+    "cc:btest":"f() { lerna run build --scope $1; lerna run test --scope $1; }; f"
   },
   "devDependencies": {
     "lerna": "~3.13.0",

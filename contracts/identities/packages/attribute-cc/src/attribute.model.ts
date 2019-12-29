@@ -18,8 +18,11 @@ export class Attribute extends ConvectorModel<Attribute> {
 
   @Required()
   @Validate(yup.string())
-  public value: string;
+  public attribute_type: string;//number,string,boolean,object
 
+  // @Required()
+  // @Validate(yup.string())
+  // public value: string;
 }
 
 export class AttributeField extends ConvectorModel<AttributeField> {

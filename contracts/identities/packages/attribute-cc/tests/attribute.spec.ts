@@ -26,39 +26,44 @@ describe('Attribute', () => {
     ]);
 
     adapter.addUser('Test');
+    const result = await attributeCtrl.init();
+   // console.log('init succcess? result' + result);
   });
   
-  // it('should create a default model', async () => {
-  //   const modelSample = new Attribute({
-  //       id: "email",
-  //       name: "email",
-  //       value: "stevenlam123@yahoo.com.hk",
-  //   });
 
-  //   await attributeCtrl.$withUser('Test').create(modelSample);
-  
-  //   const justSavedModel = await adapter.getById<Attribute>(modelSample.id);
-  
-  //   expect(justSavedModel.id).to.exist;
+  // it('just testing', async () => {
+  //   //const attrs = await  Attribute.getAll();
+  //  // console.log(attrs);
+ 
+  //  Attribute.query({id:{ $lte: 5}}).then(function(data){
+  //   console.log(data);
+  //  });
+  //   const s = await Attribute.query({ amount: { $lte: 5 } })
+  // .then(function(obj){
+  //   console.log(obj);
+  //   console.log('found');
   // });
-
-  it('should create a default model', async () => {
-    const attribute_fields = new AttributeField(
-      {
-        id: "first_name",
-        name: "First Name",
-        field_type:"string",
-        required: true
-      }
-  )
-});
-
-  // it('should create multiple attribute field', async () => {
-  //   await attributeCtrl.$withUser('Test').init();
-  //   // await attributeCtrl.$withUser('Test').create(modelSample);
-  
-  //   // const justSavedModel = await adapter.getById<Attribute>(modelSample.id);
-  
-  //   // expect(justSavedModel.id).to.exist;
+  // .catch(function (){
+  //   console.log('not found');
   // });
+ // console.log(s);
+    // const result = await attributeCtrl.init();
+    // expect(result).to.true;
+ });
+
+  // it('should run a success init', async () => {
+  //    const result = await attributeCtrl.init();
+  //    expect(result).to.true;
+  // });
+//   it('should create a default model', async () => {
+//     const attribute_fields = new AttributeField(
+//       {
+//         id: "first_name",
+//         name: "First Name",
+//         field_type:"string",
+//         required: true
+//       }
+//   )
+// });
+
 });
