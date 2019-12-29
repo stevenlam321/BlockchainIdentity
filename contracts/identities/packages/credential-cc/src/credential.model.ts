@@ -7,7 +7,7 @@ import {
   Validate,
   FlatConvectorModel
 } from '@worldsibu/convector-core-model';
-import { Attribute,AttributeField } from 'attribute-cc';
+import { Attribute} from 'attribute-cc';
 
 export class CredentialAttribute extends ConvectorModel<CredentialAttribute> {
   @ReadOnly()

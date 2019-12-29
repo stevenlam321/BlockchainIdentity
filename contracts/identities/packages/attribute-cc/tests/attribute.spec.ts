@@ -49,7 +49,7 @@ describe('Attribute', () => {
  // console.log(s);
     // const result = await attributeCtrl.init();
     // expect(result).to.true;
- });
+//  });
 
   // it('should run a success init', async () => {
   //    const result = await attributeCtrl.init();

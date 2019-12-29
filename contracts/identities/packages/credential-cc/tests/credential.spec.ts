@@ -7,7 +7,7 @@ import { ClientFactory, ConvectorControllerClient } from '@worldsibu/convector-c
 import 'mocha';
 
 import { Credential, CredentialController } from '../src';
-import { AttributeField } from 'attribute-cc';
+import { Attribute } from 'attribute-cc';
 
 describe('Credential', () => {
   let adapter: MockControllerAdapter;

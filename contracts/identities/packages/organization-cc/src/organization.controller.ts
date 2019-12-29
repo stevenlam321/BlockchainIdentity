@@ -19,12 +19,86 @@ export class OrganizationController extends ConvectorController<ChaincodeTx> {
   };
 
   @Invokable()
+  public async init(
+  ) {
+    var success = true;
+    const organizations = [
+      {
+        id: "hksar",
+        name: "HKSAR",
+        logo: "abcjidjii"
+      },
+      {
+        id: "hkimmd",
+        name: "Hong Kong Immigration Department",
+        logo: "fuck"
+      },
+    ];
+    try{
+        for(const i in organizations){
+          const organization = new Organization(organizations[i]);
+          await organization.save();
+        }
+      }
+      catch(Error){
+        success = false;
+      }
+    return success;
+  }
+
+  @Invokable()
+  public async index() {   
+    return await Organization.getAll();
+  }
+
+  @Invokable()
+  public async show( 
+    @Param(yup.string())
+    id: string
+  ) {   
+    const existing = await Organization.getOne(id);
+    if (!existing || !existing.id) {
+      throw new Error('Organization does not exist');
+    }
+    return existing;
+  }
+
+  @Invokable()
   public async create(
     @Param(Organization)
     organization: Organization
   ) {
-    
+    const existing = await Organization.getOne(organization.id);
+    if (existing && existing.id) {
+      throw new Error('Organization exists with that ID');
+    }
     await organization.save();
+  }
+
+  @Invokable()
+  public async update(
+    @Param(Organization)
+    organization: Organization
+  ) {
+    const existing = await Organization.getOne(organization.id);
+
+    if (!existing || !existing.id) {
+      throw new Error('Organization does not exist');
+    }
+    await organization.save();
+  }
+
+  @Invokable()
+  public async destroy(
+    @Param(yup.string())
+    id: string
+  ) {
+    const existing = await Organization.getOne(id);
+
+    if (!existing || !existing.id) {
+      throw new Error('Organization does not exist');
+    }
+    await existing.delete();
   }
 
   @Invokable()

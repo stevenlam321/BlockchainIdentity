@@ -7,7 +7,7 @@ import {
   Param
 } from '@worldsibu/convector-core';
 
-import { Attribute,AttributeField } from './attribute.model';
+import { Attribute} from './attribute.model';
 
 @Controller('attribute')
 export class AttributeController extends ConvectorController<ChaincodeTx> {

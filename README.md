@@ -17,3 +17,6 @@ model.fetch()
 
 
 const s = await Attribute.getOne('first_name')  => get full object
+
+
+npm run cc:upgrade -- credential 1.1
