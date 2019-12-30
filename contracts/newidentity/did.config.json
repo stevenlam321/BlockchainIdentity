@@ -6,6 +6,11 @@
       "name": "did-cc",
       "version": "file:./packages/did-cc",
       "controller": "DidController"
+    },
+    {
+      "name": "did-cc",
+      "version": "file:./packages/did-cc",
+      "controller": "OrganizationController"
     }
   ]
 }

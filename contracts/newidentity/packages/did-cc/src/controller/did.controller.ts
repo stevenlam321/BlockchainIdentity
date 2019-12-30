@@ -5,17 +5,15 @@ import {
   Invokable,
   Param
 } from '@worldsibu/convector-core';
+import * as yup from 'yup';
 
-import {Person,Organization,Attribute,Credential } from './model';
+import {Person,Organization,Attribute,Credential } from '../model';
 
 @Controller('did')
 export class DidController extends ConvectorController<ChaincodeTx> {
   @Invokable()
-  public async init(
-
-  ) {
+  public async init() {
     var success = true;
-
     //start init organizations
     const organizations = [
       {
@@ -91,6 +89,7 @@ export class DidController extends ConvectorController<ChaincodeTx> {
           ]
       }
       ];
+     // return JSON.stringify(persons);
       try{
           for(const i in persons){
             const person = new Person(persons[i]);
@@ -104,13 +103,44 @@ export class DidController extends ConvectorController<ChaincodeTx> {
 
   }
 
-  // @Invokable()
-  // public async create(
-  //   @Param(Did)
-  //   did: Did
-  // ) {
-  //   await did.save();
-  // }
+  @Invokable()
+  public async createPerson(
+    @Param(Person)
+    person: Person
+  ) {
+    const existing = await Person.getOne(person.id);
+    if (existing && existing.id) {
+      throw new Error('Person exists with that ID');
+    }
+    await person.save();
+  }
+
+  @Invokable()
+  public async updatePerson(
+    @Param(Person)
+    person: Person
+  ) {
+    const existing = await Person.getOne(person.id);
+    if (existing && existing.id) {
+      throw new Error('Person exists with that ID');
+    }
+    await person.save();
+  }
+
+  @Invokable()
+  public async getPerson(
+    // @Param(yup.string())
+    // id:string,
+    @Param(yup.string())
+    value:string
+  ) {
+    return await Person.query(Person, {
+      'selector': {
+        'type':'did.person',
+        'email': value
+      }
+    });
+  }
 
 
 }

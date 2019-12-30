@@ -3,4 +3,5 @@
 // export * from './model/organization.model';
 // export * from './model/person.model';
 export * from './model';
-export * from './did.controller';
+export * from './controller/did.controller';
+export * from './controller/organization.controller';
