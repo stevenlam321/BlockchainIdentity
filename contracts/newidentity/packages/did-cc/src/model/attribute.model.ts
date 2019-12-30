@@ -16,9 +16,23 @@ export class Attribute extends ConvectorModel<Attribute> {
   @Validate(yup.string())
   public name: string;
 
+  // @Required()
+  // @Validate(yup.string())
+  // public attribute_type: string;
+}
+
+export class PersonAttribute extends ConvectorModel<PersonAttribute> {
+  @ReadOnly()
+  @Required()
+  public readonly type = 'did.person.attribute';
+
   @Required()
   @Validate(yup.string())
-  public attribute_type: string;//number,string,boolean,object
+  public name: string;
+
+  // @Required()
+  // @Validate(yup.string())
+  // public attribute_type: string;
 
   @Required()
   @Validate(yup.string())

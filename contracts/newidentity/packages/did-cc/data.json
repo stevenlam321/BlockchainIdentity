@@ -1,0 +1,12 @@
+{
+    "id": "C-hkidcard",
+    "name": "Hong Kong Identity Card",
+    "organization_id": "gov",
+    "credential_attributes": [
+        {
+            "attribute_id": "hk id no",
+            "name": "HKID Card Number",
+            "required":true
+        }
+    ]
+}

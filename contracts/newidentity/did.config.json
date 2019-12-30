@@ -11,6 +11,21 @@
       "name": "did-cc",
       "version": "file:./packages/did-cc",
       "controller": "OrganizationController"
+    },
+    {
+      "name": "did-cc",
+      "version": "file:./packages/did-cc",
+      "controller": "AttributeController"
+    },
+    {
+      "name": "did-cc",
+      "version": "file:./packages/did-cc",
+      "controller": "PersonController"
+    },
+    {
+      "name": "did-cc",
+      "version": "file:./packages/did-cc",
+      "controller": "CredentialController"
     }
   ]
 }

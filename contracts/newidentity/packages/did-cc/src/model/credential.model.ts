@@ -9,23 +9,27 @@ import {
 } from '@worldsibu/convector-core-model';
 import {Attribute} from './attribute.model';
 
-// export class CredentialAttribute extends ConvectorModel<CredentialAttribute> {
-//   @ReadOnly()
-//   @Required()
-//   public readonly type = 'com.codefifa.did.credential.attribute';
+export class CredentialAttribute extends ConvectorModel<CredentialAttribute> {
+  @ReadOnly()
+  @Required()
+  public readonly type = 'did.credential.attribute';
 
-//   @Required()
-//   @Validate(yup.string())
-//   public name: string;
+  @Required()
+  @Validate(yup.string())
+  public attribute_id: string;
+
+  @Required()
+  @Validate(yup.string())
+  public name: string;
   
-//   @Required()
-//   @Validate(yup.string())
-//   public attribute_type: string;
+  // @Required()
+  // @Validate(yup.string())
+  // public attribute_type: string;
 
-//   @Required()
-//   @Validate(yup.boolean())
-//   public required: boolean;
-// }
+  @Required()
+  @Validate(yup.boolean())
+  public required: boolean;
+}
 
 export class Credential extends ConvectorModel<Credential> {
   @ReadOnly()
@@ -39,6 +43,6 @@ export class Credential extends ConvectorModel<Credential> {
   @Validate(yup.string())
   public organization_id: string;
 
-  @Validate(yup.array(Attribute.schema()))
-  public attributes: Array<FlatConvectorModel<Attribute>>;
+  @Validate(yup.array(CredentialAttribute.schema()))
+  public credential_attributes: Array<FlatConvectorModel<CredentialAttribute>>;
 }

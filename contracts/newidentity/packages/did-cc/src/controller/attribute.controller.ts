@@ -8,11 +8,11 @@ import {
 import * as yup from 'yup';
 import {Person,Organization,Attribute,Credential } from '../model';
 
-@Controller('organization')
-export class OrganizationController extends ConvectorController<ChaincodeTx> {
+@Controller('attribute')
+export class AttributeController extends ConvectorController<ChaincodeTx> {
   @Invokable()
   public async index() {   
-    return await Organization.getAll();
+    return await Attribute.getAll();
   }
 
   @Invokable()
@@ -20,35 +20,35 @@ export class OrganizationController extends ConvectorController<ChaincodeTx> {
     @Param(yup.string())
     id: string
   ) {   
-    const existing = await Organization.getOne(id);
+    const existing = await Attribute.getOne(id);
     if (!existing || !existing.id) {
-      throw new Error('Organization does not exist');
+      throw new Error('Attribute does not exist');
     }
     return existing;
   }
 
   @Invokable()
   public async create(
-    @Param(Organization)
-    organization: Organization
+    @Param(Attribute)
+    attribute: Attribute
   ) {
-    const existing = await Organization.getOne(organization.id);
+    const existing = await Attribute.getOne(attribute.id);
     if (existing && existing.id) {
-      throw new Error('Organization exists with that ID');
+      throw new Error('Attribute exists with that ID');
     }
-    await organization.save();
+    await attribute.save();
   }
 
   @Invokable()
   public async update(
-    @Param(Organization)
-    organization: Organization
+    @Param(Attribute)
+    attribute: Attribute
   ) {
-    const existing = await Person.getOne(organization.id);
+    const existing = await Attribute.getOne(attribute.id);
     if (!existing || !existing.id) {
-      throw new Error('Organization does not exist');
+      throw new Error('Attribute does not exist');
     }
-    await organization.save();
+    await attribute.save();
   }
 
   @Invokable()
@@ -56,10 +56,10 @@ export class OrganizationController extends ConvectorController<ChaincodeTx> {
     @Param(yup.string())
     id: string
   ) {
-    const existing = await Organization.getOne(id);
+    const existing = await Attribute.getOne(id);
 
     if (!existing || !existing.id) {
-      throw new Error('Organization does not exist');
+      throw new Error('Attribute does not exist');
     }
     await existing.delete();
   }
