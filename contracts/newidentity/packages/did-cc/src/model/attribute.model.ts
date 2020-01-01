@@ -16,23 +16,47 @@ export class Attribute extends ConvectorModel<Attribute> {
   @Validate(yup.string())
   public name: string;
 
-  // @Required()
-  // @Validate(yup.string())
-  // public attribute_type: string;
 }
-
-export class PersonAttribute extends ConvectorModel<PersonAttribute> {
+export class CredentialAttribute extends ConvectorModel<CredentialAttribute> {
   @ReadOnly()
   @Required()
-  public readonly type = 'did.person.attribute';
+  public readonly type = 'did.credential.attribute';
+
+  @Required()
+  @Validate(yup.string())
+  public attribute_id: string;
+
+  @Required()
+  @Validate(yup.string())
+  public name: string;
+  
+
+  @Required()
+  @Validate(yup.boolean())
+  public required: boolean;
+}
+export class PersonCredentialAttribute extends ConvectorModel<PersonCredentialAttribute> {
+  @ReadOnly()
+  @Required()
+  public readonly type = 'did.person.credential.attribute';
 
   @Required()
   @Validate(yup.string())
   public name: string;
 
-  // @Required()
-  // @Validate(yup.string())
-  // public attribute_type: string;
+  @Required()
+  @Validate(yup.string())
+  public value: string;
+}
+
+export class PersonCredentialAttributeValue extends ConvectorModel<PersonCredentialAttributeValue> {
+  @ReadOnly()
+  @Required()
+  public readonly type = 'did.person.credential.attribute.value';
+
+  @Required()
+  @Validate(yup.string())
+  public attribute_id: string;
 
   @Required()
   @Validate(yup.string())

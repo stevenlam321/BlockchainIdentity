@@ -17,12 +17,12 @@ export class DidController extends ConvectorController<ChaincodeTx> {
     //start init organizations
     const organizations = [
       {
-        id: "hksar",
+        id: "O-hksar",
         name: "HKSAR",
         logo: "abcjidjii"
       },
       {
-        id: "hkimmd",
+        id: "O-hkimmd",
         name: "Hong Kong Immigration Department",
         logo: "fuck"
       },
@@ -74,6 +74,55 @@ export class DidController extends ConvectorController<ChaincodeTx> {
         success = false;
       }
       //end init attributes
+
+
+          //start init credentials
+    const credentials = [
+      {
+        id: "C-hkidcard",
+        name: "Hong Kong Identity Card",
+        organization_id: "O-hkimmd",
+        credential_attributes:[
+          {
+            attribute_id: "A-hkidno",
+            name: "HK ID Card Number",
+            required: true
+          },
+          {
+            attribute_id: "A-first_name",
+            name: "First Name",
+            required: true
+          },
+          {
+            attribute_id: "A-last_name",
+            name: "Last Name",
+            required: true
+          },
+          {
+            attribute_id: "A-dob",
+            name: "Date of Birth",
+            required: true
+          },
+          {
+            attribute_id: "A-gender",
+            name: "Gender",
+            required: true
+          }
+        ]
+      }
+    ];
+
+    try{
+        for(const i in credentials){
+          const credential = new Credential(credentials[i]);
+          await credential.save();
+        }
+      }
+      catch(Error){
+        success = false;
+      }
+      //end init attributes
+
 
   //     //start init person
   //     const persons = [

@@ -7,29 +7,8 @@ import {
   Validate,
   FlatConvectorModel
 } from '@worldsibu/convector-core-model';
-import {Attribute} from './attribute.model';
+import {Attribute,CredentialAttribute,PersonCredentialAttribute,PersonCredentialAttributeValue} from './attribute.model';
 
-export class CredentialAttribute extends ConvectorModel<CredentialAttribute> {
-  @ReadOnly()
-  @Required()
-  public readonly type = 'did.credential.attribute';
-
-  @Required()
-  @Validate(yup.string())
-  public attribute_id: string;
-
-  @Required()
-  @Validate(yup.string())
-  public name: string;
-  
-  // @Required()
-  // @Validate(yup.string())
-  // public attribute_type: string;
-
-  @Required()
-  @Validate(yup.boolean())
-  public required: boolean;
-}
 
 export class Credential extends ConvectorModel<Credential> {
   @ReadOnly()
@@ -45,4 +24,42 @@ export class Credential extends ConvectorModel<Credential> {
 
   @Validate(yup.array(CredentialAttribute.schema()))
   public credential_attributes: Array<FlatConvectorModel<CredentialAttribute>>;
+}
+
+export class PersonCredential extends ConvectorModel<PersonCredential> {
+  @ReadOnly()
+  @Required()
+  public readonly type = 'did.person.credential';
+
+  @Required()
+  @Validate(yup.string())
+  public credential_id: string;
+
+  @Required()
+  @Validate(yup.string())
+  public name: string;
+
+  @Required()
+  @Validate(yup.string())
+  public organization_id: string;
+
+  @Validate(yup.array(PersonCredentialAttribute.schema()))
+  public attributes: Array<FlatConvectorModel<PersonCredentialAttribute>>;
+}
+
+export class AssignCredential extends ConvectorModel<AssignCredential> {
+  @ReadOnly()
+  @Required()
+  public readonly type = 'did.assign.credential';
+
+  @Required()
+  @Validate(yup.string())
+  public person_id: string;
+
+  @Required()
+  @Validate(yup.string())
+  public credential_id: string;
+
+  @Validate(yup.array(PersonCredentialAttributeValue.schema()))
+  public attributes: Array<FlatConvectorModel<PersonCredentialAttributeValue>>;
 }
