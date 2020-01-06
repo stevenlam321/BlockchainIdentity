@@ -1,0 +1,39 @@
+{
+    "id":"P-00000000001",
+    "type": "hkdid.person",
+    "email":"chantaiman@gmail.com",
+    "phone": "12345678",
+    "credentials":[
+        {
+            "id":"C-hkidcard",
+            "name":"Hong Kong Identity Card",
+            "attributes":[
+                {
+                    "id":"A-hkidcardno",
+                    "name":"Hong Kong Identity Card Number",
+                    "value":"A000001(2)"
+                },
+                {
+                    "id":"A-firstname",
+                    "name":"First Name",
+                    "value":"TaiMan"
+                },
+                {
+                    "id":"A-lastname",
+                    "name":"Last Name",
+                    "value":"Chan"
+                },
+                {
+                    "id":"A-dob",
+                    "name":"Date of Birth",
+                    "value":"1999-09-09"
+                },
+                {
+                    "id":"A-gender",
+                    "name":"Gender",
+                    "value":"M"
+                }
+            ]
+        }
+    ]
+}
