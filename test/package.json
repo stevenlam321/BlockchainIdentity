@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@theledger/fabric-chaincode-utils": "^4.0.3"
+    "express": "^4.17.1"
   }
 }

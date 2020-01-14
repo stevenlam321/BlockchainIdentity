@@ -20,3 +20,9 @@ const s = await Attribute.getOne('first_name')  => get full object
 
 
 npm run cc:upgrade -- credential 1.1
+
+
+https://doc.pm2.io/en/runtime/integration/transpilers/
+pm2 install typescript
+## Start app.ts in watch & restart:
+pm2 start app.ts --watch
