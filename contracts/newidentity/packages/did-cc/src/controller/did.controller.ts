@@ -124,66 +124,66 @@ export class DidController extends ConvectorController<ChaincodeTx> {
       //end init attributes
 
 
-  //     //start init person
-  //     const persons = [
-  //       {
-  //         id: "abcd",
-  //         email: "stevenlam123@yahoo.com.hk",
-  //         country_code: "852",
-  //         mobile: "63742615",
-  //         created_at: new Date("2019-10-10 12:00:01"),
-  //         credentials: [
-  //           {
-  //             id: "hkid_card",
-  //             name: "HKID Card",
-  //             organization_id: "gov",
-  //             attributes: [
-  //               {
-  //                 id: "hkidno",
-  //                 name: "HKID Card Number",
-  //                 attribute_type: "string",
-  //                 value: "A123456(7)"
-  //               },
-  //               {
-  //                 id: "first_name",
-  //                 name: "First Name",
-  //                 attribute_type: "string",
-  //                 value: "Steven"
-  //               },
-  //               {
-  //                 id: "last_name",
-  //                 name: "Last Name",
-  //                 attribute_type: "string",
-  //                 value: "Lam"
-  //               },
-  //               {
-  //                 id: "dob",
-  //                 name: "Date of Birth",
-  //                 attribute_type: "string",
-  //                 value: "2000-01-01"
-  //               },
-  //               {
-  //                 id: "gender",
-  //                 name: "Gender",
-  //                 attribute_type: "string",
-  //                 value: "M"
-  //               }
-  //             ]
-  //           }
-  //         ]
-  //     }
-  //     ];
-  //    // return JSON.stringify(persons);
-  //     try{
-  //         for(const i in persons){
-  //           const person = new Person(persons[i]);
-  //           await person.save();
-  //         }
-  //       }
-  //       catch(Error){
-  //         success = false;
-  //       }
-  //       return success;
+      //start init person
+      const persons = [
+        {
+          id: "abcd",
+          email: "stevenlam123@yahoo.com.hk",
+          country_code: "852",
+          mobile: null,
+          created_at: new Date("2019-10-10 12:00:01"),
+         // credentials: [
+          //   {
+          //     id: "hkid_card",
+          //     name: "HKID Card",
+          //     organization_id: "gov",
+          //     attributes: [
+          //       {
+          //         id: "hkidno",
+          //         name: "HKID Card Number",
+          //         attribute_type: "string",
+          //         value: "A123456(7)"
+          //       },
+          //       {
+          //         id: "first_name",
+          //         name: "First Name",
+          //         attribute_type: "string",
+          //         value: "Steven"
+          //       },
+          //       {
+          //         id: "last_name",
+          //         name: "Last Name",
+          //         attribute_type: "string",
+          //         value: "Lam"
+          //       },
+          //       {
+          //         id: "dob",
+          //         name: "Date of Birth",
+          //         attribute_type: "string",
+          //         value: "2000-01-01"
+          //       },
+          //       {
+          //         id: "gender",
+          //         name: "Gender",
+          //         attribute_type: "string",
+          //         value: "M"
+          //       }
+          //     ]
+          //   }
+          // ]
+      }
+      ];
+     // return JSON.stringify(persons);
+      try{
+          for(const i in persons){
+            const person = new Person(persons[i]);
+            await person.save();
+          }
+        }
+        catch(Error){
+          success = false;
+        }
+        return success;
 
   }
 }

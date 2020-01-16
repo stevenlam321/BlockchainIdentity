@@ -24,6 +24,8 @@ export class AttributeController extends ConvectorController<ChaincodeTx> {
     if (!existing || !existing.id) {
       throw new Error('Attribute does not exist');
     }
+   // var his = await existing.history();
+   console.log(this.sender);
     return existing;
   }
 
