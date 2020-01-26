@@ -1,7 +1,9 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { port as serverPort } from './env';
-import { AttributeExpressController } from './controllers';
+import { AttributeExpressController,OrganizationExpressController,PersonExpressController } from './controllers';
+
+// import * as expressValidator from 'express-validator';
 
 const app: express.Application = express();
 const port = serverPort;
@@ -10,7 +12,7 @@ app.use(bodyParser.urlencoded({
   extended: true,
   limit: '40mb'
 }));
-
+app.use(express.static('public'));
 app.use(bodyParser.json({ limit: '40mb' }));
 
 app.use((req, res, next) => {
@@ -20,8 +22,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.get('/', (req, res) => res.send('fuck?'))
 app.use('/attributes', AttributeExpressController);
+app.use('/organizations', OrganizationExpressController);
+app.use('/persons', PersonExpressController);
 
 app.listen(port, () =>
   console.log(`Server started in port ${port}`));

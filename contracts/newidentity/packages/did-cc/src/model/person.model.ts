@@ -17,11 +17,16 @@ export class Person extends ConvectorModel<Person> {
   public readonly type = 'did.person';
 
   @Required()
+  @Validate(yup.string())
+  @Default("P-"+Math.random().toString(36).substr(2, 10))
+  public id: string;
+
+  @Required()
   @Validate(yup.string().email())
   public email: string;
 
   @Required()
-  @Validate(yup.string())
+  @Validate(yup.string().nullable())
   public country_code: string;
 
   @Required()

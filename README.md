@@ -8,6 +8,21 @@ cp $HOME/hyperledger-fabric-network/.hfc-org1/* ./hfc-key-store
 http://localhost:4001
 
 
+{
+   "selector": {
+      "type": "did.person"
+   }
+}
+
+
+
+docker start $(docker ps -a -q -f status=exited)
+
+npm run cc:start:debug -- did
+
+Run api server: 
+nodemon src/app.ts
+
 
 const model = new MyModel(id);
 model.fetch()
@@ -20,7 +35,7 @@ const s = await Attribute.getOne('first_name')  => get full object
 
 
 npm run cc:upgrade -- credential 1.1
-
+npm run cc:package -- credential
 
 https://doc.pm2.io/en/runtime/integration/transpilers/
 pm2 install typescript

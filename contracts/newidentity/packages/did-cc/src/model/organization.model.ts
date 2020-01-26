@@ -31,7 +31,7 @@ export class Organization extends ConvectorModel<Organization> {
   public name: string;
 
   @Required()
-  @Validate(yup.string())
+  @Validate(yup.string().nullable())
   public logo: string;
 
   @ReadOnly()

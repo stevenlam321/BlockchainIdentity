@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import { FabricControllerAdapter } from '@worldsibu/convector-adapter-fabric';
 import { ClientFactory } from '@worldsibu/convector-core';
 
-import { AttributeController, Attribute,Person,PersonController } from 'did-cc';
+import { AttributeController, Attribute,Person,PersonController,OrganizationController } from 'did-cc';
 
 const adapter = new FabricControllerAdapter({
     txTimeout: 300000,
@@ -19,6 +19,7 @@ const adapter = new FabricControllerAdapter({
 export const initAdapter = adapter.init();
 export const AttributeControllerBackEnd = ClientFactory(AttributeController, adapter);
 export const PersonControllerBackEnd = ClientFactory(PersonController, adapter);
+export const OrganizationControllerBackEnd = ClientFactory(OrganizationController, adapter);
 
 //#region Optional
 
