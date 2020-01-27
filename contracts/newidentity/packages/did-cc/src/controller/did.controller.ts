@@ -129,7 +129,7 @@ export class DidController extends ConvectorController<ChaincodeTx> {
         {
           // id: "stevenlam123@yahoo.com.hk",
           email: "stevenlam123@yahoo.com.hk",
-          country_code: "852",
+          // country_code: "852",
           mobile: null,
           created_at: new Date("2019-10-10 12:00:01"),
          // credentials: [

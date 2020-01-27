@@ -21,8 +21,9 @@ export class Credential extends ConvectorModel<Credential> {
   @Required()
   @Validate(yup.string())
   public organization_id: string;
-
-  @Validate(yup.array(CredentialAttribute.schema()))
+  
+  @Required()
+  @Validate(yup.array(CredentialAttribute.schema().nullable()))
   public credential_attributes: Array<FlatConvectorModel<CredentialAttribute>>;
 }
 

@@ -1,24 +1,23 @@
 
 import { Router, Request, Response } from 'express';
-import {PersonControllerBackEnd, InitServerIdentity } from '../convector';
-import { Person,Attribute } from 'did-cc';
+import {CredentialControllerBackEnd, InitServerIdentity } from '../convector';
+import { Person,Attribute, Credential } from 'did-cc';
 import validation from '../helpers/validation';
 import {check, validationResult } from 'express-validator';
-var multer  = require('multer')
-var upload = multer({ dest: 'public/uploads/' })
 
+//Credential
 
 const router: Router = Router();
 
-router.post('/',validation.createPersonRules, async (req: Request, res: Response) => {
+router.post('/',validation.createCredentialRules, async (req: Request, res: Response) => {
    const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
     try {
-         const {id,email,mobile} = req.body;
-         let person = new Person({id,email,mobile});
-        await PersonControllerBackEnd.create(person);
+         const {id,name,organization_id} = req.body;
+         let credential = new Credential({id,name,organization_id,credential_attributes:[]});
+        await CredentialControllerBackEnd.create(credential);
         res.status(200).send();
     } catch (err) {
         console.log(err);
@@ -88,4 +87,4 @@ router.post('/',validation.createPersonRules, async (req: Request, res: Response
 //         res.status(500).send(err.responses[0].error);
 //     }
 // });
-export const PersonExpressController: Router = router;
+export const CredentialExpressController: Router = router;

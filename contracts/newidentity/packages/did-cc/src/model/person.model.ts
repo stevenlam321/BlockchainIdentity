@@ -27,10 +27,6 @@ export class Person extends ConvectorModel<Person> {
 
   @Required()
   @Validate(yup.string().nullable())
-  public country_code: string;
-
-  @Required()
-  @Validate(yup.string().nullable())
   public mobile: string;
   
   @ReadOnly()

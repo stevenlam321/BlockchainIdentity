@@ -57,9 +57,7 @@ export class CredentialController extends ConvectorController<ChaincodeTx> {
     @Param(yup.string())
     credential_id:string,
     @Param(yup.string())
-    attribute_id:string,
-    @Param(yup.boolean())
-    required:boolean
+    attribute_id:string
   ) {
     const credential = await Credential.getOne(credential_id);
     if (!credential || !credential.id) {
@@ -77,8 +75,7 @@ export class CredentialController extends ConvectorController<ChaincodeTx> {
 
     const new_credential_attribute = {
       attribute_id,
-      name: attribute.name,
-      required
+      name: attribute.name
     };
     credential_attributes.push(new_credential_attribute);
   

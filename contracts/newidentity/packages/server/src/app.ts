@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { port as serverPort } from './env';
-import { AttributeExpressController,OrganizationExpressController,PersonExpressController } from './controllers';
+import { AttributeExpressController,OrganizationExpressController,PersonExpressController,CredentialExpressController } from './controllers';
 
 // import * as expressValidator from 'express-validator';
 
@@ -25,6 +25,7 @@ app.use((req, res, next) => {
 app.use('/attributes', AttributeExpressController);
 app.use('/organizations', OrganizationExpressController);
 app.use('/persons', PersonExpressController);
+app.use('/credentials', CredentialExpressController);
 
 app.listen(port, () =>
   console.log(`Server started in port ${port}`));

@@ -30,10 +30,6 @@ export class CredentialAttribute extends ConvectorModel<CredentialAttribute> {
   @Validate(yup.string())
   public name: string;
   
-
-  @Required()
-  @Validate(yup.boolean())
-  public required: boolean;
 }
 export class PersonCredentialAttribute extends ConvectorModel<PersonCredentialAttribute> {
   @ReadOnly()

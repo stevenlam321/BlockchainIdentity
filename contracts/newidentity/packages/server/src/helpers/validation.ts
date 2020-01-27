@@ -7,6 +7,16 @@ const validation = {
   createPersonRules:[
     check('email').exists().isEmail(),
   ], 
+  createCredentialRules:[
+    check('id').exists(),
+    check('name').exists(),
+    check('organization_id').exists(),
+  ],
+  addCredentialAttributeRules:[
+    check('id').exists(),
+    check('name').exists(),
+    check('organization_id').exists(),
+  ],
     loginRules:[
         check('username').exists().withMessage((value,{req})=>req.__('username.required')),
         check('password').exists().withMessage((value,{req})=>req.__('password.required'))
