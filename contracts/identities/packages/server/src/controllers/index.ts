@@ -1,1 +1,0 @@
-export { AttributeExpressController } from './attribute.controller';
