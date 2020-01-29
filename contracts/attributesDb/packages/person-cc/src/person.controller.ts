@@ -7,10 +7,32 @@ import {
   Param
 } from '@worldsibu/convector-core';
 
-import { Person, Attribute,Organization } from './person.model';
+import { Person, Attribute } from './person.model';
 
 @Controller('person')
 export class PersonController extends ConvectorController<ChaincodeTx> {
+
+    //check modle defintion
+    @Invokable()
+    public async test(
+     
+    ) {
+       const person = {
+         "id":"P01",
+         "name":"Steven",
+         "org_id" : "ohfd",
+         "attributes":[
+           {
+             "id":"hey",
+             "name":"First Name"
+           }
+         ]
+       };
+       
+       const p = new Person(person);
+       p.save();
+    }
+
 
   //check modle defintion
   @Invokable()
@@ -127,10 +149,10 @@ export class PersonController extends ConvectorController<ChaincodeTx> {
         // const org = new Organization({id:'gov',name:"Hong Kong Government"});
         // org.save();
        const person = await Person.getOne(id);
-       const org =  await Organization.getOne(person.org_id);
-      //  person.organization = org;
-       console.log(person);
-       return "{username:'steven'}";
+      //  const org =  await Organization.getOne(person.org_id);
+      // //  person.organization = org;
+      //  console.log(person);
+      //  return "{username:'steven'}";
       //  person.org_id = 'gov';
       //  await person.save();
     }

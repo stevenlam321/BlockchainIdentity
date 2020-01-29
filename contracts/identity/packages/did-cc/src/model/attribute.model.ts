@@ -17,20 +17,6 @@ export class Attribute extends ConvectorModel<Attribute> {
   public name: string;
 
 }
-export class CredentialAttribute extends ConvectorModel<CredentialAttribute> {
-  @ReadOnly()
-  @Required()
-  public readonly type = 'did.credential.attribute';
-
-  @Required()
-  @Validate(yup.string())
-  public attribute_id: string;
-
-  @Required()
-  @Validate(yup.string())
-  public name: string;
-  
-}
 export class PersonCredentialAttribute extends ConvectorModel<PersonCredentialAttribute> {
   @ReadOnly()
   @Required()

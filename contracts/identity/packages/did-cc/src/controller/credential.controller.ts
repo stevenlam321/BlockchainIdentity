@@ -7,7 +7,7 @@ import {
   FlatConvectorModel
 } from '@worldsibu/convector-core';
 import * as yup from 'yup';
-import {Person,Organization,Attribute,Credential,CredentialAttribute } from '../model';
+import {Person,Organization,Attribute,Credential } from '../model';
 
 @Controller('credential')
 export class CredentialController extends ConvectorController<ChaincodeTx> {
@@ -59,28 +59,28 @@ export class CredentialController extends ConvectorController<ChaincodeTx> {
     @Param(yup.string())
     attribute_id:string
   ) {
-    const credential = await Credential.getOne(credential_id);
-    if (!credential || !credential.id) {
-      throw new Error('Credential does not exist');
-    }
-    const attribute = await Attribute.getOne(attribute_id);
-    if (!attribute || !attribute.id) {
-      throw new Error('Attribute does not exist');
-    }
-    var credential_attributes = credential.credential_attributes;
+    // const credential = await Credential.getOne(credential_id);
+    // if (!credential || !credential.id) {
+    //   throw new Error('Credential does not exist');
+    // }
+    // const attribute = await Attribute.getOne(attribute_id);
+    // if (!attribute || !attribute.id) {
+    //   throw new Error('Attribute does not exist');
+    // }
+    // var credential_attributes = credential.credential_attributes;
 
-    if(this.attribute_exist(credential_attributes,attribute_id)){
-      throw new Error('Attribute already exist');
-    }
+    // if(this.attribute_exist(credential_attributes,attribute_id)){
+    //   throw new Error('Attribute already exist');
+    // }
 
-    const new_credential_attribute = {
-      attribute_id,
-      name: attribute.name
-    };
-    credential_attributes.push(new_credential_attribute);
+    // const new_credential_attribute = {
+    //   attribute_id,
+    //   name: attribute.name
+    // };
+    // credential_attributes.push(new_credential_attribute);
   
-    credential.credential_attributes = credential_attributes;
-    await credential.save();
+    // credential.credential_attributes = credential_attributes;
+    // await credential.save();
   }
 
   @Invokable()
@@ -90,20 +90,20 @@ export class CredentialController extends ConvectorController<ChaincodeTx> {
     @Param(yup.string())
     attribute_id:string
   ) {
-    const credential = await Credential.getOne(credential_id);
-    if (!credential || !credential.id) {
-      throw new Error('Credential does not exist');
-    }
+    // const credential = await Credential.getOne(credential_id);
+    // if (!credential || !credential.id) {
+    //   throw new Error('Credential does not exist');
+    // }
 
-    var credential_attributes = credential.credential_attributes;
+    // var credential_attributes = credential.credential_attributes;
 
-    if(!this.attribute_exist(credential_attributes,attribute_id)){
-      throw new Error('Attribute does not exist');
-    }
-    credential_attributes = credential_attributes.filter(credential_attribute => credential_attribute.attribute_id != attribute_id);
+    // if(!this.attribute_exist(credential_attributes,attribute_id)){
+    //   throw new Error('Attribute does not exist');
+    // }
+    // credential_attributes = credential_attributes.filter(credential_attribute => credential_attribute.attribute_id != attribute_id);
   
-    credential.credential_attributes = credential_attributes;
-    await credential.save();
+    // credential.credential_attributes = credential_attributes;
+    // await credential.save();
   }
 
   @Invokable()
@@ -119,12 +119,12 @@ export class CredentialController extends ConvectorController<ChaincodeTx> {
     await existing.delete();
   }
   
-  private attribute_exist(credential_attributes:Array<FlatConvectorModel<CredentialAttribute>>,attribute_id:string):boolean {
-    for (let credential_attribute of credential_attributes) {
-      if(credential_attribute.attribute_id == attribute_id){
-          return true;
-      }
-    }
+  private attribute_exist(credential_attributes:Array<FlatConvectorModel<Attribute>>,attribute_id:string):boolean {
+    // for (let credential_attribute of credential_attributes) {
+    //   if(credential_attribute.attribute_id == attribute_id){
+    //       return true;
+    //   }
+    // }
     return false;
   }
 }

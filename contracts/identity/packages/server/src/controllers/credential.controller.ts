@@ -9,36 +9,36 @@ import {check, validationResult } from 'express-validator';
 
 const router: Router = Router();
 
-router.post('/',validation.createCredentialRules, async (req: Request, res: Response) => {
-   const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
-    }
-    try {
-         const {id,name,organization_id} = req.body;
-         let credential = new Credential({id,name,organization_id,credential_attributes:[]});
-        await CredentialControllerBackEnd.create(credential);
-        res.status(200).send();
-    } catch (err) {
-        console.log(err);
-        res.status(500).send(err.responses[0].error);
-    }
-});
-router.post('/',validation.addCredentialAttributeRules, async (req: Request, res: Response) => {
-  const errors = validationResult(req);
-   if (!errors.isEmpty()) {
-     return res.status(422).json({ errors: errors.array() });
-   }
-   try {
-        const {id,name,organization_id} = req.body;
-        let credential = new Credential({id,name,organization_id,credential_attributes:[]});
-       await CredentialControllerBackEnd.create(credential);
-       res.status(200).send();
-   } catch (err) {
-       console.log(err);
-       res.status(500).send(err.responses[0].error);
-   }
-});
+// router.post('/',validation.createCredentialRules, async (req: Request, res: Response) => {
+//    const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       return res.status(422).json({ errors: errors.array() });
+//     }
+//     try {
+//          const {id,name,organization_id} = req.body;
+//          let credential = new Credential({id,name,organization_id,credential_attributes:[]});
+//         await CredentialControllerBackEnd.create(credential);
+//         res.status(200).send();
+//     } catch (err) {
+//         console.log(err);
+//         res.status(500).send(err.responses[0].error);
+//     }
+// });
+// router.post('/',validation.addCredentialAttributeRules, async (req: Request, res: Response) => {
+//   const errors = validationResult(req);
+//    if (!errors.isEmpty()) {
+//      return res.status(422).json({ errors: errors.array() });
+//    }
+//    try {
+//         const {id,name,organization_id} = req.body;
+//         let credential = new Credential({id,name,organization_id,credential_attributes:[]});
+//        await CredentialControllerBackEnd.create(credential);
+//        res.status(200).send();
+//    } catch (err) {
+//        console.log(err);
+//        res.status(500).send(err.responses[0].error);
+//    }
+// });
 
 // router.get('/', async (req: Request, res: Response) => {
 //     try {

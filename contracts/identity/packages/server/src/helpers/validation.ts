@@ -5,7 +5,9 @@ const validation = {
     check('name').exists(),
   ], 
   createPersonRules:[
-    check('email').exists().isEmail(),
+    check('email').exists().withMessage('Email is required')
+    .isEmail().withMessage('Invalid email'),
+    check('mobile').exists().withMessage('Mobile is required'),
   ], 
   createCredentialRules:[
     check('id').exists(),

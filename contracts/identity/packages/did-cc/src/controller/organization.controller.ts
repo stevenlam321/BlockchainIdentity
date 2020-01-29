@@ -131,12 +131,12 @@ export class OrganizationController extends ConvectorController<ChaincodeTx> {
   }
 
   private credential_exist(credentials:Array<FlatConvectorModel<PersonCredential>>,credential_id:string):boolean {
-    for (let credential of credentials) {
-      if(credential.credential_id == credential_id){
-          return true;
-      }
-    }
-    return false;
+    // for (let credential of credentials) {
+    //   if(credential.credential_id == credential_id){
+    //       return true;
+    //   }
+    // }
+     return false;
   }
 
   private validate_credential_attributes(credential, attributes) {

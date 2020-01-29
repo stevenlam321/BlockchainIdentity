@@ -35,6 +35,7 @@ export class Person extends ConvectorModel<Person> {
   @Validate(yup.date())
   public readonly created_at: Date;
  
+  @Default([])
   @Validate(yup.array(PersonCredential.schema()))
   public credentials: Array<FlatConvectorModel<PersonCredential>>;
 

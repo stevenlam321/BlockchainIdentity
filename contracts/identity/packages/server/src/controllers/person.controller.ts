@@ -9,6 +9,9 @@ var upload = multer({ dest: 'public/uploads/' })
 
 
 const router: Router = Router();
+router.get('/', async (req: Request, res: Response) => {
+  res.send( "helki");
+});
 
 router.post('/',validation.createPersonRules, async (req: Request, res: Response) => {
    const errors = validationResult(req);
@@ -16,7 +19,8 @@ router.post('/',validation.createPersonRules, async (req: Request, res: Response
       return res.status(422).json({ errors: errors.array() });
     }
     try {
-         const {id,email,mobile} = req.body;
+         const id = "P-"+Math.random().toString(36).substr(2,10);
+         const {email,mobile} = req.body;
          let person = new Person({id,email,mobile});
         await PersonControllerBackEnd.create(person);
         res.status(200).send();

@@ -29,6 +29,21 @@ export class PersonController extends ConvectorController<ChaincodeTx> {
   }
 
   @Invokable()
+  public async exists(
+    @Param(yup.string())
+    email: string
+  ) {
+    var persons =  await Person.query(Person, {
+      'selector': {
+        "type": Person.prototype.type,
+        "email":email
+      }
+    })
+    persons = <Array<Person>> persons;
+    return persons.length > 0;
+  }
+
+  @Invokable()
   public async create(
     @Param(Person)
     person: Person
@@ -36,6 +51,17 @@ export class PersonController extends ConvectorController<ChaincodeTx> {
     const existing = await Person.getOne(person.id);
     if (existing && existing.id) {
       throw new Error('Person exists with that ID');
+    }
+
+    var persons =  await Person.query(Person, {
+      'selector': {
+        "type": Person.prototype.type,
+        "email":person.email
+      }
+    }) as any[];
+   
+    if(persons.length > 0){
+      throw new Error('Email already registered');
     }
     await person.save();
   }
