@@ -13,6 +13,24 @@ Return:
     }
 ]
 ```
+```
+Method: POST
+Path: /organizations/assign_credential,
+Params: 
+{
+    "email":"steven.lam@echk.com.hk",
+    "credential_id":"C-hkidcard",
+    "attributes":[
+        {"attribute_id":"A-dob","value":"2018-10-12"},
+        {"attribute_id":"A-first_name","value":"Steven"},
+        {"attribute_id":"A-last_name","value":"Lam"},
+        {"attribute_id":"A-gender","value":"M"},
+        {"attribute_id":"A-hkidno","value":"A12345(7)"}
+    ]
+}
+Return: 
+
+```
 ## Attributes
 ```
 Method: GET

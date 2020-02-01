@@ -17,6 +17,20 @@ export class Attribute extends ConvectorModel<Attribute> {
   public name: string;
 
 }
+export class CredentialAttribute extends ConvectorModel<Attribute> {
+  @ReadOnly()
+  public readonly type = 'did.credential.attribute';
+
+  @Required()
+  @Validate(yup.string())
+  public attribute_id: string;
+
+  @Required()
+  @Validate(yup.string())
+  public name: string;
+
+}
+
 export class PersonCredentialAttribute extends ConvectorModel<PersonCredentialAttribute> {
   @ReadOnly()
   @Required()
@@ -24,8 +38,13 @@ export class PersonCredentialAttribute extends ConvectorModel<PersonCredentialAt
 
   @Required()
   @Validate(yup.string())
+  public attribute_id: string;
+
+  @Required()
+  @Validate(yup.string())
   public name: string;
 
+  @Default(null)
   @Required()
   @Validate(yup.string())
   public value: string;
@@ -39,7 +58,7 @@ export class PersonCredentialAttributeValue extends ConvectorModel<PersonCredent
   @Required()
   @Validate(yup.string())
   public attribute_id: string;
-
+  
   @Required()
   @Validate(yup.string())
   public value: string;

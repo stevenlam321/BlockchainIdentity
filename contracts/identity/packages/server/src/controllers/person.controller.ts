@@ -44,16 +44,16 @@ router.post('/',validation.createPersonRules, async (req: Request, res: Response
 //     }
 // });
 
-// router.get('/:id', async (req: Request, res: Response) => {
-//     try {
-//         let { id } = req.params;
-//         const organization = new Organization(await PersonControllerBackEnd.show(id));
-//         res.send(organization.toJSON());
-//     } catch (err) {
-//         console.log(err);
-//         res.status(500).send(err);
-//     }
-// });
+router.get('/:id', async (req: Request, res: Response) => {
+    try {
+        let { id } = req.params;
+        const person = new Person(await PersonControllerBackEnd.show(id));
+        res.send(person.toJSON());
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+});
 // router.post('/',validation.createOrganizationRules, async (req: Request, res: Response) => {
 //    const errors = validationResult(req);
 //     if (!errors.isEmpty()) {

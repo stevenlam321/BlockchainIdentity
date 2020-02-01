@@ -5,6 +5,8 @@ hurl invoke did organization_assisn_credential '{"person_id":"p0001","credential
 
 
 
+hurl invoke did organization_assisn_credential steven.lam@echk.com.hk C-hkidcard '[{"attribute_id":"A-dob","value":"2018-10-12"},{"attribute_id":"A-first_name","value":"Steven"},{"attribute_id":"A-last_name","value":"Lam"},{"attribute_id":"A-gender","value":"M"},{"attribute_id":"A-hkidno","value":"A12345(7)"}]'
+
 
 
 Field should be exist, but allow null value

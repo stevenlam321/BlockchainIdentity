@@ -1,7 +1,7 @@
 
 import { Router, Request, Response } from 'express';
 import {OrganizationControllerBackEnd, InitServerIdentity } from '../convector';
-import { Organization } from 'did-cc';
+import { Organization,PersonCredentialAttributeValue} from 'did-cc';
 import validation from '../helpers/validation';
 import {check, validationResult } from 'express-validator';
 var multer  = require('multer')
@@ -73,4 +73,22 @@ router.delete('/', async (req: Request, res: Response) => {
         res.status(500).send(err.responses[0].error);
     }
 });
+
+
+router.post('/assign_credential',validation.createOrganizationRules, async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+   // res.send(req.body.attributes);
+    //  if (!errors.isEmpty()) {
+    //    return res.status(422).json({ errors: errors.array() });
+    //  }
+     try {
+         const {email,credential_id,attributes} = req.body;
+         await OrganizationControllerBackEnd.assign_credential(email,credential_id,attributes);
+         res.status(200).send();
+     } catch (err) {
+         console.log(err);
+         res.status(500).send(err.responses[0].error);
+     }
+ });
+
 export const OrganizationExpressController: Router = router;

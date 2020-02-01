@@ -84,28 +84,29 @@ export class DidController extends ConvectorController<ChaincodeTx> {
         organization_id: "O-hkimmd",
         attributes:[
           {
-            id: "A-hkidno",
+            attribute_id: "A-hkidno",
             name: "HK ID Card Number"
           },
           {
-            id: "A-first_name",
+            attribute_id: "A-first_name",
             name: "First Name"
           },
           {
-            id: "A-last_name",
+            attribute_id: "A-last_name",
             name: "Last Name"
           },
           {
-            id: "A-dob",
+            attribute_id: "A-dob",
             name: "Date of Birth"
           },
           {
-            id: "A-gender",
+            attribute_id: "A-gender",
             name: "Gender"
           }
         ]
       }
     ];
+
 
     try{
         for(const i in credentials){
@@ -127,32 +128,32 @@ export class DidController extends ConvectorController<ChaincodeTx> {
           created_at: new Date("2019-10-10 12:00:01"),
          credentials: [
             {
-              id: "C-hkidcard",
+              credential_id: "C-hkidcard",
               name: "Hong Kong Identity Card",
               organization_id: "O-hkimmd",
               attributes: [
                 {
-                  id: "A-hkidno",
+                  attribute_id: "A-hkidno",
                   name: "HK ID Card Number",
                   value: "A123456(7)"
                 },
                 {
-                  id: "A-first_name",
+                  attribute_id: "A-first_name",
                   name: "First Name",
                   value: "Steven"
                 },
                 {
-                  id: "A-last_name",
+                  attribute_id: "A-last_name",
                   name: "Last Name",
                   value: "Lam"
                 },
                 {
-                  id: "A-dob",
+                  attribute_id: "A-dob",
                   name: "Date of Birth",
                   value: "2000-01-01"
                 },
                 {
-                  id: "A-gender",
+                  attribute_id: "A-gender",
                   name: "Gender",
                   value: "M"
                 }
@@ -172,5 +173,5 @@ export class DidController extends ConvectorController<ChaincodeTx> {
         }
         return success;
 
-  }
+   }
 }

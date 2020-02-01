@@ -7,7 +7,7 @@ import {
   Validate,
   FlatConvectorModel
 } from '@worldsibu/convector-core-model';
-import {Attribute,PersonCredentialAttribute,PersonCredentialAttributeValue} from './attribute.model';
+import {Attribute,CredentialAttribute,PersonCredentialAttribute,PersonCredentialAttributeValue} from './attribute.model';
 import {Organization} from './organization.model';
 
 export class Credential extends ConvectorModel<Credential> {
@@ -29,7 +29,7 @@ export class Credential extends ConvectorModel<Credential> {
   @Default([])
   @Required()
   @Validate(yup.array(Attribute.schema().nullable()))
-  public attributes: Array<FlatConvectorModel<Attribute>>;
+  public attributes: Array<FlatConvectorModel<CredentialAttribute>>;
 
   @Validate(yup.array(yup.string()))
   public attribute_ids: Array<string>;
@@ -42,6 +42,10 @@ export class PersonCredential extends ConvectorModel<PersonCredential> {
 
   @Required()
   @Validate(yup.string())
+  public credential_id: string;
+
+  @Required()
+  @Validate(yup.string())
   public name: string;
 
   @Required()
@@ -50,21 +54,4 @@ export class PersonCredential extends ConvectorModel<PersonCredential> {
 
   @Validate(yup.array(PersonCredentialAttribute.schema()))
   public attributes: Array<FlatConvectorModel<PersonCredentialAttribute>>;
-}
-
-export class AssignCredential extends ConvectorModel<AssignCredential> {
-  @ReadOnly()
-  @Required()
-  public readonly type = 'did.assign.credential';
-
-  @Required()
-  @Validate(yup.string())
-  public person_id: string;
-
-  @Required()
-  @Validate(yup.string())
-  public credential_id: string;
-
-  @Validate(yup.array(PersonCredentialAttributeValue.schema()))
-  public attributes: Array<FlatConvectorModel<PersonCredentialAttributeValue>>;
 }
