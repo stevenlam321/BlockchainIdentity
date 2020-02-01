@@ -9,21 +9,32 @@ import {check, validationResult } from 'express-validator';
 
 const router: Router = Router();
 
-// router.post('/',validation.createCredentialRules, async (req: Request, res: Response) => {
-//    const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       return res.status(422).json({ errors: errors.array() });
-//     }
-//     try {
-//          const {id,name,organization_id} = req.body;
-//          let credential = new Credential({id,name,organization_id,credential_attributes:[]});
-//         await CredentialControllerBackEnd.create(credential);
-//         res.status(200).send();
-//     } catch (err) {
-//         console.log(err);
-//         res.status(500).send(err.responses[0].error);
-//     }
-// });
+router.get('/', async (req: Request, res: Response) => {
+    try {
+        const result_json = await CredentialControllerBackEnd.index();
+        res.send(result_json);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+});
+
+router.post('/',validation.createCredentialRules, async (req: Request, res: Response) => {
+    //res.send(req.body.attributes);
+   const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    try {
+        const {id,name,organization_id,attribute_ids} = req.body;
+        let credential = new Credential({id,name,organization_id,attribute_ids});
+        await CredentialControllerBackEnd.create(credential);
+        res.status(200).send();
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err.responses[0].error);
+    }
+});
 // router.post('/',validation.addCredentialAttributeRules, async (req: Request, res: Response) => {
 //   const errors = validationResult(req);
 //    if (!errors.isEmpty()) {
@@ -40,19 +51,6 @@ const router: Router = Router();
 //    }
 // });
 
-// router.get('/', async (req: Request, res: Response) => {
-//     try {
-//         const organizations = await PersonControllerBackEnd.index();
-//         const result_json = [];
-//         organizations.forEach(element => {
-//             result_json.push(new Organization(element).toJSON());
-//         });
-//         res.send(result_json);
-//     } catch (err) {
-//         console.log(err);
-//         res.status(500).send(err);
-//     }
-// });
 
 // router.get('/:id', async (req: Request, res: Response) => {
 //     try {

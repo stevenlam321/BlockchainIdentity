@@ -1,3 +1,21 @@
+# Smart Contract Comands
+## Start exited docker containers
+docker start $(docker ps -a -q -f status=exited)
+
+## Start debug
+hurl new (Reset first)
+npm run cc:start:debug -- did
+hurl invoke did did_init
+
+## Update chaincode on debug mode
+npm run cc:package -- did
+
+# Start API Server
+cd contracts/packages/server
+nodemon src/app.ts
+
+
+
 # BlockchainIdentity
 A digitial identity framework using Hyperledger Fabric Blockchain Framework
 

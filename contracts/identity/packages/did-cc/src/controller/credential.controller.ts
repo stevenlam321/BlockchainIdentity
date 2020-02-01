@@ -13,7 +13,24 @@ import {Person,Organization,Attribute,Credential } from '../model';
 export class CredentialController extends ConvectorController<ChaincodeTx> {
   @Invokable()
   public async index() {   
-    return await Credential.getAll();
+    var result_json = [];
+    
+    const credentials = await Credential.getAll();
+   
+    const organizations = await Organization.getAll();
+
+    credentials.forEach(credential => {
+      organizations.forEach(organization => {
+       if(credential.organization_id == organization.id){
+          credential.organization = organization;
+       }
+      });
+    });
+
+    credentials.forEach(element => {
+        result_json.push(new Credential(element).toJSON());
+    });
+    return result_json;
   }
 
   @Invokable()
@@ -37,6 +54,30 @@ export class CredentialController extends ConvectorController<ChaincodeTx> {
     if (existing && existing.id) {
       throw new Error('Credential exists with that ID');
     }
+    const organization = await Organization.getOne(credential.organization_id);
+
+    if (!organization || !organization.id) {
+      throw new Error('No such organization ID');
+    }
+    const error_attributes = [];
+    const attributes = [];
+    if(credential.attribute_ids.length > 0){
+      for (let attribute_id of credential.attribute_ids) {
+        const attribute = await Attribute.getOne(attribute_id);
+           if(!attribute || !attribute.id){
+              error_attributes.push(attribute_id);
+           }else{
+              attributes.push(attribute);
+           }
+      }
+      if(error_attributes.length > 0){
+        throw new Error('Invalid attribute_ids:' + error_attributes.join(','));
+      }
+    }
+    if(attributes.length > 0){
+       credential.attributes = attributes;
+    }
+    delete credential.attribute_ids;
     await credential.save();
   }
 
@@ -56,8 +97,8 @@ export class CredentialController extends ConvectorController<ChaincodeTx> {
   public async add_attribute(
     @Param(yup.string())
     credential_id:string,
-    @Param(yup.string())
-    attribute_id:string
+    @Param(yup.array(yup.string()))
+    attribute_ids: string[]
   ) {
     // const credential = await Credential.getOne(credential_id);
     // if (!credential || !credential.id) {

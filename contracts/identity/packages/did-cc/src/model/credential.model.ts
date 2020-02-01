@@ -8,7 +8,7 @@ import {
   FlatConvectorModel
 } from '@worldsibu/convector-core-model';
 import {Attribute,PersonCredentialAttribute,PersonCredentialAttributeValue} from './attribute.model';
-
+import {Organization} from './organization.model';
 
 export class Credential extends ConvectorModel<Credential> {
   @ReadOnly()
@@ -18,13 +18,21 @@ export class Credential extends ConvectorModel<Credential> {
   @Required()
   @Validate(yup.string())
   public name: string;
+
   @Required()
   @Validate(yup.string())
   public organization_id: string;
+
+  @Validate(Organization.schema().nullable())
+  public organization: FlatConvectorModel<Organization>;
   
+  @Default([])
   @Required()
   @Validate(yup.array(Attribute.schema().nullable()))
   public attributes: Array<FlatConvectorModel<Attribute>>;
+
+  @Validate(yup.array(yup.string()))
+  public attribute_ids: Array<string>;
 }
 
 export class PersonCredential extends ConvectorModel<PersonCredential> {

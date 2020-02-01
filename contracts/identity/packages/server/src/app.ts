@@ -14,6 +14,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static('public'));
 app.use(bodyParser.json({ limit: '40mb' }));
+app.use(express.json());
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');

@@ -9,6 +9,7 @@ const router: Router = Router();
 router.get('/', async (req: Request, res: Response) => {
     try {
         const attributes = await AttributeControllerBackEnd.index();
+
         const attribute_json = [];
         attributes.forEach(element => {
             attribute_json.push(new Attribute(element).toJSON());

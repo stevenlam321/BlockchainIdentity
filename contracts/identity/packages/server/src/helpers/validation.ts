@@ -5,14 +5,16 @@ const validation = {
     check('name').exists(),
   ], 
   createPersonRules:[
-    check('email').exists().withMessage('Email is required')
+    check('email').exists().withMessage('email is required')
     .isEmail().withMessage('Invalid email'),
-    check('mobile').exists().withMessage('Mobile is required'),
+    check('mobile').exists().withMessage('mobile is required'),
   ], 
   createCredentialRules:[
-    check('id').exists(),
-    check('name').exists(),
-    check('organization_id').exists(),
+    check('id').exists().withMessage('id is required'),
+    check('name').exists().withMessage('name is required'),
+    check('organization_id').exists().withMessage('organization_id is required'),
+    check('attribute_ids').exists().withMessage('attribute_ids is required')
+    .isArray().withMessage('attribute_ids should be an array'),
   ],
   addCredentialAttributeRules:[
     check('id').exists(),
