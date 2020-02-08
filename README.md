@@ -1,6 +1,21 @@
+# Start mongo db docker container
+docker run --name  mongodb  -p 27017:27017 -d mongo
+
+
 # Smart Contract Comands
+## Start mongodb service
+brew services start mongodb-community@4.2
+
+
 ## Start exited docker containers
 docker start $(docker ps -a -q -f status=exited)
+
+## Stop and remove docker containers
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+docker rmi $(docker images -q)
+
+
 
 ## Start debug
 hurl new (Reset first)

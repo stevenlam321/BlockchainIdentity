@@ -4,6 +4,13 @@ const validation = {
     check('id').exists(),
     check('name').exists(),
   ], 
+  createAttributeRules:[
+    check('id').exists().withMessage('id is required'),
+    check('name').exists().withMessage('name is required'),
+  ], 
+  updateAttributeRules:[
+    check('name').exists().withMessage('name is required'),
+  ], 
   createPersonRules:[
     check('email').exists().withMessage('email is required')
     .isEmail().withMessage('Invalid email'),

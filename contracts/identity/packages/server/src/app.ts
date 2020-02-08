@@ -1,11 +1,13 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { port as serverPort } from './env';
+import * as createError  from 'http-errors';
+
 import { AttributeExpressController,OrganizationExpressController,PersonExpressController,CredentialExpressController } from './controllers';
 
 // import * as expressValidator from 'express-validator';
 
-const app: express.Application = express();
+const app = express();
 const port = serverPort;
 
 app.use(bodyParser.urlencoded({
@@ -27,6 +29,23 @@ app.use('/attributes', AttributeExpressController);
 app.use('/organizations', OrganizationExpressController);
 app.use('/persons', PersonExpressController);
 app.use('/credentials', CredentialExpressController);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+   next(createError(404));
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  var response:any = {
+    message:err.message
+  };
+  if(err.errors){
+      response.errors = err.errors;
+  }
+  res.json(response);
+});
 
 app.listen(port, () =>
   console.log(`Server started in port ${port}`));

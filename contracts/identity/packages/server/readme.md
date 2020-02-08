@@ -1,4 +1,67 @@
 # Api endpoints
+## HKDID Client App APIs
+login
+register
+
+## Attributes
+```
+Method: GET
+Path: /attributes
+Description:
+Params: N/A
+Return:
+[
+    {
+        "id": "A-dob",
+        "type": "did.attribute",
+        "name": "Date of Birth"
+    }
+]
+```
+```
+Method: GET
+Path: /attributes/{attribute_id}
+Description:
+Params: N/A
+Return:
+{
+    "id": "A-dob",
+    "type": "did.attribute",
+    "name": "Date of Birth"
+}
+```
+```
+Method: POST
+Path: /attributes
+Description:
+Params: id,name
+Return:
+{
+    "id": "A-dob",
+    "type": "did.attribute",
+    "name": "Date of Birth"
+}
+```
+```
+Method: PUT
+Path: /attributes/{attribute_id}
+Description:
+Params: name
+Return:
+{
+    "id": "A-dob",
+    "type": "did.attribute",
+    "name": "Date of Birth"
+}
+```
+```
+Method: DELETE
+Path: /attributes/{attribute_id}
+Description:
+Params: N/A
+Return: N/A
+```
+
 ## Organizations
 ```
 Method: GET
