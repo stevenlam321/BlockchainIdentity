@@ -42,8 +42,9 @@ router.post('/',validation.createOrganizationRules, async (req, res, next) => {
     }
     try {
         const {id,name,logo} = req.body;
-        let organization = new Organization({id,name,logo});
-        await OrganizationControllerBackEnd.create(organization);
+        let organizationObj = new Organization({id,name,logo});
+        await OrganizationControllerBackEnd.create(organizationObj);
+        const organization = new Organization(await OrganizationControllerBackEnd.show(id));
         res.status(200).json(organization);
     } catch (err) {
         next(createError(400,err.responses[0].error.message));
@@ -58,8 +59,9 @@ router.put('/:id',validation.updateOrganizationRules, async (req, res, next) => 
     try {
         let { id } = req.params;
         const {name,logo} = req.body;
-        let organization = new Organization({id,name,logo});
-        await OrganizationControllerBackEnd.update(organization);
+        let organizationObj = new Organization({id,name,logo});
+        await OrganizationControllerBackEnd.update(organizationObj);
+        const organization = new Organization(await OrganizationControllerBackEnd.show(id));
         res.status(200).json(organization);
     } catch (err) {
         next(createError(400,err.responses[0].error.message));

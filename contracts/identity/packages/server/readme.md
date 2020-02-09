@@ -61,6 +61,41 @@ Description:
 Params: N/A
 Return: N/A
 ```
+## Persons
+```
+Method: POST
+Path: /persons/register
+Params: email,mobile
+Return:
+{
+    "id": "P-3ui16yo77b",
+    "type": "did.person",
+    "email": "steven.lam123@yahoo.com.hk",
+    "mobile": "12345678",
+    "created_at": "2020-02-09T12:44:42.647Z",
+    "credentials": []
+}
+```
+```
+Method: GET
+Path: /persons/{person_id/email}
+Return:
+{
+    "id": "P-3ui16yo77b",
+    "type": "did.person",
+    "email": "steven.lam123@yahoo.com.hk",
+    "mobile": "12345678",
+    "created_at": "2020-02-09T12:44:42.647Z",
+    "credentials": []
+}
+```
+```
+Method: POST
+Path: /persons/login
+Return:
+
+```
+
 
 ## Organizations
 ```

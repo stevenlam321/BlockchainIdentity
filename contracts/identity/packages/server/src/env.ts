@@ -22,3 +22,5 @@ export const couchDBView = process.env.COUCHDBVIEW || 'ch1_did';
 export const couchDBProtocol = process.env.COUCHDB_PROTOCOL || 'http';
 export const couchDBHost = process.env.COUCHDB_HOST || 'localhost';
 export const couchDBPort = process.env.COUCHDB_PORT || 5084;
+
+export const mongodbConnection = process.env.COUCHDB_PORT || 'mongodb://localhost/hkdid';

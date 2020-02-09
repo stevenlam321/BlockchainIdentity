@@ -27,7 +27,7 @@ router.get('/:id', async (req, res, next) => {
     try {
         let { id } = req.params;
         const attribute = new Attribute(await AttributeControllerBackEnd.show(id));
-        res.status(200).json(attribute.toJSON());
+        res.status(200).json(attribute);
     } catch (err) {
         return next(createError(404,err.responses[0].error.message));
     }
@@ -40,8 +40,9 @@ router.post('/', validation.createAttributeRules, async (req, res, next) => {
 
     try {
         const {id,name} = req.body;
-        let attribute = new Attribute({id,name});
-        await AttributeControllerBackEnd.create(attribute);
+        let attributeObj = new Attribute({id,name});
+        await AttributeControllerBackEnd.create(attributeObj);
+        const attribute = new Attribute(await AttributeControllerBackEnd.show(id));
         res.status(200).json(attribute);
     } catch (err) {
         next(createError(400,err.responses[0].error.message));
@@ -56,8 +57,9 @@ router.put('/:id',validation.updateAttributeRules, async (req, res, next) => {
         return next(createError(400,{ errors: errors.array()}));
     }
     try {
-        let attribute = new Attribute({id,name});
-        await AttributeControllerBackEnd.update(attribute);
+        let attributeObj = new Attribute({id,name});
+        await AttributeControllerBackEnd.update(attributeObj);
+        const attribute = new Attribute(await AttributeControllerBackEnd.show(id));
         res.status(200).json(attribute);
     } catch (err) {
         next(createError(400,err.responses[0].error.message));

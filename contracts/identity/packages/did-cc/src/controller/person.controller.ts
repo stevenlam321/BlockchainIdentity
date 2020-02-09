@@ -93,17 +93,20 @@ export class PersonController extends ConvectorController<ChaincodeTx> {
 
   @Invokable()
   public async getPerson(
-    // @Param(yup.string())
-    // id:string,
     @Param(yup.string())
     value:string
   ) {
-    return await Person.query(Person, {
+    const persons =  await Person.query(Person, {
       'selector': {
         'type':'did.person',
         'email': value
       }
-    });
+    }) as any[];
+    if(persons.length == 0){
+      throw new Error('Person does not exist');
+    }else{
+      return persons[0];
+    }
   }
 
 

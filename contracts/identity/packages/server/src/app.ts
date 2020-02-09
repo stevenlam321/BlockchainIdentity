@@ -1,7 +1,9 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
-import { port as serverPort } from './env';
+import { port as serverPort,mongodbConnection } from './env';
 import * as createError  from 'http-errors';
+import * as mongoose from 'mongoose';
+// const User = require('./models/user');
 
 import { AttributeExpressController,OrganizationExpressController,PersonExpressController,CredentialExpressController } from './controllers';
 
@@ -46,6 +48,13 @@ app.use(function(err, req, res, next) {
   }
   res.json(response);
 });
+
+mongoose.connect(mongodbConnection, { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true });
+
+//  User.find({}, function (err, users) {
+//   if (err) console.log(err);
+//   console.log(users);
+// });
 
 app.listen(port, () =>
   console.log(`Server started in port ${port}`));
