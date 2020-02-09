@@ -14,7 +14,7 @@ var upload = multer({ dest: 'public/uploads/' })
 
 const router: Router = Router();
 
-router.post('/register',validation.createPersonRules,  async (req, res, next) => {
+router.post('/register',validation.registerRules,  async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return next(createError(400,{ errors: errors.array()}));
@@ -41,20 +41,20 @@ router.post('/register',validation.createPersonRules,  async (req, res, next) =>
      }
  });
 
-router.post('/',validation.createPersonRules,  async (req, res, next) => {
+router.post('/login',validation.loginRules,  async (req, res, next) => {
    const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-    try {
-         const id = "P-"+Math.random().toString(36).substr(2,10);
-         const {email,mobile} = req.body;
-         let person = new Person({id,email,mobile});
-        await PersonControllerBackEnd.create(person);
-        res.status(200).send();
-    } catch (err) {
-        next(createError(400,err.responses[0].error.message));
+    const {email,password} = req.body;
+    var user = await User.findOne({email});
+
+    if(!user || (user && !user.verifyPassword(password))){
+        return next(createError(400,'Invalid email or password'));
     }
+    const personObj = await PersonControllerBackEnd.getPerson(email) as Person;
+    const person = new Person(personObj);
+    res.status(200).json(person);
 });
 
 
@@ -63,9 +63,9 @@ router.get('/:text',  async (req, res, next) => {
         let { text } = req.params;
         var person = null;
         if(text.indexOf('@') != -1){
-            person = (await PersonControllerBackEnd.getPerson(text));
+            person = await PersonControllerBackEnd.getPerson(text);
         }else{
-            person = (await PersonControllerBackEnd.show(text));
+            person = await PersonControllerBackEnd.show(text);
         }
         person = new Person(person);
         res.send(person);

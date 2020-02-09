@@ -16,10 +16,16 @@ const validation = {
   updateAttributeRules:[
     check('name').exists().withMessage('name is required'),
   ], 
-  createPersonRules:[
+  registerRules:[
     check('email').exists().withMessage('email is required')
     .isEmail().withMessage('Invalid email'),
+    check('password').exists().withMessage('password is required'),
     check('mobile').exists().withMessage('mobile is required'),
+  ], 
+  loginRules:[
+    check('email').exists().withMessage('email is required')
+    .isEmail().withMessage('Invalid email'),
+    check('password').exists().withMessage('password is required')
   ], 
   createCredentialRules:[
     check('id').exists().withMessage('id is required'),
@@ -33,23 +39,12 @@ const validation = {
     check('name').exists(),
     check('organization_id').exists(),
   ],
-    loginRules:[
-        check('username').exists().withMessage((value,{req})=>req.__('username.required')),
-        check('password').exists().withMessage((value,{req})=>req.__('password.required'))
-    ],
-    registerRules : [
-        check('username').exists().withMessage((value,{req})=>req.__('username.required')),
-        check('password').exists().withMessage((value,{req})=>req.__('password.required'))
-        .isLength({min:8}).withMessage((value,{req})=>req.__('password.min_length')),
-        check('confirm_password').exists().withMessage((value,{req})=>req.__('confirm_password.required'))
-        .custom((value, { req }) => value === req.body.password).withMessage((value,{req})=>req.__('password.not_match'))
-      ],
-      changePasswordRules : [
-        check('password').exists().withMessage((value,{req})=>req.__('password.required'))
-        .isLength({min:8}).withMessage((value,{req})=>req.__('password.min_length')),
-        check('confirm_password').exists().withMessage((value,{req})=>req.__('confirm_password.required'))
-        .custom((value, { req }) => value === req.body.password).withMessage((value,{req})=>req.__('password.not_match'))
-      ]
+  changePasswordRules : [
+    check('password').exists().withMessage((value,{req})=>req.__('password.required'))
+    .isLength({min:8}).withMessage((value,{req})=>req.__('password.min_length')),
+    check('confirm_password').exists().withMessage((value,{req})=>req.__('confirm_password.required'))
+    .custom((value, { req }) => value === req.body.password).withMessage((value,{req})=>req.__('password.not_match'))
+  ]
 };
 
 export default validation;

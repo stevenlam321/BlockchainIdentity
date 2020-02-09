@@ -95,7 +95,7 @@ export class PersonController extends ConvectorController<ChaincodeTx> {
   public async getPerson(
     @Param(yup.string())
     value:string
-  ) {
+  ):Promise<Person> {
     const persons =  await Person.query(Person, {
       'selector': {
         'type':'did.person',
