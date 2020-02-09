@@ -17,9 +17,9 @@ router.get('/', async (req, res, next) => {
         attributes.forEach(element => {
             attribute_json.push(new Attribute(element).toJSON());
         });
-        res.send(attribute_json);
+        res.status(200).json(attribute_json);
     } catch (err) {
-        next(createError(404,err.responses[0].error.message));
+        next(createError(400,err.responses[0].error.message));
     }
 });
 
@@ -27,7 +27,7 @@ router.get('/:id', async (req, res, next) => {
     try {
         let { id } = req.params;
         const attribute = new Attribute(await AttributeControllerBackEnd.show(id));
-        res.send(attribute.toJSON());
+        res.status(200).json(attribute.toJSON());
     } catch (err) {
         return next(createError(404,err.responses[0].error.message));
     }
@@ -42,7 +42,7 @@ router.post('/', validation.createAttributeRules, async (req, res, next) => {
         const {id,name} = req.body;
         let attribute = new Attribute({id,name});
         await AttributeControllerBackEnd.create(attribute);
-        res.status(200).send(attribute);
+        res.status(200).json(attribute);
     } catch (err) {
         next(createError(400,err.responses[0].error.message));
     }
@@ -58,7 +58,7 @@ router.put('/:id',validation.updateAttributeRules, async (req, res, next) => {
     try {
         let attribute = new Attribute({id,name});
         await AttributeControllerBackEnd.update(attribute);
-        res.status(200).send(attribute);
+        res.status(200).json(attribute);
     } catch (err) {
         next(createError(400,err.responses[0].error.message));
     }
@@ -68,7 +68,7 @@ router.delete('/:id', async (req, res, next) => {
     let { id } = req.params;
     try {
         await AttributeControllerBackEnd.delete(id);
-        res.status(200).send();
+        res.status(200).json();
     } catch (err) {
         next(createError(400,err.responses[0].error.message));
     }

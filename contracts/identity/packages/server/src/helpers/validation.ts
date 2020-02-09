@@ -1,8 +1,13 @@
 import { check, validationResult } from 'express-validator';
 const validation = {
   createOrganizationRules:[
-    check('id').exists(),
-    check('name').exists(),
+    check('id').exists().withMessage('id is required'),
+    check('name').exists().withMessage('name is required'),
+    check('logo').exists().withMessage('logo is required'),
+  ], 
+  updateOrganizationRules:[
+    check('name').exists().withMessage('name is required'),
+    check('logo').exists().withMessage('logo is required'),
   ], 
   createAttributeRules:[
     check('id').exists().withMessage('id is required'),

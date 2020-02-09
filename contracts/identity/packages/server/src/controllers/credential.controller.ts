@@ -5,8 +5,6 @@ import { Person,Attribute, Credential } from 'did-cc';
 import validation from '../helpers/validation';
 import {check, validationResult } from 'express-validator';
 
-//Credential
-
 const router: Router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
@@ -20,7 +18,6 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 router.post('/',validation.createCredentialRules, async (req: Request, res: Response) => {
-    //res.send(req.body.attributes);
    const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
