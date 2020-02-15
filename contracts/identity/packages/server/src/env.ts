@@ -24,3 +24,4 @@ export const couchDBHost = process.env.COUCHDB_HOST || 'localhost';
 export const couchDBPort = process.env.COUCHDB_PORT || 5084;
 
 export const mongodbConnection = process.env.COUCHDB_PORT || 'mongodb://localhost/hkdid';
+export const secretKey = process.env.SECRET_KEY || 'uyfhdjko239485t7ygvchxdjskwi';

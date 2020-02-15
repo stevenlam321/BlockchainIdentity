@@ -25,7 +25,18 @@ export class AttributeController extends ConvectorController<ChaincodeTx> {
       throw new Error('Attribute does not exist');
     }
    // var his = await existing.history();
-   console.log(this.sender);
+  //  console.log("this.tx.identity.getID()");
+  //  console.log(this.tx.identity.getID());
+  //  console.log("this.tx.identity.getMSPID()");
+  //  console.log(this.tx.identity.getMSPID());
+  //  console.log("this.tx.identity.getX509Certificate()");
+  //  console.log(this.tx.identity.getX509Certificate());
+  //  console.log("this.tx.identity.getAttributeValue('OU')");
+  //  console.log(this.tx.identity.getAttributeValue('OU'));
+  //   console.log("this.tx");
+  //   console.log(this.tx);
+  //  console.log("this.sender");
+  //  console.log(this.sender);
     return existing;
   }
 

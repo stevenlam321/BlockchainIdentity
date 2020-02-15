@@ -3,7 +3,7 @@ import * as bodyParser from 'body-parser';
 import { port as serverPort,mongodbConnection } from './env';
 import * as createError  from 'http-errors';
 import * as mongoose from 'mongoose';
-// const User = require('./models/user');
+
 
 import { AttributeExpressController,OrganizationExpressController,PersonExpressController,CredentialExpressController } from './controllers';
 
