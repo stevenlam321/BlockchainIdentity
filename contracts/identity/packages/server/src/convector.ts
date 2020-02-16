@@ -21,7 +21,7 @@ export const AttributeControllerBackEnd = ClientFactory(AttributeController, ada
 export const PersonControllerBackEnd = ClientFactory(PersonController, adapter);
 export const OrganizationControllerBackEnd = ClientFactory(OrganizationController, adapter);
 export const CredentialControllerBackEnd = ClientFactory(CredentialController, adapter);
-//#region Optional
+
 
 /**
  * Check if the identity has been initialized in the chaincode.
@@ -51,5 +51,3 @@ fs.readFile(contextPath, 'utf8', async function (err, data) {
         console.log('Context path with cryptographic materials exists');
     }
 });
-
-//#endregion

@@ -5,11 +5,11 @@ import { Attribute } from 'did-cc';
 import * as createError  from 'http-errors';
 import validation from '../helpers/validation';
 import {check, validationResult } from 'express-validator';
-
+import authed from '../middlewares/authed';
 
 const router: Router = Router();
 
-router.get('/', async (req, res, next) => {
+router.get('/', authed,async (req, res, next) => {
     try {
         const attributes = await AttributeControllerBackEnd.index();
 

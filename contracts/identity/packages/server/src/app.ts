@@ -3,7 +3,7 @@ import * as bodyParser from 'body-parser';
 import { port as serverPort,mongodbConnection } from './env';
 import * as createError  from 'http-errors';
 import * as mongoose from 'mongoose';
-
+import AuthedUser from './middlewares/AuthedUser';
 
 import { AttributeExpressController,OrganizationExpressController,PersonExpressController,CredentialExpressController } from './controllers';
 
@@ -26,6 +26,8 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   next();
 });
+
+app.use(AuthedUser);
 
 app.use('/attributes', AttributeExpressController);
 app.use('/organizations', OrganizationExpressController);
@@ -51,10 +53,6 @@ app.use(function(err, req, res, next) {
 
 mongoose.connect(mongodbConnection, { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true });
 
-//  User.find({}, function (err, users) {
-//   if (err) console.log(err);
-//   console.log(users);
-// });
 
 app.listen(port, () =>
   console.log(`Server started in port ${port}`));
