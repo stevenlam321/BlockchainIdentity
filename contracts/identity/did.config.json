@@ -26,6 +26,11 @@
       "name": "did-cc",
       "version": "file:./packages/did-cc",
       "controller": "CredentialController"
+    },
+    {
+      "name": "did-cc",
+      "version": "file:./packages/did-cc",
+      "controller": "ApplicationController"
     }
   ]
 }

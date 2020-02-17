@@ -1,6 +1,6 @@
 
 import { Router, Request, Response } from 'express';
-import {CredentialControllerBackEnd, InitServerIdentity } from '../convector';
+import {CredentialControllerBackEnd } from '../convector';
 import { Person,Attribute, Credential } from 'did-cc';
 import validation from '../helpers/validation';
 import {check, validationResult } from 'express-validator';

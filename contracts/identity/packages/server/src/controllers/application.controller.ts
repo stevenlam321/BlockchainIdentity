@@ -14,7 +14,6 @@ router.get('/', authed,async (req, res, next) => {
         const ctrls = await Init();
         
         const attributes = await ctrls.attribute.index();
-      //  const attributes = await AttributeControllerBackEnd.index();
 
         const attribute_json = [];
         attributes.forEach(element => {

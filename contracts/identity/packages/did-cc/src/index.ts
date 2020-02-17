@@ -4,3 +4,4 @@ export * from './controller/organization.controller';
 export * from './controller/attribute.controller';
 export * from './controller/person.controller';
 export * from './controller/credential.controller';
+export * from './controller/application.controller';

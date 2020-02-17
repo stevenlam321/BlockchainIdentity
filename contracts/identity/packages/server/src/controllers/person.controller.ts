@@ -1,6 +1,6 @@
 
 import { Router, Request, Response } from 'express';
-import {PersonControllerBackEnd, InitServerIdentity } from '../convector';
+import {PersonControllerBackEnd } from '../convector';
 import { Person,Attribute } from 'did-cc';
 import validation from '../helpers/validation';
 import * as createError  from 'http-errors';
