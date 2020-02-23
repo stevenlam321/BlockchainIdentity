@@ -21,3 +21,30 @@ p.error{
   bottom: 0;
   left: 0;
 }
+.applications{
+  list-style: none;
+  padding: 0;
+}
+.applications li{
+  margin: 15px 0;
+}
+.application-c-name{
+  text-transform: capitalize;
+  width: 100%;
+  height: 100%;
+  background: grey;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border-radius: 10px;
+  font-size: 40px;
+}
+.application-name{
+  font-size: 20px;
+  font-weight: bold;
+  height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

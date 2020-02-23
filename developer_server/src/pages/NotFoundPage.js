@@ -1,11 +1,11 @@
 
 import React from 'react';
 
-export default function HomePage(props) {
+export default function NotFoundPage(props) {
 
     return (
         <div>
-            <h1>Docs</h1>
+            <h1>404 not found</h1>
            
       </div>
   );

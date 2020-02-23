@@ -8,8 +8,8 @@ import {check, validationResult } from 'express-validator';
 import authed from '../middlewares/authed';
 
 const router: Router = Router();
-
-router.get('/', authed,async (req, res, next) => {
+//authed
+router.get('/',async (req, res, next) => {
     try {
         const ctrls = await Init();
         
