@@ -11,6 +11,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ApplicationPage from './pages/ApplicationPage';
 import NotFoundPage from './pages/NotFoundPage';
+import LogoutPage from './pages/LogoutPage';
 import {Container,Spinner} from 'react-bootstrap';
 import { observer,inject } from 'mobx-react';
 import {
@@ -66,7 +67,7 @@ class App extends React.Component {
     return (
       <Router>
         <div className="App">
-            {!this.props.commonStore.appLoaded && <Loading/>}
+            {this.props.commonStore.loading && <Loading/>}
             <Header logined={this.props.commonStore.islogined} commonStore={this.props.commonStore}  history={history}/>            
             <Container>
             <Switch>
@@ -74,8 +75,13 @@ class App extends React.Component {
               <Route path="/login"  component={LoginPage}/>
               <Route path="/register" component={RegisterPage}/>
               <PrivateRoute path="/applications" logined={this.props.commonStore.islogined}>
-                  <ApplicationPage/>
+                <ApplicationPage/>
               </PrivateRoute>
+              <PrivateRoute path="/logout" logined={this.props.commonStore.islogined}>
+                  <LogoutPage/>
+              </PrivateRoute>
+            
+              
               <Route path="*" component={NotFoundPage}/>
             </Switch>
             </Container>

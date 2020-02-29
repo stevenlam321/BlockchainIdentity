@@ -36,6 +36,10 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
     if (existing && existing.id) {
       throw new Error('Application exists with that ID');
     }
+    const person = await Person.getOne(application.person_id);
+    if (!person || !person.id) {
+      throw new Error('Person does not exist');
+    }
     await application.save();
   }
 
@@ -47,6 +51,10 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
     const existing = await Application.getOne(application.id);
     if (!existing || !existing.id) {
       throw new Error('Application does not exist');
+    }
+    const person = await Person.getOne(application.person_id);
+    if (!person || !person.id) {
+      throw new Error('Person does not exist');
     }
     await application.save();
   }
@@ -62,6 +70,21 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
       throw new Error('Application does not exist');
     }
     await existing.delete();
+  }
+
+  @Invokable()
+  public async myApplications(
+    @Param(yup.string())
+    person_id:string
+  ) {
+    const applications =  await Application.query(Application, {
+      'selector': {
+        'type':'did.application',
+        'person_id': person_id
+      }
+    });
+    return applications;
+   
   }
 
 }

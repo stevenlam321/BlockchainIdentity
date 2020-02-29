@@ -1,6 +1,6 @@
 # Start mongo db docker container
 docker run --name  mongodb  -p 27017:27017 -d mongo
-
+docker run mongodb
 
 # Smart Contract Comands
 ## Start mongodb service

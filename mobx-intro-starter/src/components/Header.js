@@ -8,13 +8,18 @@ function Header(props) {
         <Navbar.Brand href="/">HKDID Developers</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="mr-auto">
+        {props.logined  && 
+            <Nav.Link href="/applications">Applications</Nav.Link>   
+        }
+        </Nav>
         <Nav className="ml-auto">
             {!props.logined  &&
+                <>
                 <Nav.Link href="/login">Login</Nav.Link>
-            }
-             {!props.logined  && 
                 <Nav.Link href="/register">Register</Nav.Link>
-             }
+                </>
+            }
             {props.logined  && 
                 <Nav.Link href="/logout">Logout</Nav.Link>
              }

@@ -5,7 +5,7 @@ class CommonStore {
 
   @observable appName = 'Conduit';
   @observable token = window.localStorage.getItem('access_token');
-  @observable appLoaded = true;
+  @observable loading = false;
   @observable logined = false;
 
   @observable tags = [];
@@ -25,12 +25,15 @@ class CommonStore {
   }
 
 
-  @action setAppLoaded(loaded) {
-    this.appLoaded = loaded;
+  @action setLoading(loading) {
+    this.loading = loading;
   }
 
   @action setLogined(logined) {
     this.logined = logined;
+  }
+  @action logout() {
+    this.token = null;
   }
 
   @computed get islogined(){
@@ -47,10 +50,6 @@ class CommonStore {
   @action setToken(token) {
     this.token = token;
   }
-
-  // @action setAppLoaded() {
-  //   this.appLoaded = true;
-  // }
 
 }
 

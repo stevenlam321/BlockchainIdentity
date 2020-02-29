@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import DisplayErrors from '../components/DisplayErrors';
 import axios from 'axios';
 import { observer,inject } from 'mobx-react';
-import { withRouter } from "react-router-dom";
+
 
 const LoginSchema = yup.object().shape({
     email: yup.string().required().email(),
@@ -20,7 +20,7 @@ function LoginForm(props){
   
     const onSubmit = data => {
         props.updateResult({result:null,resultMessage:null});
-        props.commonStore.setAppLoaded(false);
+        props.commonStore.setLoading(true);
         axios.post('/persons/login', data)
           .then(function (response) {
             const access_token = response.data;
@@ -30,7 +30,6 @@ function LoginForm(props){
                 resultMessage: "Login success"
             };
             props.updateResult(formResult);
-            props.commonStore.setLogined(true);
             props.history.push("/");
           })
           .catch(function (error) {
@@ -40,19 +39,19 @@ function LoginForm(props){
             };
             props.updateResult(formResult);
           }).finally(function(){
-            props.commonStore.setAppLoaded(true);
+            props.commonStore.setLoading(false);
           });
         
     }
     return (<Form onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group>
                     <Form.Label htmlFor="email">Email</Form.Label>
-                    <Form.Control type="text" name='email' value="steven.lam@yahoo.com.hk" placeholder="Email" id="email" ref={register}/>
+                    <Form.Control type="text" name='email'  placeholder="Email" id="email" ref={register}/>
                     <DisplayErrors errors={errors.email}/>
                 </Form.Group>
                 <Form.Group>
                     <Form.Label htmlFor="password">password</Form.Label>
-                    <Form.Control type="password" name='password' value="12345678" placeholder="Password" id="password" ref={register}/>
+                    <Form.Control type="password" name='password'  placeholder="Password" id="password" ref={register}/>
                     <DisplayErrors errors={errors.password}/>
                 </Form.Group>
                 <Button variant="primary" type='submit'>Submit</Button>

@@ -39,6 +39,15 @@ const validation = {
     check('name').exists(),
     check('organization_id').exists(),
   ],
+  createApplicationRules:[
+    check('name').exists(),
+    check('public_key').exists(),
+  ],
+  updateApplicationRules:[
+    check('name').exists(),
+    check('public_key').exists(),
+  ],
+
   changePasswordRules : [
     check('password').exists().withMessage((value,{req})=>req.__('password.required'))
     .isLength({min:8}).withMessage((value,{req})=>req.__('password.min_length')),

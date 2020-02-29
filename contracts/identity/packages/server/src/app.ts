@@ -4,8 +4,9 @@ import { port as serverPort,mongodbConnection } from './env';
 import * as createError  from 'http-errors';
 import * as mongoose from 'mongoose';
 import AuthedUser from './middlewares/AuthedUser';
-
-import { AttributeExpressController,OrganizationExpressController,PersonExpressController,CredentialExpressController,DeveloperExpressController } from './controllers';
+import authed from './middlewares/authed';
+import { AttributeExpressController,OrganizationExpressController,PersonExpressController,CredentialExpressController,
+  DeveloperExpressController,ApplicationExpressController } from './controllers';
 
 // import * as expressValidator from 'express-validator';
 
@@ -34,6 +35,7 @@ app.use('/organizations', OrganizationExpressController);
 app.use('/persons', PersonExpressController);
 app.use('/credentials', CredentialExpressController);
 app.use('/developers', DeveloperExpressController);
+app.use('/applications', ApplicationExpressController);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

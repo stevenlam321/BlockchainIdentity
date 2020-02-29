@@ -4,7 +4,8 @@ import * as fs from 'fs';
 import { FabricControllerAdapter } from '@worldsibu/convector-adapter-fabric';
 import { ClientFactory } from '@worldsibu/convector-core';
 import * as createError  from 'http-errors';
-import { AttributeController, Attribute,Person,PersonController,OrganizationController,CredentialController } from 'did-cc';
+import { AttributeController, Attribute,Person,PersonController,OrganizationController,
+  CredentialController,ApplicationController } from 'did-cc';
 
 async function InitFabricAdapter(identityID?: string) {
     if(!identityID){
@@ -46,6 +47,7 @@ async function InitFabricAdapter(identityID?: string) {
       person: ClientFactory(PersonController, adapter),
       organization: ClientFactory(OrganizationController, adapter),
       credential: ClientFactory(CredentialController, adapter),
+      application: ClientFactory(ApplicationController, adapter),
     };
   }
 

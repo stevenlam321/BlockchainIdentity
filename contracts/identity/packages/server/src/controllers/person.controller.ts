@@ -10,6 +10,7 @@ import * as bcrypt from 'bcryptjs';
 import  * as jwt from 'jsonwebtoken';
 import {secretKey} from '../env';
 import * as Client from 'fabric-client';
+import authed from '../middlewares/authed';
 var multer  = require('multer')
 var upload = multer({ dest: 'public/uploads/' })
 
@@ -84,11 +85,11 @@ router.post('/register',validation.registerRules,  async (req, res, next) => {
             next(createError(500,`Admin ${adminUsername} user is not enrolled ` +
             `when trying to register new user`));
         }
-    
+       
         const ca = client.getCertificateAuthority();
-    
+
         const enrollmentSecret = await ca.register({enrollmentID,affiliation: 'org1'}, admin);
-    
+      
         const { key, certificate } = await ca.enroll({enrollmentSecret,enrollmentID: enrollmentID});
     
         let result = await client.createUser({
@@ -105,8 +106,12 @@ router.post('/register',validation.registerRules,  async (req, res, next) => {
         const personObj = new Person({id,email,mobile});
         await PersonControllerBackEnd.create(personObj);
         const person = new Person(await PersonControllerBackEnd.show(id));
-        user = await User.create({email,password:hashed_password});
-        res.status(200).json(person);
+        try{
+            user = await User.create({email:email,password:hashed_password});
+        }catch(err){
+            next(createError(400,err));
+        }
+         res.status(200).json(person);
      } catch (err) {
         next(createError(400,err.responses[0].error.message));
      }
@@ -130,7 +135,7 @@ router.post('/login',validation.loginRules,  async (req, res, next) => {
     res.status(200).json(token);
 });
 
-router.get('/protected',  async (req, res, next) => {
+router.get('/protected',authed , async (req, res, next) => {
     const token = req.headers.authorization.split(" ")[1];
       const payload = jwt.verify(token,secretKey);
       

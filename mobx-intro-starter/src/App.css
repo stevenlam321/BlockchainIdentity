@@ -39,6 +39,7 @@ p.error{
   display: flex;
   border-radius: 10px;
   font-size: 40px;
+  cursor: pointer;
 }
 .application-name{
   font-size: 20px;
@@ -47,4 +48,9 @@ p.error{
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  cursor: pointer;
+}
+.show-secret{
+  padding: 0px 7px !important;
+  font-size: 14px !important;
 }

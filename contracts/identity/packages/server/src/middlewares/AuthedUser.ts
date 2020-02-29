@@ -6,6 +6,7 @@ export default async function AuthedUser (req, res, next) {
     var identityID = null;
     try{
       const token = req.headers.authorization.split(" ")[1];
+      
       const payload = jwt.verify(token,secretKey);
       // var user = await User.findOne({payload.email);
       req.user = payload;
@@ -13,6 +14,8 @@ export default async function AuthedUser (req, res, next) {
     }catch(error){
       
     }
+    // console.log(req.headers.authorization);
+
      req.ctrls = await Init(identityID);
     next();
 }

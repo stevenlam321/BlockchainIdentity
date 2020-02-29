@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup';
 import DisplayErrors from '../components/DisplayErrors';
 import axios from 'axios';
+import { observer,inject } from 'mobx-react';
 const RegisterSchema = yup.object().shape({
     email: yup.string().required().email(),
     password: yup.string().required().min(8),
@@ -16,9 +17,10 @@ function RegisterForm(props){
     })
   
     const onSubmit = (data, e) => {
-        props.updateLoading(true);
+        props.commonStore.setLoading(true);
         axios.post('/persons/register', data)
           .then(function (response) {
+            e.target.reset(); 
             const formResult = {
                 result: "success",
                 resultMessage: "Register success"
@@ -32,8 +34,7 @@ function RegisterForm(props){
             };
             props.updateResult(formResult);
           }).finally(function(){
-            e.target.reset(); 
-            props.updateLoading(false);
+            props.commonStore.setLoading(false);
           });
         
     }
@@ -63,8 +64,9 @@ function RegisterForm(props){
                 <Button variant="primary" type='submit'>Submit</Button>
     </Form>);
 }
-
-export default class RegisterPage extends React.Component{
+@inject("commonStore")
+@observer
+class RegisterPage extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -72,17 +74,12 @@ export default class RegisterPage extends React.Component{
             resultMessage:  null
         };
         this.updateResult=this.updateResult.bind(this);
-        this.updateLoading=this.updateLoading.bind(this);
-
     }
     updateResult(formResult){
         this.setState({
             result: formResult.result,
             resultMessage: formResult.resultMessage
         });
-    }
-    updateLoading(loading){
-       this.props.updateLoading(loading);
     }
 
    render(){
@@ -94,9 +91,10 @@ export default class RegisterPage extends React.Component{
             {this.state.result &&
             <Alert variant={this.state.result}>{this.state.resultMessage}</Alert>
             }
-                <RegisterForm updateResult={this.updateResult} updateLoading={this.updateLoading}/>
+                <RegisterForm updateResult={this.updateResult} commonStore={this.props.commonStore}/>
             </Col>
         </Row>
     );
     }
   }
+  export default RegisterPage;

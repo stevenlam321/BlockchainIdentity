@@ -14,9 +14,19 @@ export class Application extends ConvectorModel<Application> {
   @Required()
   public readonly type = 'did.application';
 
-  @ReadOnly()
+  @Required()
+  @Validate(yup.string())
+  public person_id: string;
+
   @Required()
   @Validate(yup.string())
   public name: string;
 
+  @Required()
+  @Validate(yup.string())
+  public secret: string;
+
+  @Required()
+  @Validate(yup.string())
+  public public_key: string;
 }
