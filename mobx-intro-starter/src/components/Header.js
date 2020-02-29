@@ -15,7 +15,7 @@ function Header(props) {
              {!props.logined  && 
                 <Nav.Link href="/register">Register</Nav.Link>
              }
-              {props.logined  && 
+            {props.logined  && 
                 <Nav.Link href="/logout">Logout</Nav.Link>
              }
         </Nav>

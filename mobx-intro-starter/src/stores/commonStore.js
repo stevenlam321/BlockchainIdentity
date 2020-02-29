@@ -1,42 +1,56 @@
-import { observable, action, reaction } from 'mobx';
-import agent from '../agent';
+import { observable, action, reaction ,computed } from 'mobx';
+// import agent from '../agent';
 
 class CommonStore {
 
   @observable appName = 'Conduit';
-  @observable token = window.localStorage.getItem('jwt');
-  @observable appLoaded = false;
+  @observable token = window.localStorage.getItem('access_token');
+  @observable appLoaded = true;
+  @observable logined = false;
 
   @observable tags = [];
   @observable isLoadingTags = false;
 
-  constructor() {
+   constructor() {
     reaction(
       () => this.token,
       token => {
         if (token) {
-          window.localStorage.setItem('jwt', token);
+          window.localStorage.setItem('access_token', token);
         } else {
-          window.localStorage.removeItem('jwt');
+          window.localStorage.removeItem('access_token');
         }
       }
     );
   }
 
-  @action loadTags() {
-    this.isLoadingTags = true;
-    return agent.Tags.getAll()
-      .then(action(({ tags }) => { this.tags = tags.map(t => t.toLowerCase()); }))
-      .finally(action(() => { this.isLoadingTags = false; }))
+
+  @action setAppLoaded(loaded) {
+    this.appLoaded = loaded;
   }
+
+  @action setLogined(logined) {
+    this.logined = logined;
+  }
+
+  @computed get islogined(){
+      return this.token!=null;
+  }
+
+  // @action loadTags() {
+  //   this.isLoadingTags = true;
+  //   return agent.Tags.getAll()
+  //     .then(action(({ tags }) => { this.tags = tags.map(t => t.toLowerCase()); }))
+  //     .finally(action(() => { this.isLoadingTags = false; }))
+  // }
 
   @action setToken(token) {
     this.token = token;
   }
 
-  @action setAppLoaded() {
-    this.appLoaded = true;
-  }
+  // @action setAppLoaded() {
+  //   this.appLoaded = true;
+  // }
 
 }
 

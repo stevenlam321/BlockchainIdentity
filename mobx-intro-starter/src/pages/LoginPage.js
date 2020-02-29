@@ -5,6 +5,9 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup';
 import DisplayErrors from '../components/DisplayErrors';
 import axios from 'axios';
+import { observer,inject } from 'mobx-react';
+import { withRouter } from "react-router-dom";
+
 const LoginSchema = yup.object().shape({
     email: yup.string().required().email(),
     password: yup.string().required(),
@@ -16,16 +19,19 @@ function LoginForm(props){
     })
   
     const onSubmit = data => {
+        props.updateResult({result:null,resultMessage:null});
+        props.commonStore.setAppLoaded(false);
         axios.post('/persons/login', data)
           .then(function (response) {
-            localStorage.setItem("access_token", response.data);
-            const access_token = localStorage.getItem("access_token");
+            const access_token = response.data;
+            props.commonStore.setToken(access_token);
             const formResult = {
                 result: "success",
                 resultMessage: "Login success"
             };
             props.updateResult(formResult);
-            props.updateLoginStatus(true);
+            props.commonStore.setLogined(true);
+            props.history.push("/");
           })
           .catch(function (error) {
             const formResult = {
@@ -33,24 +39,28 @@ function LoginForm(props){
                 resultMessage: error.response.data.message
             };
             props.updateResult(formResult);
+          }).finally(function(){
+            props.commonStore.setAppLoaded(true);
           });
         
     }
     return (<Form onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group>
                     <Form.Label htmlFor="email">Email</Form.Label>
-                    <Form.Control type="text" name='email' placeholder="Email" id="email" ref={register}/>
+                    <Form.Control type="text" name='email' value="steven.lam@yahoo.com.hk" placeholder="Email" id="email" ref={register}/>
                     <DisplayErrors errors={errors.email}/>
                 </Form.Group>
                 <Form.Group>
                     <Form.Label htmlFor="password">password</Form.Label>
-                    <Form.Control type="password" name='password' placeholder="Password" id="password" ref={register}/>
+                    <Form.Control type="password" name='password' value="12345678" placeholder="Password" id="password" ref={register}/>
                     <DisplayErrors errors={errors.password}/>
                 </Form.Group>
                 <Button variant="primary" type='submit'>Submit</Button>
     </Form>);
 }
-export default class LoginPage extends React.Component{
+@inject("commonStore")
+@observer
+class LoginPage extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -58,8 +68,11 @@ export default class LoginPage extends React.Component{
             resultMessage:  null
         };
         this.updateResult=this.updateResult.bind(this);
-        this.updateLoginStatus=this.updateLoginStatus.bind(this);
-
+        this.resetResult=this.resetResult.bind(this); 
+          
+        if(this.props.commonStore.islogined){
+            this.props.history.push("/");
+        }
     }
     updateResult(formResult){
         this.setState({
@@ -67,11 +80,14 @@ export default class LoginPage extends React.Component{
             resultMessage: formResult.resultMessage
         });
     }
-    updateLoginStatus(logined){
-        this.props.updateLoginStatus(logined);
+    resetResult(){
+        this.setState({
+            result: null,
+            resultMessage: null
+        });
     }
+
    render(){
-    
     return (
         <Row>
             <Col md={{ span: 6, offset: 3 }}>
@@ -79,9 +95,11 @@ export default class LoginPage extends React.Component{
             {this.state.result &&
             <Alert variant={this.state.result}>{this.state.resultMessage}</Alert>
             }
-                <LoginForm updateResult={this.updateResult} updateLoginStatus={this.updateLoginStatus}/>
+                <LoginForm history={this.props.history} updateResult={this.updateResult} commonStore={this.props.commonStore}/>
             </Col>
         </Row>
     );
     }
   }
+
+  export default LoginPage;
