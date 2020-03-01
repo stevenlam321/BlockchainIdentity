@@ -55,3 +55,16 @@ export class PersonCredential extends ConvectorModel<PersonCredential> {
   @Validate(yup.array(PersonCredentialAttribute.schema()))
   public attributes: Array<FlatConvectorModel<PersonCredentialAttribute>>;
 }
+
+export class ApplicationCredential extends ConvectorModel<PersonCredential> {
+  @ReadOnly()
+  @Required()
+  public readonly type = 'did.application.credential';
+
+  @Required()
+  @Validate(yup.string())
+  public credential_id: string;
+
+  @Validate(yup.array(yup.string()))
+  public attribute_ids: Array<string>;
+}

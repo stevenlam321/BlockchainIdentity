@@ -7,7 +7,7 @@ import {
 } from '@worldsibu/convector-core';
 import * as yup from 'yup';
 
-import {Person,Organization,Attribute,Credential } from '../model';
+import { Person, Organization, Attribute, Credential,ApplicationRequest } from '../model';
 
 @Controller('did')
 export class DidController extends ConvectorController<ChaincodeTx> {
@@ -28,18 +28,18 @@ export class DidController extends ConvectorController<ChaincodeTx> {
       },
     ];
 
-    try{
-        for(const i in organizations){
-          const organization = new Organization(organizations[i]);
-          await organization.save();
-        }
+    try {
+      for (const i in organizations) {
+        const organization = new Organization(organizations[i]);
+        await organization.save();
       }
-      catch(Error){
-        success = false;
-      }
-      //end init organizations
+    }
+    catch (Error) {
+      success = false;
+    }
+    //end init organizations
 
-    
+
     //start init attributes
     const attributes = [
       {
@@ -64,25 +64,25 @@ export class DidController extends ConvectorController<ChaincodeTx> {
       }
     ];
 
-    try{
-        for(const i in attributes){
-          const attribute = new Attribute(attributes[i]);
-          await attribute.save();
-        }
+    try {
+      for (const i in attributes) {
+        const attribute = new Attribute(attributes[i]);
+        await attribute.save();
       }
-      catch(Error){
-        success = false;
-      }
-      //end init attributes
+    }
+    catch (Error) {
+      success = false;
+    }
+    //end init attributes
 
 
-          //start init credentials
+    //start init credentials
     const credentials = [
       {
         id: "C-hkidcard",
         name: "Hong Kong Identity Card",
         organization_id: "O-hkimmd",
-        attributes:[
+        attributes: [
           {
             attribute_id: "A-hkidno",
             name: "HK ID Card Number"
@@ -108,70 +108,75 @@ export class DidController extends ConvectorController<ChaincodeTx> {
     ];
 
 
-    try{
-        for(const i in credentials){
-          const credential = new Credential(credentials[i]);
-          await credential.save();
-        }
+    try {
+      for (const i in credentials) {
+        const credential = new Credential(credentials[i]);
+        await credential.save();
       }
-      catch(Error){
-        success = false;
-      }
-      //end init attributes
+    }
+    catch (Error) {
+      success = false;
+    }
+    //end init attributes
 
 
-      //start init person
-      const persons = [
-        {
-          email: "stevenlam123@yahoo.com.hk",
-          mobile: null,
-          created_at: new Date("2019-10-10 12:00:01"),
-         credentials: [
-            {
-              credential_id: "C-hkidcard",
-              name: "Hong Kong Identity Card",
-              organization_id: "O-hkimmd",
-              attributes: [
-                {
-                  attribute_id: "A-hkidno",
-                  name: "HK ID Card Number",
-                  value: "A123456(7)"
-                },
-                {
-                  attribute_id: "A-first_name",
-                  name: "First Name",
-                  value: "Steven"
-                },
-                {
-                  attribute_id: "A-last_name",
-                  name: "Last Name",
-                  value: "Lam"
-                },
-                {
-                  attribute_id: "A-dob",
-                  name: "Date of Birth",
-                  value: "2000-01-01"
-                },
-                {
-                  attribute_id: "A-gender",
-                  name: "Gender",
-                  value: "M"
-                }
-              ]
-            }
-          ]
-      }
-      ];
-      try{
-          for(const i in persons){
-            const person = new Person(persons[i]);
-            await person.save();
+    //start init person
+    const persons = [
+      {
+        email: "stevenlam123@yahoo.com.hk",
+        mobile: null,
+        created_at: new Date("2019-10-10 12:00:01"),
+        credentials: [
+          {
+            credential_id: "C-hkidcard",
+            name: "Hong Kong Identity Card",
+            organization_id: "O-hkimmd",
+            attributes: [
+              {
+                attribute_id: "A-hkidno",
+                name: "HK ID Card Number",
+                value: "A123456(7)"
+              },
+              {
+                attribute_id: "A-first_name",
+                name: "First Name",
+                value: "Steven"
+              },
+              {
+                attribute_id: "A-last_name",
+                name: "Last Name",
+                value: "Lam"
+              },
+              {
+                attribute_id: "A-dob",
+                name: "Date of Birth",
+                value: "2000-01-01"
+              },
+              {
+                attribute_id: "A-gender",
+                name: "Gender",
+                value: "M"
+              }
+            ]
           }
-        }
-        catch(Error){
-          success = false;
-        }
-        return success;
+        ]
+      }
+    ];
+    try {
+      for (const i in persons) {
+        const person = new Person(persons[i]);
+        await person.save();
+      }
+    }
+    catch (Error) {
+      success = false;
+    }
+    // const d = { "id":"sds","app_id": "APP-1", "person_id": "APP-6fdzg01baw", "credentials": [{ "credential_id": "C-hkidcard", "attribute_ids": ["A-hkidno", "A-first_name"] }]};
+    // const applicationRequest = new ApplicationRequest(d);
+    // await applicationRequest.save();
 
-   }
+    return success;
+
+
+  }
 }

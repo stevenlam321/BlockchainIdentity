@@ -6,7 +6,7 @@ import {
   Param
 } from '@worldsibu/convector-core';
 import * as yup from 'yup';
-import {Person,Organization,Attribute,Credential,Application } from '../model';
+import {Person,Organization,Attribute,Credential,Application,ApplicationRequest } from '../model';
 
 @Controller('application')
 export class ApplicationController extends ConvectorController<ChaincodeTx> {
@@ -85,6 +85,43 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
     });
     return applications;
    
+  }
+
+  @Invokable()
+  public async createRequest(
+    @Param(ApplicationRequest)
+    application_request: ApplicationRequest
+  ) {
+    const existing = await ApplicationRequest.getOne(application_request.id);
+    if (existing && existing.id) {
+      throw new Error('Application Request exists with that ID');
+    }
+    const person = await Person.getOne(application_request.person_id);
+    if (!person || !person.id) {
+      throw new Error('Person does not exist');
+    }
+    const application = await Application.getOne(application_request.app_id);
+    if (!application || !application.id) {
+      throw new Error('Application does not exist');
+    }
+
+    const application_credentials = application_request.credentials;
+    for(var i = 0; i < application_request.credentials.length; i++){
+      const credential = await Credential.getOne(application_credentials[i].credential_id);
+      if (!credential || !credential.id) {
+          throw new Error('Credential ID: ' + application_credentials[i].credential_id + ' does not exist');
+      }
+      const application_credential_attribute_ids = application_credentials[i].attribute_ids;
+      
+      for(var j = 0; j < application_credential_attribute_ids.length; j++){
+        const attribute = await Attribute.getOne(application_credential_attribute_ids[j]);
+        if (!attribute || !attribute.id) {
+            throw new Error('Attribute ID: ' + application_credential_attribute_ids[j] + ' does not exist');
+        }        
+      }
+    }
+
+    await application_request.save();
   }
 
 }
