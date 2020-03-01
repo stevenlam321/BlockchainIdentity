@@ -1,7 +1,7 @@
 
 import { Router, Request, Response,Next } from 'express';
 import { AttributeControllerBackEnd,Init} from '../convector';
-import { Attribute, Application } from 'did-cc';
+import { Attribute, Application ,ApplicationRequest} from 'did-cc';
 import * as createError  from 'http-errors';
 import validation from '../helpers/validation';
 import {check, validationResult } from 'express-validator';
@@ -58,6 +58,76 @@ router.post('/', authed,validation.createApplicationRules, async (req, res, next
     } catch (err) {
         next(createError(400,err.responses[0].error.message));
     }
+});
+
+router.post('/create_request', authed,validation.createApplicationRequestRules, async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return next(createError(400,{ errors: errors.array()}));
+    }
+    try {
+        const {app_id,person_id,credentials} = req.body;
+        const id = "APPR-"+ Math.random().toString(36).substr(2,10); 
+       // const expired_at = new Date();
+        let applicationRequestObj = new ApplicationRequest({id,app_id,person_id,credentials});
+        const ctrls = req.ctrls;
+        await ctrls.application.createRequest(applicationRequestObj);
+        const applicationRequest = new ApplicationRequest(await ctrls.application.showApplicationRequest(id));
+        res.status(200).json(applicationRequest);
+    } catch (err) {
+        next(createError(400,err.responses[0].error.message));
+    }
+});
+
+router.get('/request/:id', authed, async (req, res, next) => {
+    let { id } = req.params;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return next(createError(400,{ errors: errors.array()}));
+    }
+    try {
+        const ctrls = req.ctrls;
+        //const person = 
+
+     //   const applicationRequest = new ApplicationRequest(await ctrls.application.showApplicationRequest(id));
+     //   res.status(200).json(applicationRequest);
+    } catch (err) {
+        res.status(200).json(err);
+       // next(createError(400,err.responses[0].error.message));
+     }
+});
+
+router.get('/request_data/:id', authed, async (req, res, next) => {
+    let { id } = req.params;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return next(createError(400,{ errors: errors.array()}));
+    }
+    try {
+        const ctrls = req.ctrls;
+        
+        //const applicationRequest = new ApplicationRequest(await ctrls.application.showApplicationRequest(id));
+      //  res.status(200).json(applicationRequest);
+    } catch (err) {
+        res.status(200).json(err);
+       // next(createError(400,err.responses[0].error.message));
+     }
+});
+
+router.get('/approve_request/:id', authed, async (req, res, next) => {
+    let { id } = req.params;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return next(createError(400,{ errors: errors.array()}));
+    }
+    try {
+        const ctrls = req.ctrls;
+        const applicationRequest = new ApplicationRequest(await ctrls.application.showApplicationRequest(id));
+        res.status(200).json(applicationRequest);
+    } catch (err) {
+        res.status(200).json(err);
+       // next(createError(400,err.responses[0].error.message));
+     }
 });
 
 router.put('/:id',authed,validation.updateApplicationRules, async (req, res, next) => {

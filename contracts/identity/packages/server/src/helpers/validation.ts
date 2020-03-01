@@ -1,4 +1,4 @@
-import { check, validationResult } from 'express-validator';
+import { check, validationResult,checkSchema } from 'express-validator';
 const validation = {
   createOrganizationRules:[
     check('id').exists().withMessage('id is required'),
@@ -35,19 +35,23 @@ const validation = {
     .isArray().withMessage('attribute_ids should be an array'),
   ],
   addCredentialAttributeRules:[
-    check('id').exists(),
-    check('name').exists(),
-    check('organization_id').exists(),
+    check('id').exists().withMessage('id is required'),
+    check('name').exists().withMessage('name is required'),
+    check('organization_id').exists().withMessage('organization_id is required')
   ],
   createApplicationRules:[
-    check('name').exists(),
-    check('public_key').exists(),
+    check('name').exists().withMessage('name is required'),
+    check('public_key').exists().withMessage('public_key is required'),
   ],
   updateApplicationRules:[
-    check('name').exists(),
-    check('public_key').exists(),
+    check('name').exists().withMessage('name is required'),
+    check('public_key').exists().withMessage('public_key is required'),
   ],
-
+  createApplicationRequestRules:[
+    check('app_id').exists().withMessage('app_id is required'),
+    check('credentials').exists().withMessage('credentials is required')
+    .isArray().withMessage('credentials must be an array')
+  ],
   changePasswordRules : [
     check('password').exists().withMessage((value,{req})=>req.__('password.required'))
     .isLength({min:8}).withMessage((value,{req})=>req.__('password.min_length')),

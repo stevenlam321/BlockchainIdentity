@@ -7,7 +7,8 @@ import {
 } from '@worldsibu/convector-core';
 import * as yup from 'yup';
 import {Person,Organization,Attribute,Credential,Application,ApplicationRequest } from '../model';
-
+import * as forge from 'node-forge';
+const NodeRSA = require('node-rsa');
 @Controller('application')
 export class ApplicationController extends ConvectorController<ChaincodeTx> {
   @Invokable()
@@ -123,5 +124,32 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
 
     await application_request.save();
   }
-
+  @Invokable()
+  public async showApplicationRequest( 
+    @Param(yup.string())
+    id: string
+  ) {   
+    const existing = await ApplicationRequest.getOne(id);
+    if (!existing || !existing.id) {
+      throw new Error('ApplicationRequest does not exist');
+    }
+    return existing;
+  }
+  @Invokable()
+  public async getApplicationRequestData( 
+    @Param(yup.string())
+    id: string
+  ) {   
+    const applicationRequest = await ApplicationRequest.getOne(id);
+    if (!applicationRequest || !applicationRequest.id) {
+      throw new Error('ApplicationRequest does not exist');
+    }
+    const application = await Application.getOne(applicationRequest.app_id);
+    const person = await Person.getOne(applicationRequest.person_id);
+    
+    var publicKey =  new NodeRSA(application.public_key);
+    var data = publicKey.encrypt(person.credentials,'base64');
+    return data;
+    return applicationRequest;
+  }
 }
