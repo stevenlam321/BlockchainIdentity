@@ -69,7 +69,7 @@ class App extends React.Component {
         <div className="App">
             {this.props.commonStore.loading && <Loading/>}
             <Header logined={this.props.commonStore.islogined} commonStore={this.props.commonStore}  history={history}/>            
-            <Container>
+            <Container className="content">
             <Switch>
               <Route exact path="/" component={HomePage}/>
               <Route path="/login"  component={LoginPage}/>

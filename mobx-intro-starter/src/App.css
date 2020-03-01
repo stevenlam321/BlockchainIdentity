@@ -54,3 +54,6 @@ p.error{
   padding: 0px 7px !important;
   font-size: 14px !important;
 }
+.content{
+  margin: 20px 0;
+}

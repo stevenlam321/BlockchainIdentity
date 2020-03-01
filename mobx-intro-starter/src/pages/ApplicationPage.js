@@ -52,7 +52,7 @@ function ApplicationForm(props){
         </Button>
         <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
-        <Modal.Title>Create a New App ID</Modal.Title>
+        <Modal.Title>Create a New App</Modal.Title>
         </Modal.Header>
         <Modal.Body>
             <Form onSubmit={handleSubmit(onSubmit)} id="form">
@@ -81,7 +81,7 @@ function ApplicationForm(props){
 }
 
 
-@inject("commonStore")
+@inject("commonStore","applicationStore")
 @observer
 class ApplicationPage extends React.Component {
     constructor(props){
@@ -139,13 +139,14 @@ class ApplicationPage extends React.Component {
      
     
     render(){
+        var applications = this.props.applicationStore.applications;
         return (
         <div>
             <h1>Applications</h1>
             <ApplicationForm commonStore={this.props.commonStore} addApplication={this.addApplication}/>
             <ul className="row applications">
                 {
-                    this.state.applications.map((application)=>{
+                    applications.map((application)=>{
                         return (
                         <li className="col-lg-4 col-md-6" key={application.id}>
                         <div className="row">

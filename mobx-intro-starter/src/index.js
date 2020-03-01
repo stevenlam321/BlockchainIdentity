@@ -5,9 +5,11 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from "mobx-react";
 import commonStore from "./stores/commonStore";
+import applicationStore from "./stores/applicationStore";
 import axios from 'axios';
 const stores = {
-    commonStore
+    commonStore,
+    applicationStore
 };
 axios.defaults.headers.common = {'Authorization': `Bearer ${commonStore.token}`};
 ReactDOM.render(
