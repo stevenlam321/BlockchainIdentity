@@ -1,5 +1,4 @@
-import { observable, action, reaction, computed } from 'mobx';
-// import agent from '../agent';
+import { observable, action} from 'mobx';
 import axios from 'axios';
 import commonStore from './commonStore';
 class applicationStore {

@@ -26,7 +26,6 @@ export default function ApplicationForm(props){
     
   
     const onSubmit = data => {
-       const token = props.commonStore.token;
         props.commonStore.setLoading(true);
         axios.post('/applications/', data)
           .then(function (response) {

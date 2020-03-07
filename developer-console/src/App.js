@@ -12,41 +12,18 @@ import RegisterPage from './pages/RegisterPage';
 import ApplicationPage from './pages/ApplicationPage';
 import NotFoundPage from './pages/NotFoundPage';
 import LogoutPage from './pages/LogoutPage';
-import {Container,Spinner} from 'react-bootstrap';
+import {Container} from 'react-bootstrap';
 import { observer,inject } from 'mobx-react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Redirect
+  Route
 } from "react-router-dom";
 import { createBrowserHistory } from "history";
-import { HashRouter } from "react-router-dom";
 dotenv.config();
 const history = createBrowserHistory();
 
-const fakeAuth = {
-  isAuthenticated: false,
-  authenticate(cb) {
-    console.log(cb);
-    fakeAuth.isAuthenticated = true;
-    setTimeout(cb, 100); // fake async
-  },
-  signout(cb) {
-    fakeAuth.isAuthenticated = false;
-    setTimeout(cb, 100);
-  }
-};
 
-
-function isLoggedin(){
-  const access_token = localStorage.getItem("access_token");
-  if(access_token){
-    return true;
-  }else{
-    return false;
-  }
-}
 @inject("commonStore")
 @observer
 class App extends React.Component {

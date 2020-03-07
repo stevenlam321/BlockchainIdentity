@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React from 'react';
 import {Button,Modal,Form} from 'react-bootstrap';
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup';
@@ -26,7 +26,6 @@ export default function EditApplicationForm(props){
     const handleClose = ()=>{props.closeEditForm()};
     
     const onSubmit = data => {
-       const token = props.commonStore.token;
         props.commonStore.setLoading(true);
         axios.put('/applications/'+ application.id , data)
           .then(function (response) {
