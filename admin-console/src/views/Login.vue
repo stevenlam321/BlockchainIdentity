@@ -28,6 +28,7 @@
                     placeholder="Enter password"
                   ></b-form-input>
                 </b-form-group>
+                 <b-alert show variant="danger" v-if="error">{{error}}</b-alert>
                 <b-button type="submit" variant="primary">Submit</b-button>
               </b-form>
             </div>
@@ -41,12 +42,14 @@
 import {mapGetters,mapActions} from 'vuex';
 
   export default {
+    name:"Login",
     data() {
       return {
         form: {
           email: '',
           password: '',
         },
+        error:'',
         show: true
       }
     },
@@ -57,7 +60,12 @@ import {mapGetters,mapActions} from 'vuex';
         const email = this.form.email;
         const password = this.form.password;
         this.login({email,password}).then(() => this.$router.push('/'))
-       .catch(err => console.log(err));
+       .catch((err) => {
+         this.form.email = '';
+         this.form.password = '';
+         this.error = err;
+          console.log(err);
+       });
       },
     },
     computed: mapGetters(['allTodos']),
