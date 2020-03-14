@@ -15,7 +15,8 @@ const router: Router = Router();
 
 router.get('/', async (req, res, next) => {
     try {
-        const organizations = await OrganizationControllerBackEnd.index();
+        const ctrls = req.ctrls;
+        const organizations = await ctrls.organization.index();
         const result_json = [];
         organizations.forEach(element => {
             result_json.push(new Organization(element).toJSON());
@@ -29,7 +30,8 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
     try {
         let { id } = req.params;
-        const organization = new Organization(await OrganizationControllerBackEnd.show(id));
+        const ctrls = req.ctrls;
+        const organization = new Organization(await ctrls.organization.show(id));
         res.status(200).json(organization);
     } catch (err) {
         next(createError(404,err.responses[0].error.message));
@@ -41,38 +43,12 @@ router.post('/',validation.createOrganizationRules, async (req, res, next) => {
         return next(createError(400,{ errors: errors.array()}));
     }
     try {
+        const ctrls = req.ctrls;
         const {id,name,logo} = req.body;
         let organizationObj = new Organization({id,name,logo});
-        await OrganizationControllerBackEnd.create(organizationObj);
-        const organization = new Organization(await OrganizationControllerBackEnd.show(id));
+        await ctrls.organization.create(organizationObj);
+        const organization = new Organization(await ctrls.organization.show(id));
         res.status(200).json(organization);
-    } catch (err) {
-        next(createError(400,err.responses[0].error.message));
-    }
-});
-
-router.put('/:id',validation.updateOrganizationRules, async (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return next(createError(400,{ errors: errors.array()}));
-    }
-    try {
-        let { id } = req.params;
-        const {name,logo} = req.body;
-        let organizationObj = new Organization({id,name,logo});
-        await OrganizationControllerBackEnd.update(organizationObj);
-        const organization = new Organization(await OrganizationControllerBackEnd.show(id));
-        res.status(200).json(organization);
-    } catch (err) {
-        next(createError(400,err.responses[0].error.message));
-    }
-});
-
-router.delete('/:id', async (req, res, next) => {
-    try {
-        let { id } = req.params;
-        await OrganizationControllerBackEnd.delete(id);
-        res.status(200).json();
     } catch (err) {
         next(createError(400,err.responses[0].error.message));
     }

@@ -147,18 +147,18 @@ export class CredentialController extends ConvectorController<ChaincodeTx> {
     // await credential.save();
   }
 
-  @Invokable()
-  public async delete(
-    @Param(yup.string())
-    id: string
-  ) {
-    const existing = await Credential.getOne(id);
+  // @Invokable()
+  // public async delete(
+  //   @Param(yup.string())
+  //   id: string
+  // ) {
+  //   const existing = await Credential.getOne(id);
 
-    if (!existing || !existing.id) {
-      throw new Error('Credential does not exist');
-    }
-    await existing.delete();
-  }
+  //   if (!existing || !existing.id) {
+  //     throw new Error('Credential does not exist');
+  //   }
+  //   await existing.delete();
+  // }
   
   private attribute_exist(credential_attributes:Array<FlatConvectorModel<Attribute>>,attribute_id:string):boolean {
     // for (let credential_attribute of credential_attributes) {

@@ -9,6 +9,17 @@ import {
 } from '@worldsibu/convector-core-model';
 import {Credential,PersonCredential} from './credential.model';
 
+export class x509Identities extends ConvectorModel<x509Identities>{
+  @ReadOnly()
+  public readonly type = 'io.worldsibu.examples.x509identity';
+
+  @Validate(yup.boolean())
+  @Required()
+  status: boolean;
+  @Validate(yup.string())
+  @Required()
+  fingerprint: string;
+}
 
 
 export class Person extends ConvectorModel<Person> {
@@ -20,6 +31,10 @@ export class Person extends ConvectorModel<Person> {
   @Validate(yup.string())
   @Default("P-"+Math.random().toString(36).substr(2, 10))
   public id: string;
+
+  @Required()
+  @Validate(yup.string().oneOf(["admin","org","user"]))
+  public role: string;
 
   @Required()
   @Validate(yup.string().email())
@@ -38,5 +53,8 @@ export class Person extends ConvectorModel<Person> {
   @Default([])
   @Validate(yup.array(PersonCredential.schema()))
   public credentials: Array<FlatConvectorModel<PersonCredential>>;
+
+  @Validate(yup.array(x509Identities.schema()))
+  public identities: Array<FlatConvectorModel<x509Identities>>;
 
 }

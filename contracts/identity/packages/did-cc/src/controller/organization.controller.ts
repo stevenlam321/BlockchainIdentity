@@ -37,33 +37,14 @@ export class OrganizationController extends ConvectorController<ChaincodeTx> {
     if (existing && existing.id) {
       throw new Error('Organization exists with that ID');
     }
+    const person = await Person.getOne(organization.person_id);
+    if (!person || !person.id) {
+      throw new Error('Person does not exist');
+    }
+    
     await organization.save();
   }
 
-  @Invokable()
-  public async update(
-    @Param(Organization)
-    organization: Organization
-  ) {
-    const existing = await Person.getOne(organization.id);
-    if (!existing || !existing.id) {
-      throw new Error('Organization does not exist');
-    }
-    await organization.save();
-  }
-
-  @Invokable()
-  public async delete(
-    @Param(yup.string())
-    id: string
-  ) {
-    const existing = await Organization.getOne(id);
-
-    if (!existing || !existing.id) {
-      throw new Error('Organization does not exist');
-    }
-    await existing.delete();
-  }
 
   @Invokable()
   public async assign_credential(

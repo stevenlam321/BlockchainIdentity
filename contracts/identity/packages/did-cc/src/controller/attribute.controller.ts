@@ -49,6 +49,13 @@ export class AttributeController extends ConvectorController<ChaincodeTx> {
     if (existing && existing.id) {
       throw new Error('Attribute exists with that ID');
     }
+    
+    const role = this.tx.identity.getAttributeValue('role');
+
+    if(role != 'admin'){
+        throw new Error('Only admin can create attribute');
+    }
+  
     await attribute.save();
   }
 
@@ -61,20 +68,31 @@ export class AttributeController extends ConvectorController<ChaincodeTx> {
     if (!existing || !existing.id) {
       throw new Error('Attribute does not exist');
     }
+    const role = this.tx.identity.getAttributeValue('role');
+
+    if(role != 'admin'){
+        throw new Error('Only admin can update attribute');
+    }
     await attribute.save();
   }
 
-  @Invokable()
-  public async delete(
-    @Param(yup.string())
-    id: string
-  ) {
-    const existing = await Attribute.getOne(id);
+  // @Invokable()
+  // public async delete(
+  //   @Param(yup.string())
+  //   id: string
+  // ) {
+  //   const existing = await Attribute.getOne(id);
 
-    if (!existing || !existing.id) {
-      throw new Error('Attribute does not exist');
-    }
-    await existing.delete();
-  }
+  //   if (!existing || !existing.id) {
+  //     throw new Error('Attribute does not exist');
+  //   }
+
+  //   const role = this.tx.identity.getAttributeValue('role');
+
+  //   if(role != 'admin'){
+  //       throw new Error('Only admin can update attribute');
+  //   }
+  //   await existing.delete();
+  // }
 
 }

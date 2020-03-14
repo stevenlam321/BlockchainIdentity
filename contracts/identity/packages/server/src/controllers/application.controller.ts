@@ -153,13 +153,4 @@ router.put('/:id',authed,validation.updateApplicationRules, async (req, res, nex
     }
 });
 
-// router.delete('/:id', async (req, res, next) => {
-//     let { id } = req.params;
-//     try {
-//         await AttributeControllerBackEnd.delete(id);
-//         res.status(200).json();
-//     } catch (err) {
-//         next(createError(400,err.responses[0].error.message));
-//     }
-// });
 export const ApplicationExpressController: Router = router;

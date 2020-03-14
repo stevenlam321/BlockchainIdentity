@@ -8,17 +8,6 @@ import {
   FlatConvectorModel
 } from '@worldsibu/convector-core-model';
 
-export class x509Identities extends ConvectorModel<x509Identities>{
-  @ReadOnly()
-  public readonly type = 'did.x509identity';
-
-  @Validate(yup.boolean())
-  @Required()
-  status: boolean;
-  @Validate(yup.string())
-  @Required()
-  fingerprint: string;
-}
 
 export class Organization extends ConvectorModel<Organization> {
   @ReadOnly()
@@ -34,10 +23,7 @@ export class Organization extends ConvectorModel<Organization> {
   @Validate(yup.string().nullable())
   public logo: string;
 
-  @ReadOnly()
+  @Required()
   @Validate(yup.string())
-  public msp: string;
-
-  @Validate(yup.array(x509Identities.schema()))
-  public identities: Array<FlatConvectorModel<x509Identities>>;
+  public person_id: string;
 }

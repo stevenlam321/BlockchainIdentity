@@ -63,6 +63,12 @@ export class PersonController extends ConvectorController<ChaincodeTx> {
     if(persons.length > 0){
       throw new Error('Email already registered');
     }
+    
+    person.identities = [{
+      fingerprint: this.sender,
+      status: true
+    }];
+
     await person.save();
   }
 
@@ -75,21 +81,25 @@ export class PersonController extends ConvectorController<ChaincodeTx> {
     if (!existing || !existing.id) {
       throw new Error('Person does not exist');
     }
+    const ownerCurrentIdentity = person.identities.filter(identity => identity.status === true)[0];
+    if (ownerCurrentIdentity.fingerprint !== this.sender) {
+        throw new Error('Permission deny');
+    }
     await person.save();
   }
 
-  @Invokable()
-  public async delete(
-    @Param(yup.string())
-    id: string
-  ) {
-    const existing = await Person.getOne(id);
+  // @Invokable()
+  // public async delete(
+  //   @Param(yup.string())
+  //   id: string
+  // ) {
+  //   const existing = await Person.getOne(id);
 
-    if (!existing || !existing.id) {
-      throw new Error('Person does not exist');
-    }
-    await existing.delete();
-  }
+  //   if (!existing || !existing.id) {
+  //     throw new Error('Person does not exist');
+  //   }
+  //   await existing.delete();
+  // }
 
   @Invokable()
   public async getPerson(
