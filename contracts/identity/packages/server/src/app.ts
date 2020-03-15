@@ -5,7 +5,7 @@ import * as createError  from 'http-errors';
 import * as mongoose from 'mongoose';
 import AuthedUser from './middlewares/AuthedUser';
 import authed from './middlewares/authed';
-import { AttributeExpressController,PersonExpressController,OrganizationExpressController } from './controllers';
+import { AttributeExpressController,PersonExpressController,OrganizationExpressController,CredentialExpressController } from './controllers';
 
 // import * as expressValidator from 'express-validator';
 
@@ -32,7 +32,7 @@ app.use(AuthedUser);
 app.use('/attributes', AttributeExpressController);
 app.use('/organizations', OrganizationExpressController);
 app.use('/persons', PersonExpressController);
-// app.use('/credentials', CredentialExpressController);
+app.use('/credentials', CredentialExpressController);
 // app.use('/developers', DeveloperExpressController);
 // app.use('/applications', ApplicationExpressController);
 

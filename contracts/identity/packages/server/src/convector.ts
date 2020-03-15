@@ -1,5 +1,5 @@
 import { join, resolve } from "path";
-import { keyStore, superAdminIdentityName,rootAdminIdentityName ,channel, chaincode, networkProfile, } from './env';
+import { keyStore, adminIdentityName ,channel, chaincode, networkProfile, } from './env';
 import * as fs from 'fs';
 import { FabricControllerAdapter } from '@worldsibu/convector-adapter-fabric';
 import { ClientFactory } from '@worldsibu/convector-core';
@@ -7,24 +7,18 @@ import * as createError  from 'http-errors';
 import { AttributeController, Attribute,Person,PersonController,OrganizationController,
   CredentialController,ApplicationController } from 'did-cc';
 
-var defaultIdentityId = superAdminIdentityName;
-var defaultidentityPath = join(keyStore + '/' + defaultIdentityId);
-if(!fs.existsSync(defaultidentityPath)){
-  defaultIdentityId = rootAdminIdentityName;
+const adminIdentityPath = join(keyStore + '/' + adminIdentityName);
+if(!fs.existsSync(adminIdentityPath)){
+  throw new Error('Make sure admin identity  exists');
 }
-defaultidentityPath = join(keyStore + '/' + defaultIdentityId);
 
 async function InitFabricAdapter(identityID?: string) {
     if(!identityID){
-      identityID = defaultIdentityId;
-     
-      if(!fs.existsSync(defaultidentityPath)){
-        throw new Error('Make sure superAdminIdentity or rootAdminIdentity  exists ');
-      }
+      identityID = adminIdentityName;
     }else{
       var identityPath = join(keyStore + '/' + identityID);
       if(!fs.existsSync(identityPath)){
-        identityID = defaultIdentityId;
+        identityID = adminIdentityName;
       }
     }
 
@@ -59,7 +53,7 @@ async function InitFabricAdapter(identityID?: string) {
       attribute: ClientFactory(AttributeController, adapter),
       person: ClientFactory(PersonController, adapter),
       organization: ClientFactory(OrganizationController, adapter),
-      // credential: ClientFactory(CredentialController, adapter),
+      credential: ClientFactory(CredentialController, adapter),
       // application: ClientFactory(ApplicationController, adapter),
     };
   }

@@ -5,13 +5,29 @@ import { Organization,PersonCredentialAttributeValue} from 'did-cc';
 import validation from '../helpers/validation';
 import {check, validationResult } from 'express-validator';
 import * as createError  from 'http-errors';
-
+import authed from '../middlewares/authed';
 var multer  = require('multer')
 var upload = multer({ dest: 'public/uploads/' })
 
-
 const router: Router = Router();
 
+router.get('/credentials',authed, async (req, res, next) => {
+    const user = req.user;
+
+    if(user.role != 'org'){
+        next(createError(400,'Invalid permission'));
+    }
+    const organization_id = user.org_id;
+  
+    try {
+        const ctrls = req.ctrls;
+        const result_json = await ctrls.credential.getCredentialsByOrganizationId(organization_id);
+        res.send(result_json);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+});
 
 router.get('/', async (req, res, next) => {
     try {
@@ -54,6 +70,7 @@ router.post('/',validation.createOrganizationRules, async (req, res, next) => {
         next(createError(400,err.responses[0].error.message));
     }
 });
+
 
 router.post('/assign_credential',validation.createOrganizationRules, async (req, res, next) => {
     const errors = validationResult(req);

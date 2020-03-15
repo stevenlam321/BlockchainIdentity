@@ -8,8 +8,9 @@ export const channel = process.env.CHANNEL || 'ch1';
 
 // Automatically extract credentials by the user id
 // If no .env config is found, fallback to Hurley defaults
+
+export const adminIdentityName = process.env.IDENTITY || 'admin';
 export const superAdminIdentityName = process.env.IDENTITY || 'P-superadmin';
-export const rootAdminIdentityName = process.env.IDENTITY || 'admin';
 export const identityOrg = process.env.ORG || 'org1';
 
 export const keyStore = process.env.KEYSTORE || `/${homedir}/hyperledger-fabric-network/.hfc-${identityOrg}`;

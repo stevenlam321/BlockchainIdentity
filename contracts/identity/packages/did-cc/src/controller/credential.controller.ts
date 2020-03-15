@@ -34,6 +34,34 @@ export class CredentialController extends ConvectorController<ChaincodeTx> {
   }
 
   @Invokable()
+  public async getCredentialsByOrganizationId( 
+    @Param(yup.string())
+    id: string) {   
+    const organization = await Organization.getOne(id);
+    if (!organization || !organization.id) {
+      throw new Error('Organization does not exist');
+    }
+
+    var result_json = [];  
+   
+    const credentials =  await Credential.query(Credential, {
+      'selector': {
+        'type':'did.credential',
+        'organization_id': id
+      }
+    }) as any[];
+
+    credentials.forEach(credential => {
+        credential.organization = organization;
+    });
+
+    credentials.forEach(element => {
+        result_json.push(new Credential(element).toJSON());
+    });
+    return result_json;
+  }
+
+  @Invokable()
   public async show( 
     @Param(yup.string())
     id: string

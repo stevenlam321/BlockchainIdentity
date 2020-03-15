@@ -146,4 +146,22 @@ export class OrganizationController extends ConvectorController<ChaincodeTx> {
      return false;
   }
 
+  @Invokable()
+  public async findByPersonId(
+    @Param(yup.string())
+    person_id:string
+  ):Promise<Organization> {
+    const organizations =  await Organization.query(Organization, {
+      'selector': {
+        'type':'did.organization',
+        'person_id': person_id
+      }
+    }) as any[];
+    if(organizations.length == 0){
+      throw new Error('The person does not assigned to this organization');
+    }else{
+      return organizations[0];
+    }
+  }
+
 }

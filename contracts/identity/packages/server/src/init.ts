@@ -2,8 +2,9 @@ import User from './models/user';
 import { port as serverPort,mongodbConnection } from './env';
 import * as mongoose from 'mongoose';
 import {InitFabricCtrls} from './convector';
-import {Person,Organization} from 'did-cc';
+import {Person,Organization,Attribute} from 'did-cc';
 import * as bcrypt from 'bcryptjs';
+import {superAdminIdentityName} from './env';
 
 const Fabric_Client = require('fabric-client');
 const Fabric_CA_Client = require('fabric-ca-client');
@@ -104,7 +105,7 @@ async function setup(){
             password:"12345678",
             role: "admin"
         };
-       await createUser(superadmin);
+      // await createUser(superadmin);
 
         const users = [{
             id:"P-hktd_admin",
@@ -121,9 +122,9 @@ async function setup(){
                 role: "org"
             }
         ];
-        for (const i in users) {
-            await createUser(users[i]);
-        }
+        // for (const i in users) {
+        //     await createUser(users[i]);
+        // }
             
     const organizations = [
         {
@@ -140,12 +141,48 @@ async function setup(){
         },
       ];
 
-      for (const i in organizations) {
-            const ctrls = await InitFabricCtrls(organizations[i].person_id);
-            const organization = new Organization(organizations[i]);
-            await ctrls.organization.create(organization);
-            console.log(organizations[i].name + ' created');
-        }
+    //   for (const i in organizations) {
+    //         const ctrls = await InitFabricCtrls(organizations[i].person_id);
+    //         const organization = new Organization(organizations[i]);
+    //         await ctrls.organization.create(organization);
+    //         console.log(organizations[i].name + ' created');
+    //     }
+
+
+    const attributes = [
+      {
+        id: "A-hkidno",
+        name: "HK ID Card Number",
+      },
+      {
+        id: "A-first_name",
+        name: "First Name",
+      },
+      {
+        id: "A-last_name",
+        name: "Last Name",
+      },
+      {
+        id: "A-dob",
+        name: "Date of Birth"
+      },
+      {
+        id: "A-gender",
+        name: "Gender"
+      },
+      {
+        id: "A-issue_date",
+        name: "Issue Date" 
+      }
+    ];
+
+    const ctrls = await InitFabricCtrls(superAdminIdentityName);
+
+      for (const i in attributes) {
+        const attribute = new Attribute(attributes[i]);
+        await ctrls.attribute.create(attribute);
+        console.log("Attribute:" + attributes[i].id + 'created');
+      }
     }catch(err){
         console.log(err);
     }

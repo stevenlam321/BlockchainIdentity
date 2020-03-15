@@ -11,6 +11,7 @@ import  * as jwt from 'jsonwebtoken';
 import {secretKey} from '../env';
 import * as Client from 'fabric-client';
 import authed from '../middlewares/authed';
+import { Organization } from 'did-cc';
 var multer  = require('multer')
 var upload = multer({ dest: 'public/uploads/' })
 
@@ -98,7 +99,13 @@ router.post('/login',validation.loginRules,  async (req, res, next) => {
 
     const personObj = await ctrls.person.getPerson(email) as Person;
     const person = new Person(personObj);
-    const token = jwt.sign({ email: user.email,identityID:person.id}, secretKey);
+    var org_id = null;
+    if(person.role == 'org'){
+        const organizationObj = await ctrls.organization.findByPersonId(person.id);
+        const organization = new Organization(organizationObj);
+        org_id = organization.id;
+    }
+    const token = jwt.sign({ email: user.email,identityID:person.id,org_id,role:person.role}, secretKey);
     // res.status(200).json(person);
     res.status(200).json(token);
 });
