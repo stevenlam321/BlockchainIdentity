@@ -1,6 +1,6 @@
 
 import { Router, Request, Response } from 'express';
-import {CredentialControllerBackEnd } from '../convector';
+import {Init} from '../convector';
 import { Person,Attribute, Credential } from 'did-cc';
 import validation from '../helpers/validation';
 import {check, validationResult } from 'express-validator';
@@ -9,7 +9,8 @@ const router: Router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
     try {
-        const result_json = await CredentialControllerBackEnd.index();
+        const ctrls = req.ctrls;
+        const result_json = await ctrls.credential.index();
         res.send(result_json);
     } catch (err) {
         console.log(err);
@@ -25,7 +26,8 @@ router.post('/',validation.createCredentialRules, async (req: Request, res: Resp
     try {
         const {id,name,organization_id,attribute_ids} = req.body;
         let credential = new Credential({id,name,organization_id,attribute_ids});
-        await CredentialControllerBackEnd.create(credential);
+        const ctrls = req.ctrls;
+        await ctrls.credential.create(credential);
         res.status(200).send();
     } catch (err) {
         console.log(err);

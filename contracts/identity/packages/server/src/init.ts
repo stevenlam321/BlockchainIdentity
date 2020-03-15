@@ -1,7 +1,7 @@
 import User from './models/user';
 import { port as serverPort,mongodbConnection } from './env';
 import * as mongoose from 'mongoose';
-import {Init} from './convector';
+import {InitFabricCtrls} from './convector';
 import {Person,Organization} from 'did-cc';
 import * as bcrypt from 'bcryptjs';
 
@@ -21,21 +21,22 @@ console.log('Store path:' + hurleyIdentityPath);
 
 mongoose.connect(mongodbConnection, { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true });
 
-User.collection.drop();
+//User.collection.drop();
 
 function initAdminClient(){
     return new Promise((resolve,reject)=>{
+        //resolve('Successfully loaded admin from persistence');
         Fabric_Client.newDefaultKeyValueStore({
             path: hurleyIdentityPath
         }).then((state_store) => {
             // assign the store to the fabric client
-            fabric_client.setStateStore(state_store);
-            const crypto_suite = Fabric_Client.newCryptoSuite();
+             fabric_client.setStateStore(state_store);
+             const crypto_suite = Fabric_Client.newCryptoSuite();
             // use the same location for the state store (where the users' certificate are kept)
             // and the crypto store (where the users' keys are kept)
-            const crypto_store = Fabric_Client.newCryptoKeyStore({ path: hurleyIdentityPath });
-            crypto_suite.setCryptoKeyStore(crypto_store);
-            fabric_client.setCryptoSuite(crypto_suite);
+             const crypto_store = Fabric_Client.newCryptoKeyStore({ path: hurleyIdentityPath });
+             crypto_suite.setCryptoKeyStore(crypto_store);
+             fabric_client.setCryptoSuite(crypto_suite);
     
             // be sure to change the http to https when the CA is running TLS enabled
             fabric_ca_client = new Fabric_CA_Client('http://localhost:7054', null, '', crypto_suite);
@@ -45,12 +46,15 @@ function initAdminClient(){
         }).then((user_from_store) => {
             if (user_from_store && user_from_store.isEnrolled()) {
                 admin_user = user_from_store;
+              //  return fabric_client.setUserContext(member_user);
                resolve('Successfully loaded admin from persistence');
             } else {
                 reject('Failed to get admin.... run enrollment');
               //  reject(new Error('Failed to get admin.... run enrollAdmin.js'));
             }
-        })
+        }).catch((err)=>{
+            console.log(err);
+        });
     })
 };
 async function createUser(user){
@@ -69,7 +73,7 @@ async function createUser(user){
             });
            
             const id = user.id;
-            const ctrls = await Init(id);
+            const ctrls = await InitFabricCtrls(id);
             const email = user.email;
             const mobile = user.mobile;;
             const role = user.role;
@@ -89,7 +93,9 @@ async function createUser(user){
 
 async function setup(){
     try{
-        await initAdminClient();
+        const initAdminClientResult = await initAdminClient();
+        console.log(initAdminClientResult);
+
 
         const superadmin = {
             id:"P-superadmin",
@@ -98,7 +104,7 @@ async function setup(){
             password:"12345678",
             role: "admin"
         };
-        await createUser(superadmin);
+       await createUser(superadmin);
 
         const users = [{
             id:"P-hktd_admin",
@@ -135,7 +141,7 @@ async function setup(){
       ];
 
       for (const i in organizations) {
-            const ctrls = await Init(organizations[i].person_id);
+            const ctrls = await InitFabricCtrls(organizations[i].person_id);
             const organization = new Organization(organizations[i]);
             await ctrls.organization.create(organization);
             console.log(organizations[i].name + ' created');
@@ -148,21 +154,21 @@ async function setup(){
 setup();
 
 
-async function test(){
-    for (var i = 0; i <20;i ++){
-        const id = "P-"+ Math.random().toString(36).substr(2,10);
-        const email = Math.random().toString(36).substr(2,10) + '@hkdid.com';
-        const user = {
-            id:id,
-            email:email,
-            mobile:null,
-            password:"12345678",
-            role: "admin"
-        };
-        await createUser(user);
+// async function test(){
+//     for (var i = 0; i <20;i ++){
+//         const id = "P-"+ Math.random().toString(36).substr(2,10);
+//         const email = Math.random().toString(36).substr(2,10) + '@hkdid.com';
+//         const user = {
+//             id:id,
+//             email:email,
+//             mobile:null,
+//             password:"12345678",
+//             role: "admin"
+//         };
+//         await createUser(user);
 
-    }
-}
+//     }
+// }
 
 
 

@@ -1,6 +1,6 @@
 
 import { Router, Request, Response,Next } from 'express';
-import { AttributeControllerBackEnd,Init} from '../convector';
+import { Init} from '../convector';
 import { Attribute, Application ,ApplicationRequest} from 'did-cc';
 import * as createError  from 'http-errors';
 import validation from '../helpers/validation';
@@ -33,7 +33,6 @@ router.get('/:id',authed, async (req, res, next) => {
         
         const attribute = new Attribute(await ctrls.attribute.show(id));
 
-       // const attribute = new Attribute(await AttributeControllerBackEnd.show(id));
         res.status(200).json(attribute);
     } catch (err) {
         return next(createError(404,err.responses[0].error.message));

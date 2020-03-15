@@ -1,7 +1,7 @@
 import  * as jwt from 'jsonwebtoken';
 import User from '../models/user';
 import {secretKey} from '../env';
-import {InitFabricCtrls} from '../convector';
+import {Init} from '../convector';
 export default async function AuthedUser (req, res, next) {
     var identityID = null;
     try{
@@ -12,8 +12,10 @@ export default async function AuthedUser (req, res, next) {
       req.user = payload;
       identityID = payload.identityID;
     }catch(error){
-        
-    }  
-    req.ctrls = await InitFabricCtrls(identityID);
+      
+    }
+    // console.log(req.headers.authorization);
+
+     req.ctrls = await Init(identityID);
     next();
 }

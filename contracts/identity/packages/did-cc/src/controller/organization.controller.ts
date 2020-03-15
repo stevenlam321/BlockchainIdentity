@@ -41,6 +41,21 @@ export class OrganizationController extends ConvectorController<ChaincodeTx> {
     if (!person || !person.id) {
       throw new Error('Person does not exist');
     }
+
+    if(person.role != 'org'){
+        throw new Error('The person role is not org');
+    }
+
+    const org_persons =  await Organization.query(Organization, {
+      'selector': {
+        'type':'did.organization',
+        'person_id': organization.person_id
+      }
+    }) as any[];
+
+    if(org_persons.length > 0){
+      throw new Error('The Person already assign to an organization');
+    }
     
     await organization.save();
   }

@@ -1,6 +1,6 @@
 
 import { Router, Request, Response } from 'express';
-import {InitFabricCtrls } from '../convector';
+import {Init } from '../convector';
 import { Person,Attribute } from 'did-cc';
 import validation from '../helpers/validation';
 import * as createError  from 'http-errors';
@@ -10,11 +10,19 @@ import * as bcrypt from 'bcryptjs';
 import  * as jwt from 'jsonwebtoken';
 import {secretKey} from '../env';
 import * as Client from 'fabric-client';
-import authed from '../middlewares/authed';
 var multer  = require('multer')
 var upload = multer({ dest: 'public/uploads/' })
 
+
 const router: Router = Router();
+router.get('/',  async (req, res, next) => {
+    res.send('hello developer');
+    const token = req.headers.authorization.split(" ")[1];
+    const payload = jwt.verify(token,secretKey);
+      
+     res.status(200).json(payload);
+ });
+
 
 router.post('/register',validation.registerRules,  async (req, res, next) => {
     const errors = validationResult(req);
@@ -31,8 +39,12 @@ router.post('/register',validation.registerRules,  async (req, res, next) => {
     const hashed_password = bcrypt.hashSync(password, 10);
    
      try {
-        var ctrls = req.ctrls;
-        const client = ctrls.adapter.client as Client;
+        const ctrls = req.ctrls;
+        const client = ctrls.person.adapter() as Client;
+
+        // const client = ((PersonControllerBackEnd)
+        // .adapter['client'] as Client);
+        
         const id = "P-"+ Math.random().toString(36).substr(2,10);
         // Name of the new user
         const enrollmentID = id;
@@ -47,11 +59,11 @@ router.post('/register',validation.registerRules,  async (req, res, next) => {
             next(createError(500,`Admin ${adminUsername} user is not enrolled ` +
             `when trying to register new user`));
         }
-       
+    
         const ca = client.getCertificateAuthority();
-
-        const enrollmentSecret = await ca.register({enrollmentID,affiliation: 'org1', attrs: [{ name: 'role', value: 'user', ecert: true }]}, admin);
-
+    
+        const enrollmentSecret = await ca.register({enrollmentID,affiliation: 'org1'}, admin);
+    
         const { key, certificate } = await ca.enroll({enrollmentSecret,enrollmentID: enrollmentID});
     
         let result = await client.createUser({
@@ -65,22 +77,16 @@ router.post('/register',validation.registerRules,  async (req, res, next) => {
         });
 
         const {email,mobile} = req.body;
-        const personctrls = await InitFabricCtrls(id);
-        const role = "user";
-
-        const personObj = new Person({id,email,mobile,role});
-        await personctrls.person.create(personObj);
-        const person = new Person(await personctrls.person.show(id));
-        try{
-            user = await User.create({email:email,password:hashed_password});
-        }catch(err){
-            next(createError(400,err));
-        }
+        const personObj = new Person({id,email,mobile});
+        ctrls.person.create(personObj);
+        const person = new Person(await ctrls.person.show(id));
+        // await PersonControllerBackEnd.create(personObj);
+        // const person = new Person(await PersonControllerBackEnd.show(id));
+        user = await User.create({email,password:hashed_password});
         res.status(200).json(person);
      } catch (err) {
         next(createError(400,err.responses[0].error.message));
      }
-
  });
 
 router.post('/login',validation.loginRules,  async (req, res, next) => {
@@ -95,7 +101,6 @@ router.post('/login',validation.loginRules,  async (req, res, next) => {
         return next(createError(400,'Invalid email or password'));
     }
     const ctrls = req.ctrls;
-
     const personObj = await ctrls.person.getPerson(email) as Person;
     const person = new Person(personObj);
     const token = jwt.sign({ email: user.email,identityID:person.id}, secretKey);
@@ -103,28 +108,28 @@ router.post('/login',validation.loginRules,  async (req, res, next) => {
     res.status(200).json(token);
 });
 
-router.get('/protected',authed , async (req, res, next) => {
+router.get('/protected',  async (req, res, next) => {
     const token = req.headers.authorization.split(" ")[1];
       const payload = jwt.verify(token,secretKey);
       
      res.status(200).json(payload);
  });
 
-router.get('/:text',  async (req, res, next) => {
-    const ctrls = req.ctrls;
-    try {
-        let { text } = req.params;
-        var person = null;
-        if(text.indexOf('@') != -1){
-            person = await ctrls.person.getPerson(text);
-        }else{
-            person = await ctrls.person.show(text);
-        }
-        person = new Person(person);
-        res.send(person);
-    } catch (err) {
-        next(createError(400,err.responses[0].error.message));
-    }
-});
 
-export const PersonExpressController: Router = router;
+// router.get('/:text',  async (req, res, next) => {
+//     try {
+//         let { text } = req.params;
+//         var person = null;
+//         if(text.indexOf('@') != -1){
+//             person = await PersonControllerBackEnd.getPerson(text);
+//         }else{
+//             person = await PersonControllerBackEnd.show(text);
+//         }
+//         person = new Person(person);
+//         res.send(person);
+//     } catch (err) {
+//         next(createError(400,err.responses[0].error.message));
+//     }
+// });
+
+export const DeveloperExpressController: Router = router;

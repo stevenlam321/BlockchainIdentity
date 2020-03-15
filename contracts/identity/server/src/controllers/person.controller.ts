@@ -1,6 +1,6 @@
 
 import { Router, Request, Response } from 'express';
-import {InitFabricCtrls } from '../convector';
+import {Init } from '../convector';
 import { Person,Attribute } from 'did-cc';
 import validation from '../helpers/validation';
 import * as createError  from 'http-errors';
@@ -32,7 +32,8 @@ router.post('/register',validation.registerRules,  async (req, res, next) => {
    
      try {
         var ctrls = req.ctrls;
-        const client = ctrls.adapter.client as Client;
+        const client = ctrls.person.adapter() as Client;
+        
         const id = "P-"+ Math.random().toString(36).substr(2,10);
         // Name of the new user
         const enrollmentID = id;
@@ -65,18 +66,18 @@ router.post('/register',validation.registerRules,  async (req, res, next) => {
         });
 
         const {email,mobile} = req.body;
-        const personctrls = await InitFabricCtrls(id);
+        const personctrls = await Init(id);
         const role = "user";
 
         const personObj = new Person({id,email,mobile,role});
-        await personctrls.person.create(personObj);
-        const person = new Person(await personctrls.person.show(id));
+        await ctrls.person.create(personObj);
+        const person = new Person(await ctrls.person.show(id));
         try{
             user = await User.create({email:email,password:hashed_password});
         }catch(err){
             next(createError(400,err));
         }
-        res.status(200).json(person);
+         res.status(200).json(person);
      } catch (err) {
         next(createError(400,err.responses[0].error.message));
      }
@@ -99,6 +100,7 @@ router.post('/login',validation.loginRules,  async (req, res, next) => {
     const personObj = await ctrls.person.getPerson(email) as Person;
     const person = new Person(personObj);
     const token = jwt.sign({ email: user.email,identityID:person.id}, secretKey);
+
     // res.status(200).json(person);
     res.status(200).json(token);
 });

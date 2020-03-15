@@ -1,6 +1,6 @@
 
 import { Router, Request, Response,Next } from 'express';
-import {InitFabricCtrls} from '../convector';
+import {Init} from '../convector';
 import { Attribute } from 'did-cc';
 import * as createError  from 'http-errors';
 import validation from '../helpers/validation';
