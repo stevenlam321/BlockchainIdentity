@@ -93,7 +93,9 @@ export class OrganizationController extends ConvectorController<ChaincodeTx> {
     if(this.credential_exist(person.credentials,credential_id)){
       throw new Error('Credential already assigned to this person');
     }
-
+    // console.log(person);
+    // console.log(attribute_values);
+    // console.log(credential);
     const person_credential = this.validate_credential_attributes(credential,attribute_values);
    
     person.credentials.push(person_credential);

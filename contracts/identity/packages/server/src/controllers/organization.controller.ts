@@ -1,7 +1,7 @@
 
 import { Router, Request, Response } from 'express';
 import {InitFabricCtrls } from '../convector';
-import { Organization,PersonCredentialAttributeValue} from 'did-cc';
+import { Organization,PersonCredentialAttributeValue,Person} from 'did-cc';
 import validation from '../helpers/validation';
 import {check, validationResult } from 'express-validator';
 import * as createError  from 'http-errors';
@@ -72,18 +72,19 @@ router.post('/',validation.createOrganizationRules, async (req, res, next) => {
 });
 
 
-router.post('/assign_credential',validation.createOrganizationRules, async (req, res, next) => {
+router.post('/assign_credential',validation.assignCredentialRules, async (req, res, next) => {
     const errors = validationResult(req);
-   // res.send(req.body.attributes);
-    //  if (!errors.isEmpty()) {
-    //    return res.status(422).json({ errors: errors.array() });
-    //  }
+
+     if (!errors.isEmpty()) {
+       return res.status(422).json({ errors: errors.array() });
+     }
      try {
-         const {email,credential_id,attributes} = req.body;
+         const {email,credential_id,attribute_values} = req.body;
          const ctrls = req.ctrls;
-         await ctrls.organization.assign_credential(email,credential_id,attributes);
-        // await OrganizationControllerBackEnd.assign_credential(email,credential_id,attributes);
-         res.status(200).json();
+         await ctrls.organization.assign_credential(email,credential_id,attribute_values);
+
+         const person = new Person(await ctrls.person.getPerson(email));
+         res.status(200).json(person);
      } catch (err) {
          console.log(err);
          res.status(500).send(err.responses[0].error);

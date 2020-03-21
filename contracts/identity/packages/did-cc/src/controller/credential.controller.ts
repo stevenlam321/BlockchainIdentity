@@ -7,7 +7,7 @@ import {
   FlatConvectorModel
 } from '@worldsibu/convector-core';
 import * as yup from 'yup';
-import {Person,Organization,Attribute,Credential } from '../model';
+import {Person,Organization,Attribute,Credential,CredentialAttribute } from '../model';
 
 @Controller('credential')
 export class CredentialController extends ConvectorController<ChaincodeTx> {
@@ -95,7 +95,8 @@ export class CredentialController extends ConvectorController<ChaincodeTx> {
            if(!attribute || !attribute.id){
               error_attributes.push(attribute_id);
            }else{
-              attributes.push(attribute);
+             const credentialAttribute =  new CredentialAttribute({attribute_id:attribute.id,name:attribute.name});
+              attributes.push(credentialAttribute);
            }
       }
       if(error_attributes.length > 0){

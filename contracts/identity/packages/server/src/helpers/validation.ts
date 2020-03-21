@@ -38,6 +38,11 @@ const validation = {
     check('name').exists().withMessage('name is required'),
     check('organization_id').exists().withMessage('organization_id is required')
   ],
+  assignCredentialRules:[
+    check('email').exists().withMessage('email is required'),
+    check('credential_id').exists().withMessage('credential_id is required'),
+    check('attribute_values').exists().withMessage('attribute_values is required')
+  ],
   createApplicationRules:[
     check('name').exists().withMessage('name is required'),
     check('public_key').exists().withMessage('public_key is required'),

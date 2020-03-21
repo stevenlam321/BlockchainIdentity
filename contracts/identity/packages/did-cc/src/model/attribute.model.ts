@@ -17,7 +17,7 @@ export class Attribute extends ConvectorModel<Attribute> {
   public name: string;
 
 }
-export class CredentialAttribute extends ConvectorModel<Attribute> {
+export class CredentialAttribute extends ConvectorModel<CredentialAttribute> {
   @ReadOnly()
   public readonly type = 'did.credential.attribute';
 
