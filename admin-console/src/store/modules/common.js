@@ -1,7 +1,10 @@
 import axios from 'axios';
 const state = {
+    loading:false,
     todos:[],
     currentUser:null,
+    person:null,
+    organization:JSON.parse(localStorage.getItem('organization')),
     accessToken:localStorage.getItem('access_token'),
 };
 
@@ -9,43 +12,42 @@ const getters = {
     allTodos: state => state.todos,
     currentUser: state => state.currentUser,
     isLoggedIn: state => !!state.accessToken,
+    organization: state=> state.organization,
+    loading: state => state.loading,
 };
 
 const actions = {
     async login ({commit},{email,password}){
-        // const response = await axios.get('https://jsonplaceholder.typicode.com/todos/');
-       // const user = 
-        //commit('setCurrentUser',user);
-        const accessToken = 'wqwqwhqiwqhwqhwq';
-        localStorage.setItem("access_token", accessToken);
-        console.log(email,password);
-        commit('setAccessToken',accessToken);
-
-        // return new Promise((resolve, reject) => {
-        //     reject('login fail');
-        //   })
+        return new Promise((resolve, reject) => {
+            commit('setLoading',true);
+            axios({url: 'http://localhost:8080/persons/login', data: {email,password}, method: 'POST' })
+            .then(resp => {
+               const accessToken = resp.data.token
+               const person = resp.data.person
+               const organization = resp.data.organization
+                if(person.role!='org'){
+                    reject({"message":"Invalid username or password"})
+                }else{
+                    axios.defaults.headers.common['Authorization'] = accessToken;
+                    commit('authSuccess',{accessToken,person,organization});
+                    resolve(resp)
+                }
+            })
+            .catch(err => {
+                localStorage.removeItem('access_token')
+                console.log(err);
+                reject(err.response.data)
+            }).finally(()=>{
+                commit('setLoading',false);
+            });
+          })
         
-        // return new Promise((resolve, reject) => {
-        //     commit('auth_request')
-        //     axios({url: 'http://localhost:3000/login', data: user, method: 'POST' })
-        //     .then(resp => {
-        //       const token = resp.data.token
-        //       const user = resp.data.user
-        //       localStorage.setItem('token', token)
-        //       axios.defaults.headers.common['Authorization'] = token
-        //       commit('auth_success', token, user)
-        //       resolve(resp)
-        //     })
-        //     .catch(err => {
-        //       commit('auth_error')
-        //       localStorage.removeItem('token')
-        //       reject(err)
-        //     })
-        //   })
+    },
+    async setLoading ({commit},loading){
+        commit('setLoading',loading);
     },
     async logout ({commit}){
-        localStorage.removeItem("access_token");
-        commit('setAccessToken',null);
+        commit('logout',null);
     },
     async fetchTodos ({commit}){
         const response = await axios.get('https://jsonplaceholder.typicode.com/todos/');
@@ -86,6 +88,23 @@ const mutations = {
     },
     setCurrentUser:(state,user) => state.currentUser = user,
     setAccessToken:(state,accessToken) => state.accessToken = accessToken,
+    setLoading(state,loading){
+        state.loading = loading;
+    },
+    authSuccess(state,{ accessToken, person,organization}){
+        state.accessToken = accessToken
+        state.person = person
+        state.organization = organization,
+        localStorage.setItem('access_token', accessToken)
+        localStorage.setItem('organization', JSON.stringify(organization))
+    },
+    logout(state){
+        state.accessToken = null
+        state.person = null
+        state.organization = null
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("organization");
+    },
 };
 
 export default {

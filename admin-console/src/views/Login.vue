@@ -1,48 +1,55 @@
 <template>
-  <div class="form-container">
-    <b-container>
-      <b-row>
-        <b-col lg="6" offset-lg="3">
-          <div class="login-form-container">
-              <h3 class="form-header">HKDID Admin Console</h3>
-              <b-form @submit="onSubmit" v-if="show" validated >
-                <b-form-group
-                  label="Email address:"
-                  label-for="email"
-                >
-                  <b-form-input
-                    id="email"
-                    v-model="form.email"
-                    type="email"
-                    required
-                    placeholder="Enter email"
-                  ></b-form-input>
-                </b-form-group>
+  <div class="outer">
+    <Loading/>
+    <div class="form-container">
+      <b-container>
+        <b-row>
+          <b-col lg="6" offset-lg="3">
+            <div class="login-form-container">
+                <h3 class="form-header">HKDID Admin Console</h3>
+                <b-form @submit="onSubmit" v-if="show" validated >
+                  <b-form-group
+                    label="Email address:"
+                    label-for="email"
+                  >
+                    <b-form-input
+                      id="email"
+                      v-model="form.email"
+                      type="email"
+                      required
+                      placeholder="Enter email"
+                    ></b-form-input>
+                  </b-form-group>
 
-                <b-form-group label="Your Password:" label-for="password">
-                  <b-form-input
-                    id="password"
-                    v-model="form.password"
-                    type="password"
-                    required
-                    placeholder="Enter password"
-                  ></b-form-input>
-                </b-form-group>
-                 <b-alert show variant="danger" v-if="error">{{error}}</b-alert>
-                <b-button type="submit" variant="primary">Submit</b-button>
-              </b-form>
-            </div>
-        </b-col>
-      </b-row>
-      </b-container>
+                  <b-form-group label="Your Password:" label-for="password">
+                    <b-form-input
+                      id="password"
+                      v-model="form.password"
+                      type="password"
+                      required
+                      placeholder="Enter password"
+                    ></b-form-input>
+                  </b-form-group>
+                  <b-alert show variant="danger" v-if="error">{{error}}</b-alert>
+                  <b-button type="submit" variant="primary">Submit</b-button>
+                </b-form>
+              </div>
+          </b-col>
+        </b-row>
+        </b-container>
+        </div>
       </div>
 </template>
 
 <script>
 import {mapGetters,mapActions} from 'vuex';
+import Loading from '../components/Loading';
 
   export default {
     name:"Login",
+    components: {
+        Loading
+    },
     data() {
       return {
         form: {
@@ -63,7 +70,7 @@ import {mapGetters,mapActions} from 'vuex';
        .catch((err) => {
          this.form.email = '';
          this.form.password = '';
-         this.error = err;
+         this.error = err.message;
           console.log(err);
        });
       },
@@ -96,5 +103,8 @@ body,html{
 }
 form{
   padding: 0 15px 15px 15px;
+}
+.outer{
+  height: 100%;
 }
 </style>

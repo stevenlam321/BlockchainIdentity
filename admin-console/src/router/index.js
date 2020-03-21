@@ -4,6 +4,8 @@ import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import NotFound from '../views/NotFound.vue'
 import Login from '../views/Login.vue'
+import CreateCredential from '../views/CreateCredential.vue'
+import Credential from '../views/Credential.vue'
 import store from '../store'
 
 Vue.use(VueRouter)
@@ -21,9 +23,15 @@ const routes = [
     meta: { requireNotAuthed: true }
   },
   {
-    path: '/about',
-    name: 'About',
-    component: About,
+    path: '/credentials',
+    name: 'Credential',
+    component: Credential,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/credentials/create',
+    name: 'CreateCredential',
+    component: CreateCredential,
     meta: { requiresAuth: true }
   },
   {
@@ -37,7 +45,7 @@ const router = new VueRouter({
   mode: 'history',
   routes
 })
-localStorage.removeItem("access_token");
+
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requireNotAuthed) && store.getters.isLoggedIn) {
         next({

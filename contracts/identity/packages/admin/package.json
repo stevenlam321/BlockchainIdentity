@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "fabric-ca-client": "~1.4.0",
     "fabric-client": "~1.4.0",
     "grpc": "^1.18.0"

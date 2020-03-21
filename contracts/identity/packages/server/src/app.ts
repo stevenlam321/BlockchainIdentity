@@ -5,13 +5,15 @@ import * as createError  from 'http-errors';
 import * as mongoose from 'mongoose';
 import AuthedUser from './middlewares/AuthedUser';
 import authed from './middlewares/authed';
+import * as cors from 'cors';
+
 import { AttributeExpressController,PersonExpressController,OrganizationExpressController,CredentialExpressController } from './controllers';
 
 // import * as expressValidator from 'express-validator';
 
 const app = express();
 const port = serverPort;
-
+app.use(cors());
 app.use(bodyParser.urlencoded({
   extended: true,
   limit: '40mb'
