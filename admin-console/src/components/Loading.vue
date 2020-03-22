@@ -6,21 +6,21 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import {mapGetters,mapState} from 'vuex';
 export default {
     name: "Loading",
-    computed: mapGetters(['loading']),
-    // methods:{
-    //     logout(){
-    //          this.$store.dispatch('logout')
-    //         .then(() => {
-    //             this.$router.push('/login')
-    //         })
-    //     }
-    // },
-    // created(){
-      
-    // }
+    computed:
+    mapState({
+      loading: state => state.common.loading,
+    }),
+    methods:{
+        logout(){
+             this.$store.dispatch('logout')
+            .then(() => {
+                this.$router.push('/login')
+            })
+        }
+    }
 }
 </script>
 

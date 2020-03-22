@@ -29,7 +29,7 @@ const validation = {
   ], 
   createCredentialRules:[
     check('id').exists().withMessage('id is required'),
-    check('name').exists().withMessage('name is required'),
+    check('name').exists().withMessage('name is required').not().isEmpty(),
     check('organization_id').exists().withMessage('organization_id is required'),
     check('attribute_ids').exists().withMessage('attribute_ids is required')
     .isArray().withMessage('attribute_ids should be an array'),

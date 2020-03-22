@@ -13,14 +13,13 @@ const getters = {
     currentUser: state => state.currentUser,
     isLoggedIn: state => !!state.accessToken,
     organization: state=> state.organization,
-    loading: state => state.loading,
 };
 
 const actions = {
     async login ({commit},{email,password}){
         return new Promise((resolve, reject) => {
             commit('setLoading',true);
-            axios({url: 'http://localhost:8080/persons/login', data: {email,password}, method: 'POST' })
+            axios({url: 'persons/login', data: {email,password}, method: 'POST' })
             .then(resp => {
                const accessToken = resp.data.token
                const person = resp.data.person

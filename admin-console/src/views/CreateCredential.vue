@@ -18,7 +18,7 @@
           <div class="d-flex attribute-row" v-for="(attr,index) in form.attrs" v-bind:key="index">
             <div class="row-action-btn-container d-flex justify-content-center align-items-center"><b-icon icon="x-circle" class="row-action-btn" variant="danger" @click="removeAttributeRow(index)"></b-icon></div>
             <div class="flex-fill">
-                <b-form-select  v-model="attr.id" :options="attributes" required></b-form-select>
+                <b-form-select  v-model="attr.id" :options="parsesAttributes" required></b-form-select>
             </div>
           </div>
       </b-form-group>
@@ -45,27 +45,14 @@ export default {
       return {
         form: {
           credential_id: '',
-          name: '',
+          name: null,
           attrs:[],
         },
         show: true,
-        attributes:[
-              {
-                  text:"Select Attribute",
-                  value:null,
-              },
-              {
-                  text:"A-hkidno (Hong Kong ID Carr Number)",
-                  value:'A-hkidno',
-              },
-              {
-                 text:"A-issue_date (Issue Date)",
-                  value:'A-issue_date',
-              }
-          ]
       }
     },
     methods: {
+      ...mapActions(['fetchAttributes']),
       addAttributeRow(){
           this.form.attrs.push({id:null});
       },
@@ -74,37 +61,52 @@ export default {
       },
       
       onSubmit(evt) {
-        evt.preventDefault()
-        alert(JSON.stringify(this.form))
+        evt.preventDefault();
+        this.$store.dispatch('setLoading',true);
+        const attribute_ids = this.form.attrs.map(attr=>attr.id);
+        const data = {
+            id: 'C-'+this.form.credential_id,
+            name: this.form.name,
+            attribute_ids:attribute_ids
+        };
+      
+        this.$store.dispatch('CreateCredential',data)
+        .then(()=>{
+            alert('Credential Created');
+            this.resetForm();
+        })
+        .catch((err)=>{
+            alert(err.response.data.message);
+        })
+        .finally(()=>{
+            this.$store.dispatch('setLoading',false);
+        });
       },
       onReset(evt) {
         evt.preventDefault()
         // Reset our form values
-        this.form.credential_id = ''
-        this.form.name = ''
-        this.form.attrs = []
+       this.resetForm();
         // Trick to reset/clear native browser form validation state
         this.show = false
         this.$nextTick(() => {
           this.show = true
         })
+      },
+      resetForm(){
+        this.form.credential_id = ''
+        this.form.name = ''
+        this.form.attrs = []
       }
+    },
+    computed: mapGetters(['parsesAttributes']),
+    async created(){
+         this.$store.dispatch('setLoading',true);
+        this.fetchAttributes().catch((err)=>{
+            alert(err);
+        }).finally(()=>{
+            this.$store.dispatch('setLoading',false);
+        });
     }
-//   data(){
-//      return {
-//       currentCredential:null,
-//     }
-//   },
-//     computed: mapGetters(['credentials']),
-//     methods:{
-//         ...mapActions(['fetchCredentials']),
-//         show (credential){
-//             this.currentCredential = credential;
-//         }
-//     },
-//     async created(){
-//         this.fetchCredentials();
-//     }
 };
 </script>
 

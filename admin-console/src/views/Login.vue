@@ -75,10 +75,6 @@ import Loading from '../components/Loading';
        });
       },
     },
-    computed: mapGetters(['allTodos']),
-    created(){
-      
-    }
   }
 </script>
 <style>

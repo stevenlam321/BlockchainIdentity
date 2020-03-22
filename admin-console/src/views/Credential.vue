@@ -29,7 +29,7 @@
 <script>
 import DefaultLayout from "../layout/DefaultLayout";
 import axios from 'axios';
-import {mapGetters,mapActions} from 'vuex';
+import {mapGetters,mapActions,mapState} from 'vuex';
 export default {
   name: "Credential",
   components: {
@@ -40,7 +40,10 @@ export default {
       currentCredential:null,
     }
   },
-    computed: mapGetters(['credentials']),
+    computed:  
+    mapState({
+      credentials: state => state.credential.credentials,
+    }),
     methods:{
         ...mapActions(['fetchCredentials']),
         show (credential){
@@ -48,7 +51,12 @@ export default {
         }
     },
     async created(){
-        this.fetchCredentials();
+        this.$store.dispatch('setLoading',true);
+        this.fetchCredentials().catch((err)=>{
+            alert(err);
+        }).finally(()=>{
+            this.$store.dispatch('setLoading',false);
+        });
     }
 };
 </script>
