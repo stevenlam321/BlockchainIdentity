@@ -22,7 +22,7 @@ console.log('Store path:' + hurleyIdentityPath);
 
 mongoose.connect(mongodbConnection, { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true });
 
-//User.collection.drop();
+// User.collection.drop();
 
 function initAdminClient(){
     return new Promise((resolve,reject)=>{
@@ -105,7 +105,7 @@ async function setup(){
             password:"12345678",
             role: "admin"
         };
-      // await createUser(superadmin);
+       await createUser(superadmin);
 
         const users = [{
             id:"P-hktd_admin",
@@ -122,9 +122,9 @@ async function setup(){
                 role: "org"
             }
         ];
-        // for (const i in users) {
-        //     await createUser(users[i]);
-        // }
+        for (const i in users) {
+            await createUser(users[i]);
+        }
             
     const organizations = [
         {
@@ -141,12 +141,12 @@ async function setup(){
         },
       ];
 
-    //   for (const i in organizations) {
-    //         const ctrls = await InitFabricCtrls(organizations[i].person_id);
-    //         const organization = new Organization(organizations[i]);
-    //         await ctrls.organization.create(organization);
-    //         console.log(organizations[i].name + ' created');
-    //     }
+      for (const i in organizations) {
+            const ctrls = await InitFabricCtrls(organizations[i].person_id);
+            const organization = new Organization(organizations[i]);
+            await ctrls.organization.create(organization);
+            console.log(organizations[i].name + ' created');
+        }
 
 
     const attributes = [
@@ -181,7 +181,7 @@ async function setup(){
       for (const i in attributes) {
         const attribute = new Attribute(attributes[i]);
         await ctrls.attribute.create(attribute);
-        console.log("Attribute:" + attributes[i].id + 'created');
+        console.log("Attribute:" + attributes[i].id + ' created');
       }
     }catch(err){
         console.log(err);

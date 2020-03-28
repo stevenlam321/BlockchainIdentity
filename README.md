@@ -22,6 +22,10 @@ hurl new (Reset first)
 npm run cc:start:debug -- did
 hurl invoke did did_init
 
+## Seeding
+cd contracts/packages/server
+ts-node  src/init.ts
+
 ## Update chaincode on debug mode
 npm run cc:package -- did
 

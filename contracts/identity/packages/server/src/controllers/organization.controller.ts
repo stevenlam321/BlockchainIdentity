@@ -6,10 +6,54 @@ import validation from '../helpers/validation';
 import {check, validationResult } from 'express-validator';
 import * as createError  from 'http-errors';
 import authed from '../middlewares/authed';
+import {basicCredentialName,basicCredentialAttribute} from '../env';
 var multer  = require('multer')
 var upload = multer({ dest: 'public/uploads/' })
 
 const router: Router = Router();
+
+router.get('/check_person/:email',authed,async (req, res, next) => {
+    const user = req.user;
+
+    if(user.role !== "org" && user.role !== "admin"){
+        return next(createError(400,'Invalid permission'));
+    }
+    
+     try {
+        let { email } = req.params;
+        const ctrls = req.ctrls;
+
+        const personObj = new Person(await ctrls.person.getPerson(email));
+       // return res.status(200).json(personObj);
+        var hkidno = null;
+
+        for (var i = 0 ; i < personObj.credentials.length; i++){
+            const credential = personObj.credentials[i];
+            if(credential.credential_id == basicCredentialName){
+                for (var j = 0 ; j < credential.attributes.length; j++){
+                    const attribute = credential.attributes[j];
+                    if(attribute.attribute_id == basicCredentialAttribute){
+                        hkidno = attribute.value;
+                    }
+                }
+            }
+        }
+        
+
+        const person = {
+            id:personObj.id,
+            email:personObj.email,
+            mobile:personObj.mobile,
+            created_at:personObj.created_at,
+            hkidno
+        };
+
+        return res.status(200).json(person);
+     } catch (err) {
+         console.log(err);
+         res.status(500).send(err.responses[0].error);
+     }
+ });
 
 router.get('/credentials',authed, async (req, res, next) => {
     const user = req.user;
@@ -90,5 +134,6 @@ router.post('/assign_credential',validation.assignCredentialRules, async (req, r
          res.status(500).send(err.responses[0].error);
      }
  });
+
 
 export const OrganizationExpressController: Router = router;

@@ -13,6 +13,10 @@ export const adminIdentityName = process.env.IDENTITY || 'admin';
 export const superAdminIdentityName = process.env.IDENTITY || 'P-superadmin';
 export const identityOrg = process.env.ORG || 'org1';
 
+export const basicCredentialName = 'C-hkidcard';
+export const basicCredentialAttribute =  'A-hkidno';
+
+
 export const keyStore = process.env.KEYSTORE || `/${homedir}/hyperledger-fabric-network/.hfc-${identityOrg}`;
 export const networkProfile = process.env.NETWORKPROFILE || `/${homedir}/hyperledger-fabric-network/network-profiles/${identityOrg}.network-profile.yaml`;
 

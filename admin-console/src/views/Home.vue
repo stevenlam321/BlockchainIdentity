@@ -31,17 +31,20 @@
              </div>
               <div class="step-input-container" id="step2" v-if="step == 2">
                 <h3>Step 2: Check User</h3>
-                <div class="d-flex align-items-center user-info">
+                <div class="d-flex align-items-center user-info" v-if="targetPerson">
                     <div class="person-icon"><b-icon icon="person"></b-icon></div>
                     <table class="user-basic-info">
                     <tr>
-                        <td>Person ID: </td><td>A-ppp</td>
+                        <td>Person ID: </td><td>{{targetPerson.id}}</td>
                     </tr>
                      <tr>
-                        <td>Email: </td><td>stevenlam123@yahoo.com.hk</td>
+                        <td>Email: </td><td>{{targetPerson.email}}</td>
                     </tr>
                      <tr>
-                        <td>Mobile: </td><td>2345678</td>
+                        <td>Mobile: </td><td>{{targetPerson.mobile}}</td>
+                    </tr>
+                      <tr>
+                        <td>HKID: </td><td>{{targetPerson.hkidno?targetPerson.hkidno:'N/A'}}</td>
                     </tr>
                 </table>
                 </div>
@@ -63,13 +66,43 @@
                 </b-form-group>
 
              </div>
-               <div class="step-input-container" id="step3" v-if="step == 4">
-                <h3>Step 4: Finish</h3>
-
-             </div>
+               <div class="step-input-container" id="step4" v-if="step == 4">
+                    <h3>Step 4: Finish</h3>
+                    <div class="info-container">
+                        <h5 class="info-header">Target Person</h5>
+                        <div class="d-flex align-items-center user-info">
+                                <div class="person-icon"><b-icon icon="person"></b-icon></div>
+                                <table class="user-basic-info">
+                                <tr>
+                                    <td>Person ID: </td><td>{{targetPerson.id}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Email: </td><td>{{targetPerson.email}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Mobile: </td><td>{{targetPerson.mobile}}</td>
+                                </tr>
+                                <tr>
+                                    <td>HKID: </td><td>{{targetPerson.hkidno?targetPerson.hkidno:'N/A'}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                       <div class="info-container">
+                        <h5 class="info-header">Assigning Credential: {{credential.name}}</h5>
+                        <div class="d-flex align-items-center user-info"> 
+                            <table class="attribute-value-list">
+                                <tr v-for="attribute in form.attributes" v-bind:key="attribute.attribute_id">
+                                    <td>{{attribute.name}}: </td><td>{{attribute.value}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             <div class="step-controls">
                 <b-button type="button" variant="secondary" v-if="step > 1" @click="previous">Previous</b-button>
                 <b-button type="button" variant="primary" v-if="totalStep > step" @click="next" v-bind:disabled="!validatedForm()">Next</b-button>
+                 <b-button type="reset" variant="danger" v-if="showSubmitButton" class="submit-btn">Cancel</b-button>
                  <b-button type="submit" variant="warning" v-if="showSubmitButton" class="submit-btn">Submit</b-button>
             </div>
            
@@ -92,46 +125,44 @@ export default {
    data() {
       return {
         form: {
-          email: 'stevenlam123@yahoo.com.hk',
+          email: '',
           credential_id:null,
           attributes:[],
         },
         credential:null,
         show: true,
-        step:2,
+        step:1,
         totalStep:4,
         showSubmitButton:false,
-        nextButtonDisabled:true  
         }
     },
    computed: {
-    ...mapGetters(['parsesCredentials']),
     ...mapState({
       credentials: state => state.credential.credentials,
+      targetPerson: state => state.credential.targetPerson,
     })
     },
     methods: {
+        ...mapActions(['checkPerson','clearTargetPerson']),
         previous(){
             this.step > 1? this.step--:null;
-            //this.showSubmitButton = false;
         },
          next(){
-            //  if(this.step == 1 && !this.form.email){
-            //     return;
-            //  }
-            //  if(this.step == 3){
-            //     //  if(){
-
-            //     //  }
-            //     return;
-            //  }
-              this.step < this.totalStep? this.step++:null;
-            //  if(this.step == 1 && !this.email){
-            //     //nextButtonDisabled = false;
-            //  }else{
-            //      this.step < this.totalStep? this.step++:null;
-            //  }
-            
+            if(this.step == 1){
+                  this.$store.dispatch('setLoading',true);
+                this.checkPerson(this.form.email).then(()=>{
+                     this.step < this.totalStep? this.step++:null;
+                }).catch((error)=>{
+                      alert('Error: '+error.response.data.message);
+                      return;
+                }).finally(()=>{
+                    this.$store.dispatch('setLoading',false);
+                      return;
+                });
+            }else{
+                this.step < this.totalStep? this.step++:null;
+            }
+           
         },
         validatedForm() {
             switch(this.step){
@@ -161,16 +192,40 @@ export default {
             }
         },
       onSubmit(evt) {
-        evt.preventDefault()
-        alert(JSON.stringify(this.form))
+        evt.preventDefault();
+        var attribute_values = [];
+        for(var attribute of this.form.attributes){
+            const attribute_value = {
+                attribute_id:attribute.attribute_id,
+                value:attribute.value
+            };
+            attribute_values.push(attribute_value);
+        }
+       const credential_id = this.credential.id;
+       const email = this.form.email;
+       const data = {email,credential_id,attribute_values};
+
+        this.$store.dispatch('setLoading',true);
+         this.$store.dispatch('assignCredential',data).then(()=>{
+              alert('Credential Assigned');
+              this.onReset(evt);
+         }).catch((err)=>{
+             console.log(err);
+             alert('Error: '+err.response.data.message);
+        }).finally(()=>{
+            this.$store.dispatch('setLoading',false);
+        });
       },
       onReset(evt) {
         evt.preventDefault()
-        this.form.email = ''
-        this.form.name = ''
-        this.form.food = null
-        this.form.checked = []
-        this.show = false
+        this.form.email = '';
+        this.form.credential_id = null;
+        this.form.attributes = [];
+        this.credential = null;
+        this.step = 1;
+        this.showSubmitButton = false;
+        this.show = false,
+        this.clearTargetPerson();
         this.$nextTick(() => {
           this.show = true
         })
@@ -183,7 +238,6 @@ export default {
             }
              if(newStep  < this.totalStep){
                  this.showSubmitButton = false;
-               // setTimeout(()=>{this.showSubmitButton = false},500);
             }
         },
         "form.credential_id":function (newCredentialID, oldCredentialID) {
@@ -191,12 +245,9 @@ export default {
                 this.credential = this.credentials.find((credential)=> credential.id === newCredentialID);
                 this.form.attributes = this.credential.attributes;
             }
-            // this.nextButtonDisabled = newCredentialID==null;
-            // console.log(this.nextButtonDisabled);
+         
         },
-        // "form.email": function (newEmail) {
-        //     this.nextButtonDisabled = newEmail=='';
-        // },
+       
         
   },
     created(){
@@ -212,6 +263,19 @@ export default {
 </script>
 
 <style scoped>
+.info-container{
+    margin-top: 50px;
+}
+.info-container{
+    border: 1px solid grey;
+}
+.info-header{
+    background: rgb(206, 206, 206);
+    padding: 15px;
+}
+.attribute-value-list td:first-child{
+    padding-right: 15px;
+}
 .page-title{
     margin-top: 15px;
     margin-bottom: 30px;
@@ -290,6 +354,6 @@ export default {
     width: 100px;
 }
 .user-info{
-    margin-top: 30px;
+    padding: 15px;
 }
 </style>
