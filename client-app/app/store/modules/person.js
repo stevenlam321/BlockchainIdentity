@@ -26,6 +26,23 @@ const actions = {
                 }); 
           });      
     },
+    async register ({commit,dispatch},{email,password,mobile}){
+        return new Promise((resolve, reject) => {
+            axios.post(API_PATH+'persons/register', {email,password,mobile}).then((res)=>{
+                console.log(res.data);
+                // const person = res.data.person;
+                // const token = res.data.token;
+                // commit('setPerson',person);
+                // dispatch('setToken',token,{ root: true });
+                resolve(res);
+            }).catch((err)=>{
+                // commit('setPerson',null,{ root: true });
+                // dispatch('setToken',null,{ root: true });
+                reject(err.response.data)
+                console.log(err);
+            }); 
+      });      
+},
     async logout ({commit,dispatch}){
         commit('logout');
         dispatch('setToken',null,{ root: true });

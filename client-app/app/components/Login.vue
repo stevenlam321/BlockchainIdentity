@@ -2,7 +2,6 @@
   <Page actionBarHidden='true'>
     <FlexboxLayout flexDirection="column" justifyContent='center'>
       <StackLayout class="nt-form" orientation='vertical'>
-        <Label v-if="this.$store.state.common.loading">Loading</Label>
         <Image src="~/assets/images/logo.png" stretch="aspectFit" class="logo m-b-30"/>
         <TextField v-model="email" hint="Email" keyboardType="email" autocorrect="false" autocapitalizationType="none"/>
         <TextField v-model="password" hint="Password" secure="true" autocorrect="false" autocapitalizationType="none"/>
@@ -16,7 +15,10 @@
 <script >
 import { required,email } from 'vuelidate/lib/validators'
 import Register from './Register'
-import App from './App'
+import App from './App';
+import {LoadingIndicator,Mode} from '@nstudio/nativescript-loading-indicator';
+
+const loader = new LoadingIndicator();
 export default {
   data() {
     return {
@@ -35,13 +37,15 @@ export default {
         if (this.$v.$invalid) {
           alert('Please fill the form correctly!');
         }else{
-          this.$store.dispatch('setLoading',true);
+          loader.show();
           this.$store.dispatch('login',{email:this.email,password:this.password})
           .then(()=>{
-             this.$store.dispatch('setLoading',false);
              this.$navigateTo(App);
           }).catch((error)=>{
+            alert(error.message);
             console.log(error);
+          }).finally(()=>{
+            loader.hide();
           });
         }
       }

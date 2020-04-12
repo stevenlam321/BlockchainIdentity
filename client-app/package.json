@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@nativescript/theme": "^2.2.1",
+    "@nstudio/nativescript-loading-indicator": "^3.0.4",
     "@vue/devtools": "^5.0.6",
     "axios": "^0.19.2",
     "nativescript-socketio": "^3.2.1",

@@ -21,7 +21,7 @@ Vue.config.silent = (TNS_ENV === 'production')
 // Prints Colored logs when --env.production is *NOT* set while building
 Vue.config.debug = (TNS_ENV !== 'production')
 
-const landingPage = store.getters.isLoggedIn? App : Login;
+const landingPage = store.getters.isLoggedIn? App : Register;
 
 new Vue({
   store,
