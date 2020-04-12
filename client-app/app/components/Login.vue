@@ -2,6 +2,7 @@
   <Page actionBarHidden='true'>
     <FlexboxLayout flexDirection="column" justifyContent='center'>
       <StackLayout class="nt-form" orientation='vertical'>
+        <Label v-if="this.$store.state.common.loading">Loading</Label>
         <Image src="~/assets/images/logo.png" stretch="aspectFit" class="logo m-b-30"/>
         <TextField v-model="email" hint="Email" keyboardType="email" autocorrect="false" autocapitalizationType="none"/>
         <TextField v-model="password" hint="Password" secure="true" autocorrect="false" autocapitalizationType="none"/>
@@ -15,21 +16,33 @@
 <script >
 import { required,email } from 'vuelidate/lib/validators'
 import Register from './Register'
+import App from './App'
 export default {
   data() {
     return {
-      email: "",
-      password: "",
+      email: "stevenlam123@yahoo.com.hk",
+      password: "11111111",
     };
   },
   methods:{
       register(){
          this.$navigateTo(Register);
+        // console.log(this.$store.state.common.token);
       },
       login(){
         this.$v.$touch();
+        
         if (this.$v.$invalid) {
           alert('Please fill the form correctly!');
+        }else{
+          this.$store.dispatch('setLoading',true);
+          this.$store.dispatch('login',{email:this.email,password:this.password})
+          .then(()=>{
+             this.$store.dispatch('setLoading',false);
+             this.$navigateTo(App);
+          }).catch((error)=>{
+            console.log(error);
+          });
         }
       }
   },

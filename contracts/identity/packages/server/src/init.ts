@@ -22,7 +22,7 @@ console.log('Store path:' + hurleyIdentityPath);
 
 mongoose.connect(mongodbConnection, { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true });
 
-// User.collection.drop();
+User.collection.drop();
 
 function initAdminClient(){
     return new Promise((resolve,reject)=>{

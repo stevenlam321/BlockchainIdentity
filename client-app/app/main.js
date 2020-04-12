@@ -8,7 +8,7 @@ import store from './store/index'
 import VueDevtools from 'nativescript-vue-devtools'
 import RadDataForm from 'nativescript-ui-dataform/vue';
 import Vuelidate from 'vuelidate'
-
+import * as appSettings from 'tns-core-modules/application-settings';
 
 
 if(TNS_ENV !== 'production') {

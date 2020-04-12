@@ -40,6 +40,7 @@
 
 <script >
 import Credential from './Credential'
+import Login from './Login'
 import {mapGetters,mapActions} from 'vuex';
 import * as appSettings from 'tns-core-modules/application-settings';
 import * as http from 'tns-core-modules/http'
@@ -87,7 +88,8 @@ import * as http from 'tns-core-modules/http'
         this.$navigateTo(Credential);
       },
       logout(){
-        
+         this.$store.dispatch('logout');
+           this.$navigateTo(Login);
       }
     },
     created(){
