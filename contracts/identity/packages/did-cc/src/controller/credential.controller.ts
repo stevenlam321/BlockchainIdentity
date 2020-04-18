@@ -105,6 +105,8 @@ export class CredentialController extends ConvectorController<ChaincodeTx> {
     }
     if(attributes.length > 0){
        credential.attributes = attributes;
+       credential.organization_name = organization.name;
+       credential.organization_logo = organization.logo;
     }
     delete credential.attribute_ids;
     await credential.save();

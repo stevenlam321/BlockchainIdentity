@@ -7,7 +7,7 @@ import AuthedUser from './middlewares/AuthedUser';
 import authed from './middlewares/authed';
 import * as cors from 'cors';
 
-import { AttributeExpressController,PersonExpressController,OrganizationExpressController,CredentialExpressController } from './controllers';
+import { AttributeExpressController,PersonExpressController,OrganizationExpressController,CredentialExpressController,ApplicationExpressController } from './controllers';
 
 // import * as expressValidator from 'express-validator';
 
@@ -36,7 +36,7 @@ app.use('/organizations', OrganizationExpressController);
 app.use('/persons', PersonExpressController);
 app.use('/credentials', CredentialExpressController);
 // app.use('/developers', DeveloperExpressController);
-// app.use('/applications', ApplicationExpressController);
+app.use('/applications', ApplicationExpressController);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

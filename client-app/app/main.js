@@ -22,7 +22,7 @@ Vue.config.silent = (TNS_ENV === 'production')
 Vue.config.debug = (TNS_ENV !== 'production')
 
 const landingPage = store.getters.isLoggedIn? App : Register;
-
+store.dispatch('init');
 new Vue({
   store,
   render: h => h('frame', [h(landingPage)])

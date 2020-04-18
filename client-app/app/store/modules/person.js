@@ -498,7 +498,7 @@ const actions = {
 
 const mutations = {
     setPerson(state,person){
-       // console.log(person);
+       console.log(person);
         state.person = person;
     },
     logout(state){

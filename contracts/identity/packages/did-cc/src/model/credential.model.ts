@@ -23,6 +23,14 @@ export class Credential extends ConvectorModel<Credential> {
   @Validate(yup.string())
   public organization_id: string;
 
+  // @Required()
+  @Validate(yup.string())
+  public organization_name: string;
+
+  // @Required()
+  @Validate(yup.string())
+  public organization_logo: string;
+
   @Validate(Organization.schema().nullable())
   public organization: FlatConvectorModel<Organization>;
   
@@ -51,6 +59,14 @@ export class PersonCredential extends ConvectorModel<PersonCredential> {
   @Required()
   @Validate(yup.string())
   public organization_id: string;
+
+  @Required()
+  @Validate(yup.string())
+  public organization_name: string;
+
+  @Required()
+  @Validate(yup.string())
+  public organization_logo: string;
 
   @Validate(yup.array(PersonCredentialAttribute.schema()))
   public attributes: Array<FlatConvectorModel<PersonCredentialAttribute>>;

@@ -6,7 +6,7 @@
          <ListView for="credential in person.credentials" @itemTap="showDetail" v-if="person">
             <v-template>
               <StackLayout orientation="horizontal" class="credential">
-                  <!-- <Label text="ABC"/> -->
+                  <Image class='org-logo' :src="'http://localhost:8080/img/'+credential.organization_logo" stretch="aspectFit" />
                   <Label :text="credential.name"/>
               </StackLayout>
             </v-template>
@@ -61,10 +61,10 @@ import * as http from 'tns-core-modules/http'
       },
       showDetail(e){
         const index = e.index;
-        const item = e.item;
+        const credential = e.item;
         // console.log('================================');
         // console.debug(item);
-        this.$navigateTo(Credential,{props:{item:item}});
+        this.$navigateTo(Credential,{props:{credential:credential}});
       },
       logout(){
           this.$store.dispatch('logout');
@@ -72,6 +72,11 @@ import * as http from 'tns-core-modules/http'
       }
     },
     created(){
+      if(!this.person){
+          this.$store.dispatch('init');
+      }
+    },
+    beforeCreated(){
       if(!this.person){
           this.$store.dispatch('init');
       }
@@ -101,6 +106,10 @@ ActionBar {
     color: #333333;
 }
 .credential{
-  height: 50;
+  height: 60;
+}
+.org-logo{
+  width: 40;
+  height: 40;
 }
 </style>

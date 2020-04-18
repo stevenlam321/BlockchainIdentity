@@ -23,7 +23,7 @@ function LoginForm(props){
         props.commonStore.setLoading(true);
         axios.post('/persons/login', data)
           .then(function (response) {
-            const access_token = response.data;
+            const access_token = response.data.token;
             props.commonStore.setToken(access_token);
             const formResult = {
                 result: "success",

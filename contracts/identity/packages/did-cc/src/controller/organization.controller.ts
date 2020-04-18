@@ -134,6 +134,8 @@ export class OrganizationController extends ConvectorController<ChaincodeTx> {
     } else {
       person_credential.attributes = personCredentialAttributes;
       person_credential.name = credential.name;
+      person_credential.organization_name = credential.organization_name;
+      person_credential.organization_logo = credential.organization_logo;
       person_credential.credential_id = credential.id;
       return person_credential;
     }

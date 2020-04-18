@@ -54,6 +54,6 @@ async function InitFabricAdapter(identityID?: string) {
       person: ClientFactory(PersonController, adapter),
       organization: ClientFactory(OrganizationController, adapter),
       credential: ClientFactory(CredentialController, adapter),
-      // application: ClientFactory(ApplicationController, adapter),
+      application: ClientFactory(ApplicationController, adapter),
     };
   }
