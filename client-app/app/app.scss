@@ -9,6 +9,7 @@
 // @see https://docs.nativescript.org/ui/styling
 Page{
     background: rgb(165, 165, 165);
+    font-size: 15;
 }
 .logo{
     width: 100;
@@ -16,4 +17,7 @@ Page{
 }
 TextField{
     margin-bottom: 15;
+}
+.label{
+    font-weight: bold;
 }

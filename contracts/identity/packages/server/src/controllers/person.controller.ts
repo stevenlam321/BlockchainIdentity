@@ -116,11 +116,15 @@ router.post('/login',validation.loginRules,  async (req, res, next) => {
     res.status(200).json(data);
 });
 
-router.get('/protected',authed , async (req, res, next) => {
-    const token = req.headers.authorization.split(" ")[1];
-      const payload = jwt.verify(token,secretKey);
-      
-     res.status(200).json(payload);
+router.get('/me',authed , async (req, res, next) => {
+    const ctrls = req.ctrls;
+    try {
+        const personObj = await ctrls.person.show(req.user.identityID);
+        const person = new Person(personObj);
+        res.status(200).json(person);
+    } catch (err) {
+        next(createError(400,err.responses[0].error.message));
+    }
  });
 
 router.get('/:text',  async (req, res, next) => {
