@@ -1,6 +1,11 @@
 <template>
     <Page >
-      <ActionBar v-bind:title="tabs[selectedIndex]" />
+    
+<ActionBar :title="tabs[selectedIndex]">
+  <ActionItem @tap="openScanner"
+    ios.systemIcon="15" ios.position="right"
+    text="delete" android.position="popup" />
+</ActionBar>
        <TabView :selectedIndex="selectedIndex" @selectedIndexChange="tabChange">
         <TabViewItem v-bind:title="tabs[0]">
          <ListView for="credential in person.credentials" @itemTap="showDetail" v-if="person">
@@ -39,6 +44,7 @@
 <script >
 import Credential from './Credential'
 import Login from './Login'
+import Form from './Form'
 import {mapGetters,mapActions,mapState} from 'vuex';
 import * as appSettings from 'tns-core-modules/application-settings';
 import * as http from 'tns-core-modules/http'
@@ -56,6 +62,9 @@ import * as http from 'tns-core-modules/http'
       }
     },
     methods:{
+      openScanner(){
+          this.$navigateTo(Form)
+      },
       tabChange(e){
         this.selectedIndex = e.value;
       },
@@ -91,6 +100,10 @@ import * as http from 'tns-core-modules/http'
 </script>
 
 <style scoped>
+.scanner-btn{
+  text-align: right;
+  background: green;
+}
 .person-detail{
   padding: 15;
 }
