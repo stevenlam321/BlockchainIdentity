@@ -72,7 +72,7 @@ export class PersonCredential extends ConvectorModel<PersonCredential> {
   public attributes: Array<FlatConvectorModel<PersonCredentialAttribute>>;
 }
 
-export class ApplicationCredential extends ConvectorModel<PersonCredential> {
+export class ApplicationCredential extends ConvectorModel<ApplicationCredential> {
   @ReadOnly()
   @Required()
   public readonly type = 'did.application.credential';

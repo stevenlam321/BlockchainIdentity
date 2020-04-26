@@ -56,6 +56,12 @@ const validation = {
     check('credentials').exists().withMessage('credentials is required')
     .isArray().withMessage('credentials must be an array')
   ],
+  applicationRequestInfoRules:[
+    check('app_id').exists().withMessage('app_id is required'),
+    check('person_id').exists().withMessage('app_id is required'),
+    check('credentials').exists().withMessage('credentials is required')
+    .isArray().withMessage('credentials must be an array')
+  ],
   changePasswordRules : [
     check('password').exists().withMessage((value,{req})=>req.__('password.required'))
     .isLength({min:8}).withMessage((value,{req})=>req.__('password.min_length')),

@@ -22,20 +22,6 @@ router.get('/', authed,async (req, res, next) => {
     }
 });
 
-router.get('/:id',authed, async (req, res, next) => {
-    try {
-       // console.log(req.usIniter);
-        let { id } = req.params;
-        // const ctrls = await Init(req.user.identityID);
-        const ctrls = req.ctrls;
-        
-        const attribute = new Attribute(await ctrls.attribute.show(id));
-
-        res.status(200).json(attribute);
-    } catch (err) {
-        return next(createError(404,err.responses[0].error.message));
-    }
-});
 router.post('/', authed,validation.createApplicationRules, async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -94,20 +80,19 @@ router.get('/request/:id', authed, async (req, res, next) => {
      }
 });
 
-router.get('/request_data/:id', authed, async (req, res, next) => {
-    let { id } = req.params;
+router.post('/request_info/',validation.applicationRequestInfoRules, async (req, res, next) => {
+  
+    const {app_id,person_id,credentials} = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return next(createError(400,{ errors: errors.array()}));
     }
     try {
         const ctrls = req.ctrls;
-        
-        //const applicationRequest = new ApplicationRequest(await ctrls.application.showApplicationRequest(id));
-      //  res.status(200).json(applicationRequest);
+       const request_info =  await ctrls.application.showApplicationRequestInfo(app_id,person_id,credentials);
+       res.status(200).json(request_info);
     } catch (err) {
-        res.status(200).json(err);
-       // next(createError(400,err.responses[0].error.message));
+       next(createError(400,err.responses[0].error.message));
      }
 });
 

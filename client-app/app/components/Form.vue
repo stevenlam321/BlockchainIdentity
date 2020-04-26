@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <ActionBar title="BarcodeScanner demo"></ActionBar>
+    <ActionBar title="Application Scanner"></ActionBar>
 
     <GridLayout columns="*" rows="auto, auto, auto, auto">
       <BarcodeScanner
@@ -21,7 +21,8 @@
 <script>
   import {isIOS} from "tns-core-modules/platform";
   import {BarcodeScanner} from "nativescript-barcodescanner";
-
+import axios from 'axios';
+import Test from './Test';
   export default {
     data() {
       return {
@@ -30,7 +31,20 @@
     },
     methods: {
       onScanResult(evt) {
-        console.log(`onScanResult: ${evt.text} (${evt.format})`);
+         this.$navigateTo(Test);
+        //  var qr_data = JSON.parse(evt.text);
+        // const API_PATH = 'http://192.168.1.183:8080/';
+        // var data = {
+        //   app_id: qr_data.app_id,
+        //   person_id:"P-hbj3rx00c7",
+        //   credentials:qr_data.credentials
+        // };
+        //    axios.post(API_PATH+'applications/request_info',data).then((res)=>{
+        //        console.log(res.data);
+        //     }).catch((err)=>{
+        //         console.log(err);
+        //     }); 
+       
       },
   
     }

@@ -1,29 +1,36 @@
-function doJob(x,sec) {
-  return new Promise(resolve => {
-  console.log('Start: ' + x);
-    setTimeout(() => {
-        console.log('End: ' + x);
-      resolve(x);
-    }, sec *1000);
-  });
-}
-async function ParallelFlow(){
+var person = {
  
-  let result1 =  doJob(1,1);
-  let result2 =  doJob(2,2);
-  let result3 =  doJob(3,3);
+};
+person.name = "Steven Lam";
+person.age = 18;
+console.log(person);
+
+// function doJob(x,sec) {
+//   return new Promise(resolve => {
+//   console.log('Start: ' + x);
+//     setTimeout(() => {
+//         console.log('End: ' + x);
+//       resolve(x);
+//     }, sec *1000);
+//   });
+// }
+// async function ParallelFlow(){
+ 
+//   let result1 =  doJob(1,1);
+//   let result2 =  doJob(2,2);
+//   let result3 =  doJob(3,3);
    
-  let r1 = await result1;
-  let r2 = await result2;
-  let r3 = await result3;
+//   let r1 = await result1;
+//   let r2 = await result2;
+//   let r3 = await result3;
    
-  let finalResult =r1+ r2+r3;
+//   let finalResult =r1+ r2+r3;
    
-  console.log(finalResult);
-  return finalResult;
-  }
+//   console.log(finalResult);
+//   return finalResult;
+//   }
    
-  ParallelFlow();
+//   ParallelFlow();
 // async function SerialFlow(){
 //   for (var i = 0; i < 5;i++){
 //     await doJob(i,i);

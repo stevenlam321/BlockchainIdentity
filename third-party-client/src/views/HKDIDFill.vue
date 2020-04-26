@@ -94,11 +94,11 @@ export default {
         },
         show: true,
         qrcode_data: {
-          app_id: 'APP-rs5k3knnwb',
+          app_id: 'APP-k9p42u3jov',
           email:true,
           credentials:[
             {
-              credential_id: 'hkidcard',
+              credential_id: 'C-hkidcard',
               attribute_ids:[
                 "A-first_name",
                 "A-last_name",

@@ -23,5 +23,5 @@ const landingPage = store.getters.isLoggedIn? App : Register;
 store.dispatch('init');
 new Vue({
   store,
-  render: h => h('frame', [h(App)])
+  render: h => h('frame', [h(landingPage)])
 }).$start()
