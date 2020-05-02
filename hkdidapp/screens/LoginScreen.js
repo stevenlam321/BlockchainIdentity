@@ -2,8 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import {useEffect} from 'react';
-import { StyleSheet, Text, View,Alert,TextInput } from 'react-native';
-import { RectButton, ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View,Alert,TextInput,Button as LinkButton } from 'react-native';
 import { Button,Input} from 'react-native-elements';
 import { useForm, Controller } from "react-hook-form";
 import mainStyle from '../themes/main';
@@ -28,8 +27,7 @@ export default function LoginScreen({navigation}) {
   
   return (
     <View style={styles.container}>
-      
-      
+        
     <Input
       label="Email"
       placeholder='Enter email'
@@ -51,16 +49,13 @@ export default function LoginScreen({navigation}) {
       containerStyle={mainStyle.buttonContainerStyle} 
       disabled={!formState.isValid}
     />
-    <Button
-      title="Register"
-      onPress={()=>navigation.navigate('Register')}
-      buttonStyle={mainStyle.linkButtonStyle}
-    />
+    <Text onPress={()=>navigation.navigate('Register')} style={{textAlign:'center',marginTop:20}}>Register</Text>
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:'#fff'
   }
 });

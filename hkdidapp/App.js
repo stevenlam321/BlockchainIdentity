@@ -72,12 +72,9 @@ export default function App(props) {
           <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
             <Stack.Navigator initialRouteName="Root">
               <Stack.Screen name="Root" component={BottomTabNavigator}/>
-              {/* <Stack.Screen name="Modal" component={ModalScreen} /> */}
               <Stack.Screen name="Login" component={LoginScreen}/>
               <Stack.Screen name="Register" component={RegisterScreen}/>
               <Stack.Screen name="CredentialDetail" component={CredentialDetailScreen}  options={({ route }) => ({ title: route.params.name,headerBackTitle:null })}/>
-
-              
             </Stack.Navigator>
           </NavigationContainer>
         </View>
@@ -88,7 +85,6 @@ export default function App(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: 'red',
+    flex: 1
   },
 });

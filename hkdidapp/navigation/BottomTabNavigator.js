@@ -22,7 +22,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={HomeScreen}
         options={{
           title: 'Credentials',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />
         }}
       />
         <BottomTab.Screen
@@ -30,7 +30,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={Scanner}
         options={{
           title: 'Scanner',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />
         }}
       />
       <BottomTab.Screen
@@ -38,7 +38,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={SettingScreen}
         options={{
           title: 'Settings',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />
         }}
       />
     </BottomTab.Navigator>

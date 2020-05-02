@@ -9,9 +9,18 @@ import { Button} from 'react-native-elements';
 export default function SettingScreen() {
   return (
     <View style={styles.container}>
-        <Text>Person ID: P-ABCJSH</Text>
-        <Text>Email: stevenlam123@yahoo.com.hk</Text>
-        <Text>Mobile: 12345</Text>
+      <View style={styles.table}>
+        <View style={styles.tableColumn}>
+            <Text style={styles.tableCell}>Person ID</Text>
+            <Text style={styles.tableCell}>Email</Text>
+            <Text style={styles.tableCell}>Mobile</Text>
+        </View>
+        <View>
+            <Text style={styles.tableCell}>P-ABCJSH1</Text>
+            <Text style={styles.tableCell}>stevenlam123@yahoo.com.hk</Text>
+            <Text style={styles.tableCell}>12345</Text>
+        </View>
+      </View>
         <Button title="Logout"/>
     </View>
   );
@@ -21,5 +30,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fafafa',
+    padding:10,
+  },
+  table:{
+    flexDirection:'row',
+    marginBottom:30
+  },
+  tableCell:{
+    marginBottom:5,
+  },
+  tableColumn:{
+    paddingRight:10
   }
 });

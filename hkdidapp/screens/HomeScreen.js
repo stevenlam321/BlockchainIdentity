@@ -23,7 +23,6 @@ const renderItem = (item,navigation) => (
   <ListItem
   key={item.id}
     title={item.name}
-    subtitle={item.subtitle}
     leftAvatar={{ source: { uri: item.avatar_url } }}
     bottomDivider
     chevron
@@ -47,7 +46,6 @@ export default function HomeScreen({navigation}) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+    flex: 1
   }
 });

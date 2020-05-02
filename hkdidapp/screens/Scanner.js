@@ -7,7 +7,30 @@ import {ScrollView } from 'react-native-gesture-handler';
 import { Button} from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import layoutConstants from '../constants/Layout';
+import CredentialCard from '../components/CredentialCard';
 
+const qrSize = layoutConstants.window.width * 0.7;
+const credentials = [
+  {
+    exist:true,
+    name: 'Hong Kong Identity Card',
+    attributes:[
+      {
+          name: "First Name",
+          exist:true,
+      },
+      {
+        name: "Last Name",
+        exist:false,
+      },
+      {
+        name: "Gender",
+        exist:true,
+    },
+    ]
+  }
+];
 export default function Scanner() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned,setScanned] = useState(true);
@@ -49,12 +72,21 @@ export default function Scanner() {
   return (
     <View style={styles.container}>  
       <BarCodeScanner
+        barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFill}
-      />
-        <Modal isVisible={scanned} style={{backgroundColor:'yellow',marginTop:50,marginBottom:50}}>
-          <ScrollView style={{backgroundColor:'green',flexDirection:'column'}}>
-            <View><Text>Hello world</Text><Text>Hello world</Text><Text>Hello world</Text><Text>Hello world</Text><Text>Hello world</Text></View>
+      >
+      {/* <Text>Scan your QR code</Text>
+      <Text>Scan your QR code</Text> */}
+      </BarCodeScanner>
+        <Modal isVisible={true} style={{backgroundColor:'yellow',marginTop:50,marginBottom:50}}>
+          <ScrollView style={{backgroundColor:'#fff',flexDirection:'column'}}>
+            <View>
+              <Text style={{textAlign:'center',fontSize:25,fontWeight:'bold'}}>Hello world</Text>
+              <Text style={{textAlign:'center',fontWeight:'bold'}}>Is requesting the following credentials</Text>
+              {credentials.map((credential)=><CredentialCard credential={credential}/>)}
+              
+            </View>
             <View style={{flexDirection:'row',alignItems: 'stretch'}}>
               <Button title="Approve" onPress={()=>approveRequest()} containerStyle={{flex:1}}/>
               <Button title="Cancel" onPress={()=>setScanned(false)} containerStyle={{flex:1}}/>
@@ -69,6 +101,7 @@ export default function Scanner() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fafafa',
+    backgroundColor: '#fff',
+    justifyContent: 'flex-end',
   }
 });
