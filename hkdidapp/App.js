@@ -5,16 +5,16 @@ import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import useLinking from './navigation/useLinking';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
-import ModalScreen from './screens/ModalScreen';
 import CredentialDetailScreen from './screens/CredentialDetailScreen';
 import ErrorBoundary from './components/ErrorBoundary';
-
 import { ThemeProvider, Button } from 'react-native-elements';
+import {login} from './redux/actions';
+import MainService from './services/MainService';
+import Spinner from 'react-native-loading-spinner-overlay';
 const Stack = createStackNavigator();
 // Stack.Navigator.headerBackTitleVisible = false;
 const theme = {
@@ -32,14 +32,15 @@ const theme = {
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [initialNavigationState, setInitialNavigationState] = React.useState();
   const containerRef = React.useRef();
-  // console.log(containerRef);
-  const { getInitialState } = useLinking(containerRef);
 
-  React.useEffect(() => {
-      console.log('loading2');
-  });
+  MainService.load(()=> setLoading(false) );
+
+  //console.log(login('abc@abc.com','1234'));
+
+  const { getInitialState } = useLinking(containerRef);
 
  // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
@@ -75,8 +76,13 @@ export default function App(props) {
         <ThemeProvider theme={theme}>
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+            <Spinner
+            visible={loading}
+            textContent={'Loading...'}
+            textStyle={{color:'#fff'}}
+          />
             <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
-              <Stack.Navigator initialRouteName="Root">
+              <Stack.Navigator initialRouteName="Login">
                 <Stack.Screen name="Root" component={BottomTabNavigator}/>
                 <Stack.Screen name="Login" component={LoginScreen}/>
                 <Stack.Screen name="Register" component={RegisterScreen}/>
