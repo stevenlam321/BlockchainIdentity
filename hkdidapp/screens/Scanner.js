@@ -29,6 +29,24 @@ const credentials = [
         exist:true,
     },
     ]
+  },
+  {
+    exist:false,
+    name: 'Hong Kong Identity Card',
+    attributes:[
+      {
+          name: "First Name",
+          exist:true,
+      },
+      {
+        name: "Last Name",
+        exist:false,
+      },
+      {
+        name: "Gender",
+        exist:true,
+    },
+    ]
   }
 ];
 export default function Scanner() {
@@ -81,14 +99,13 @@ export default function Scanner() {
       </BarCodeScanner>
         <Modal isVisible={true} style={{backgroundColor:'yellow',marginTop:50,marginBottom:50}}>
           <ScrollView style={{backgroundColor:'#fff',flexDirection:'column'}}>
-            <View>
+            <View style={{paddingTop:20}}>
               <Text style={{textAlign:'center',fontSize:25,fontWeight:'bold'}}>Hello world</Text>
-              <Text style={{textAlign:'center',fontWeight:'bold'}}>Is requesting the following credentials</Text>
+              <Text style={{textAlign:'center',fontWeight:'bold',marginBottom:10,marginTop:10}}>Is requesting</Text>
               {credentials.map((credential)=><CredentialCard credential={credential}/>)}
-              
             </View>
-            <View style={{flexDirection:'row',alignItems: 'stretch'}}>
-              <Button title="Approve" onPress={()=>approveRequest()} containerStyle={{flex:1}}/>
+            <View style={{flexDirection:'row',alignItems: 'stretch',margin:10}}>
+              <Button title="Approve" onPress={()=>approveRequest()} containerStyle={{flex:1}} disabled/>
               <Button title="Cancel" onPress={()=>setScanned(false)} containerStyle={{flex:1}}/>
             </View>
           </ScrollView>

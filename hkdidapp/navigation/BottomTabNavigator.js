@@ -7,7 +7,7 @@ import SettingScreen from '../screens/SettingScreen';
 import Scanner from '../screens/Scanner';
 
 const BottomTab = createBottomTabNavigator();
-const INITIAL_ROUTE_NAME = 'Credentials';
+const INITIAL_ROUTE_NAME = 'Scanner';
 
 export default function BottomTabNavigator({ navigation, route }) {
   // Set the header title on the parent stack navigator depending on the
