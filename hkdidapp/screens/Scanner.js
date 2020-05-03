@@ -4,13 +4,14 @@ import * as React from 'react';
 import {useState,useEffect} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import {ScrollView } from 'react-native-gesture-handler';
-import { Button} from 'react-native-elements';
+import { Button,Image} from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import layoutConstants from '../constants/Layout';
 import CredentialCard from '../components/CredentialCard';
 
-const qrSize = layoutConstants.window.width * 0.7;
+const qrSize = layoutConstants.window.width * 0.75;
+
 const credentials = [
   {
     exist:true,
@@ -92,12 +93,18 @@ export default function Scanner() {
       <BarCodeScanner
         barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFill}
+        style={[StyleSheet.absoluteFill,{alignItems:'center'}]}
       >
-      {/* <Text>Scan your QR code</Text>
-      <Text>Scan your QR code</Text> */}
+      <Text style={{textAlign:'center',color:'#fff',fontSize:20,marginTop:20}}>Scan QR Code</Text>
+      <Image
+            source={require('../assets/images/qr.png')}
+            style={{ width: qrSize, height: qrSize}}
+            containerStyle={{marginTop:'10%',marginBottom:'10%'}}/>
+
+      {!scanned && <Text style={{textAlign:'center',color:'#fff',fontSize:15,marginBottom:20}}>Scanning...</Text>}
+      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />} 
       </BarCodeScanner>
-        <Modal isVisible={true} style={{backgroundColor:'yellow',marginTop:50,marginBottom:50}}>
+        <Modal isVisible={false} style={{marginTop:50,marginBottom:50}}>
           <ScrollView style={{backgroundColor:'#fff',flexDirection:'column'}}>
             <View style={{paddingTop:20}}>
               <Text style={{textAlign:'center',fontSize:25,fontWeight:'bold'}}>Hello world</Text>
@@ -105,12 +112,13 @@ export default function Scanner() {
               {credentials.map((credential)=><CredentialCard credential={credential}/>)}
             </View>
             <View style={{flexDirection:'row',alignItems: 'stretch',margin:10}}>
-              <Button title="Approve" onPress={()=>approveRequest()} containerStyle={{flex:1}} disabled/>
-              <Button title="Cancel" onPress={()=>setScanned(false)} containerStyle={{flex:1}}/>
+              <Button title="Approve" onPress={()=>approveRequest()} containerStyle={{flex:1}}
+               buttonStyle={{backgroundColor:'green',borderRadius:0}}/>
+              <Button title="Cancel" onPress={()=>setScanned(false)} containerStyle={{flex:1}}
+               buttonStyle={{backgroundColor:'#CA0909',borderRadius:0}}/>
             </View>
           </ScrollView>
         </Modal>
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />} 
     </View>
   );
 }
