@@ -9,7 +9,7 @@ export default function CredentialCard({credential}) {
     return (
     <View style={{borderColor:color,borderWidth:1,margin:10,padding:10}}>
         <Text style={{textAlign:'center',fontSize:16,fontWeight:'bold',marginBottom:10}}>{credential.name}</Text>
-        {credential.attributes.map((attribute)=><CredentialCardAttribute attribute={attribute}/>)}
+        {credential.attributes.map((attribute)=><CredentialCardAttribute attribute={attribute} key={attribute.id}/>)}
     </View>
     )
 }

@@ -21,7 +21,7 @@ const list = [
 
 const renderItem = (item,navigation) => (
   <ListItem
-  key={item.id}
+  // key={item.id}
     title={item.name}
     leftAvatar={{ source: { uri: item.avatar_url } }}
     bottomDivider
@@ -33,12 +33,11 @@ const renderItem = (item,navigation) => (
 )
 export default function HomeScreen({navigation}) {
   return (
-   
     <View style={styles.container}>
        <FlatList
         data={list}
         renderItem={({ item }) => renderItem(item,navigation)}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id.toString()}
       />
     </View>
   );

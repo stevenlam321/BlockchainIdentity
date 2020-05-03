@@ -12,7 +12,7 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ModalScreen from './screens/ModalScreen';
 import CredentialDetailScreen from './screens/CredentialDetailScreen';
-
+import ErrorBoundary from './components/ErrorBoundary';
 
 import { ThemeProvider, Button } from 'react-native-elements';
 const Stack = createStackNavigator();
@@ -34,9 +34,14 @@ export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [initialNavigationState, setInitialNavigationState] = React.useState();
   const containerRef = React.useRef();
+  // console.log(containerRef);
   const { getInitialState } = useLinking(containerRef);
 
-  // Load any resources or data that we need prior to rendering the app
+  React.useEffect(() => {
+      console.log('loading2');
+  });
+
+ // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
     async function loadResourcesAndDataAsync() {
       try {
@@ -66,19 +71,21 @@ export default function App(props) {
     return null;
   } else {
     return (
-      <ThemeProvider theme={theme}>
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
-            <Stack.Navigator initialRouteName="Root">
-              <Stack.Screen name="Root" component={BottomTabNavigator}/>
-              <Stack.Screen name="Login" component={LoginScreen}/>
-              <Stack.Screen name="Register" component={RegisterScreen}/>
-              <Stack.Screen name="CredentialDetail" component={CredentialDetailScreen}  options={({ route }) => ({ title: route.params.name,headerBackTitle:null })}/>
-            </Stack.Navigator>
-          </NavigationContainer>
-        </View>
-      </ThemeProvider>
+      <ErrorBoundary>
+        <ThemeProvider theme={theme}>
+          <View style={styles.container}>
+            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+            <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
+              <Stack.Navigator initialRouteName="Root">
+                <Stack.Screen name="Root" component={BottomTabNavigator}/>
+                <Stack.Screen name="Login" component={LoginScreen}/>
+                <Stack.Screen name="Register" component={RegisterScreen}/>
+                <Stack.Screen name="CredentialDetail" component={CredentialDetailScreen}  options={({ route }) => ({ title: route.params.name,headerBackTitle:null })}/>
+              </Stack.Navigator>
+            </NavigationContainer>
+          </View>
+        </ThemeProvider>
+      </ErrorBoundary>
     );
   }
 }

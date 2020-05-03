@@ -32,7 +32,7 @@ export default function CredentialDetailScreen({route,navigation}) {
           <Image
             source={{ uri: logo }}
             style={{ width: 100, height: 100}}
-            containerStyle={{alignItems:'center',textAlign:'center'}}
+            containerStyle={{alignItems:'center'}}
           />
         </View>
       </ScrollView>

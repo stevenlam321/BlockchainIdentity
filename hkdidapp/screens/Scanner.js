@@ -109,7 +109,7 @@ export default function Scanner() {
             <View style={{paddingTop:20}}>
               <Text style={{textAlign:'center',fontSize:25,fontWeight:'bold'}}>Hello world</Text>
               <Text style={{textAlign:'center',fontWeight:'bold',marginBottom:10,marginTop:10}}>Is requesting</Text>
-              {credentials.map((credential)=><CredentialCard credential={credential}/>)}
+              {credentials.map((credential,index)=><CredentialCard credential={credential} key={index}/>)}
             </View>
             <View style={{flexDirection:'row',alignItems: 'stretch',margin:10}}>
               <Button title="Approve" onPress={()=>approveRequest()} containerStyle={{flex:1}}
