@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View ,Text} from 'react-native';
 import { SplashScreen } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,12 +11,17 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import CredentialDetailScreen from './screens/CredentialDetailScreen';
 import ErrorBoundary from './components/ErrorBoundary';
+import LoadingMask from './components/LoadingMask';
+
 import { ThemeProvider, Button } from 'react-native-elements';
 import {login} from './redux/actions';
 import MainService from './services/MainService';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { Provider} from 'react-redux';
+import store from './redux/store';
+
 const Stack = createStackNavigator();
-// Stack.Navigator.headerBackTitleVisible = false;
+
 const theme = {
   Button: {
     titleStyle: {
@@ -30,15 +35,13 @@ const theme = {
   }
 };
 
-export default function App(props) {
+export default function App(props) { 
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [initialNavigationState, setInitialNavigationState] = React.useState();
   const containerRef = React.useRef();
+ // MainService.load(()=> setLoading(false) );
 
-  MainService.load(()=> setLoading(false) );
-
-  //console.log(login('abc@abc.com','1234'));
 
   const { getInitialState } = useLinking(containerRef);
 
@@ -73,14 +76,11 @@ export default function App(props) {
   } else {
     return (
       <ErrorBoundary>
+         <Provider store={store}>
         <ThemeProvider theme={theme}>
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-            <Spinner
-            visible={loading}
-            textContent={'Loading...'}
-            textStyle={{color:'#fff'}}
-          />
+            <LoadingMask/>
             <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
               <Stack.Navigator initialRouteName="Login">
                 <Stack.Screen name="Root" component={BottomTabNavigator}/>
@@ -91,6 +91,7 @@ export default function App(props) {
             </NavigationContainer>
           </View>
         </ThemeProvider>
+        </Provider>
       </ErrorBoundary>
     );
   }

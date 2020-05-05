@@ -7,6 +7,9 @@ import { Button,Input} from 'react-native-elements';
 import { useForm, Controller } from "react-hook-form";
 import mainStyle from '../themes/main';
 import * as yup from "yup";
+import {useSelector,useDispatch } from 'react-redux';
+import {setLoading} from '../redux/actions';
+import MainService from '../services/MainService';
 
 const schema = yup.object().shape({
   email: yup.string().required().email(),
@@ -14,20 +17,33 @@ const schema = yup.object().shape({
 });
 
 export default function LoginScreen({navigation}) {
+  const dispatch = useDispatch();
+
   const { register, setValue, handleSubmit, errors,formState } = useForm({
     validationSchema: schema,
-    mode: "onChange"
+    mode: "onChange",
+    defaultValues:{
+      email:'stevenlam123@yahoo.com.hk',
+      password: '12345678'
+    }
   });
-  const onSubmit = data => Alert.alert("Form Data", JSON.stringify(data));
-  
+  const onSubmit = data => {
+      dispatch(setLoading(true));
+      MainService.load(()=>{
+        console.log('finished');
+         dispatch(setLoading(false));
+        });
+     //Alert.alert("Form Data", JSON.stringify(data))
+    };
+
   useEffect(() => {
     register({ name: "email"});
     register({ name: "password"});
+
   }, [register]);
   
   return (
     <View style={styles.container}>
-        
     <Input
       label="Email"
       placeholder='Enter email'
@@ -53,6 +69,7 @@ export default function LoginScreen({navigation}) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
