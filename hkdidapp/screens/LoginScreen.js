@@ -8,9 +8,9 @@ import { useForm, Controller } from "react-hook-form";
 import mainStyle from '../themes/main';
 import * as yup from "yup";
 import {useSelector,useDispatch } from 'react-redux';
-import {setLoading} from '../redux/actions';
+import {setLoading,setToken} from '../redux/actions';
 import MainService from '../services/MainService';
-
+import { AsyncStorage } from 'react-native';
 const schema = yup.object().shape({
   email: yup.string().required().email(),
   password: yup.string().required(),
@@ -18,7 +18,7 @@ const schema = yup.object().shape({
 
 export default function LoginScreen({navigation}) {
   const dispatch = useDispatch();
-
+  const token = useSelector(state => state.common.token);
   const { register, setValue, handleSubmit, errors,formState } = useForm({
     validationSchema: schema,
     mode: "onChange",
@@ -27,13 +27,23 @@ export default function LoginScreen({navigation}) {
       password: '12345678'
     }
   });
-  const onSubmit = data => {
-      dispatch(setLoading(true));
-      MainService.load(()=>{
-        console.log('finished');
-         dispatch(setLoading(false));
-        });
-     //Alert.alert("Form Data", JSON.stringify(data))
+  const onSubmit = async (data) => {
+   const {email,password} = data;
+   
+    dispatch(setLoading(true));
+    MainService.login(email,password)
+    .then((data)=>{
+        AsyncStorage.setItem('token', data.token);
+        dispatch(setToken(data.token));
+        navigation.navigate('Root');
+        console.log(data);
+    })
+    .catch((error)=>{
+      dispatch(setLoading(false));
+      setTimeout(() => {
+        Alert.alert(error.message);
+      }, 100);
+    }).finally(()=>dispatch(setLoading(false)));
     };
 
   useEffect(() => {

@@ -1,18 +1,22 @@
-import { SET_LOADING } from "../actionTypes";
+import { SET_LOADING,LOGIN,SET_TOKEN } from "../actionTypes";
 
 
 const initialState = {
     loading: false,
-    token: '12345'
+    token: null,
+    person:null
 };
 
 export default function (state = initialState,action){
     switch (action.type) {
         case SET_LOADING:{
-            var status = {...state,loading:action.payload.loading};
-            // console.log('action:'+ JSON.stringify(action));
-            // console.log('status:'+JSON.stringify(status));
-            return status;
+            return {...state,loading:action.payload.loading};
+        }
+        case SET_TOKEN:{
+            return {...state,token:action.payload.token};
+        }
+        case LOGIN:{
+            return {...state,loading:action.payload.loading};
         }
         default:
             return state;    

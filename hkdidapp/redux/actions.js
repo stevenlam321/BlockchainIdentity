@@ -1,4 +1,4 @@
-import { ADD_TODO, TOGGLE_TODO, SET_FILTER,LOGIN,LOGOUT, SET_LOADING } from "./actionTypes";
+import { ADD_TODO, TOGGLE_TODO, SET_FILTER,LOGIN,LOGOUT, SET_LOADING ,SET_TOKEN} from "./actionTypes";
 
 let nextTodoId = 0;
 
@@ -20,4 +20,6 @@ export const setFilter = filter => ({ type: SET_FILTER, payload: { filter } });
 export const login = (email,password) => ({type:LOGIN,payload:{email,password}});
 
 export const setLoading = loading => ({type:SET_LOADING,payload:{loading}});
+
+export const setToken = token => ({type:SET_TOKEN,payload:{token}});
 
