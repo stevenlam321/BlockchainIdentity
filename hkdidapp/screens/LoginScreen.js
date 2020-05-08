@@ -33,9 +33,15 @@ export default function LoginScreen({navigation}) {
     dispatch(setLoading(true));
     MainService.login(email,password)
     .then((data)=>{
-        AsyncStorage.setItem('token', data.token);
+        AsyncStorage.setItem('token', data.token,(error)=>{
+          console.log(error);
+        });
         dispatch(setToken(data.token));
-        navigation.navigate('Root');
+        // navigation.navigate('Root');
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Root' }],
+        });
         console.log(data);
     })
     .catch((error)=>{

@@ -6,7 +6,13 @@ import {ScrollView } from 'react-native-gesture-handler';
 import { Button} from 'react-native-elements';
 
 
-export default function SettingScreen() {
+export default function SettingScreen({navigation}) {
+  const logout = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Login' }],
+    });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.table}>
@@ -21,7 +27,7 @@ export default function SettingScreen() {
             <Text style={styles.tableCell}>12345</Text>
         </View>
       </View>
-        <Button title="Logout"/>
+        <Button title="Logout"  onPress={logout} />
     </View>
   );
 }

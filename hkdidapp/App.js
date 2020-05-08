@@ -14,11 +14,14 @@ import ErrorBoundary from './components/ErrorBoundary';
 import LoadingMask from './components/LoadingMask';
 
 import { ThemeProvider, Button } from 'react-native-elements';
-import {login} from './redux/actions';
+import {setToken} from './redux/actions';
 import MainService from './services/MainService';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { Provider} from 'react-redux';
+import { Provider,useDispatch,useSelector} from 'react-redux';
 import store from './redux/store';
+
+import { AsyncStorage } from 'react-native';
+
 
 const Stack = createStackNavigator();
 
@@ -35,13 +38,15 @@ const theme = {
   }
 };
 
-export default function App(props) { 
+
+function App(props) { 
+  const dispatch = useDispatch();
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [initialNavigationState, setInitialNavigationState] = React.useState();
   const containerRef = React.useRef();
- // MainService.load(()=> setLoading(false) );
 
+  const token = useSelector(state => state.common.token);
 
   const { getInitialState } = useLinking(containerRef);
 
@@ -69,14 +74,21 @@ export default function App(props) {
     }
 
     loadResourcesAndDataAsync();
+
+     //set token
+    AsyncStorage.getItem('token',(error,token)=>{
+      if(token){
+          dispatch(setToken(token));
+      }
+    });
+   
+
   }, []);
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return null;
   } else {
     return (
-      <ErrorBoundary>
-         <Provider store={store}>
         <ThemeProvider theme={theme}>
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
@@ -91,10 +103,18 @@ export default function App(props) {
             </NavigationContainer>
           </View>
         </ThemeProvider>
-        </Provider>
-      </ErrorBoundary>
     );
   }
+}
+
+export default function AppContainer(){
+  return (
+    <ErrorBoundary>
+       <Provider store={store}>
+          <App/>
+      </Provider>
+    </ErrorBoundary>
+  );
 }
 
 const styles = StyleSheet.create({
