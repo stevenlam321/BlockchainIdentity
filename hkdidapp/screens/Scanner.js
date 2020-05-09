@@ -9,6 +9,9 @@ import Modal from 'react-native-modal';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import layoutConstants from '../constants/Layout';
 import CredentialCard from '../components/CredentialCard';
+import {useSelector,useDispatch } from 'react-redux';
+import agent from '../services/agent';
+import {setLoading} from '../redux/actions';
 
 const qrSize = layoutConstants.window.width * 0.75;
 
@@ -18,14 +21,17 @@ const credentials = [
     name: 'Hong Kong Identity Card',
     attributes:[
       {
+          id: '123',
           name: "First Name",
           exist:true,
       },
       {
+        id: '123423',
         name: "Last Name",
         exist:false,
       },
       {
+        id: '456',
         name: "Gender",
         exist:true,
     },
@@ -36,14 +42,17 @@ const credentials = [
     name: 'Hong Kong Identity Card',
     attributes:[
       {
+          id: '12334567',
           name: "First Name",
           exist:true,
       },
       {
+        id: '12334567123',
         name: "Last Name",
         exist:false,
       },
       {
+        id: '12334567123123',
         name: "Gender",
         exist:true,
     },
@@ -51,8 +60,15 @@ const credentials = [
   }
 ];
 export default function Scanner() {
+  const person = useSelector(state => state.common.person);
+  const loading = useSelector(state => state.common.loading);
+
+  const dispatch = useDispatch();
+  
   const [hasPermission, setHasPermission] = useState(null);
-  const [scanned,setScanned] = useState(true);
+  const [scanned,setScanned] = useState(false);
+  const [requestInfo,setRequestInfo] = useState(null);
+
 
   useEffect(() => {
     (async () => {
@@ -63,18 +79,26 @@ export default function Scanner() {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    console.log(data);
+    const request = JSON.parse(data);
+    const app_id = request.app_id;
+    const person_id = person.id;
+    const credentials_ = request.credentials;
+    dispatch(setLoading(true));
+   // setRequested(true);
+   agent.Application.showApplicationRequest(app_id,person_id,credentials_).then(data=>{
+      setRequestInfo(data);
+     console.log(data);
+   }).catch(error=> {
+      console.log(error);
+   }).finally(()=>{
+      //setRequesting(false);
+      dispatch(setLoading(false));
+   });
+
   };
 
   const approveRequest = () =>{
-    console.log('approved');
-    fetch('https://jsonplaceholder.typicode.com/todos/')
-  .then(response => response.json())
-  .then(json => {
-    console.log(json);
-    setScanned(false);
-  
-  })
+    
   }
 
   const cancelScan = () =>{
@@ -102,21 +126,25 @@ export default function Scanner() {
             containerStyle={{marginTop:'10%',marginBottom:'10%'}}/>
 
       {!scanned && <Text style={{textAlign:'center',color:'#fff',fontSize:15,marginBottom:20}}>Scanning...</Text>}
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />} 
+      {scanned && !loading && <Button title={'Tap to Scan'} onPress={() => setScanned(false)} />} 
       </BarCodeScanner>
-        <Modal isVisible={false} style={{marginTop:50,marginBottom:50}}>
+        <Modal isVisible={!!requestInfo} style={{marginTop:50,marginBottom:50}}>
           <ScrollView style={{backgroundColor:'#fff',flexDirection:'column'}}>
-            <View style={{paddingTop:20}}>
-              <Text style={{textAlign:'center',fontSize:25,fontWeight:'bold'}}>Hello world</Text>
-              <Text style={{textAlign:'center',fontWeight:'bold',marginBottom:10,marginTop:10}}>Is requesting</Text>
-              {credentials.map((credential,index)=><CredentialCard credential={credential} key={index}/>)}
-            </View>
-            <View style={{flexDirection:'row',alignItems: 'stretch',margin:10}}>
-              <Button title="Approve" onPress={()=>approveRequest()} containerStyle={{flex:1}}
-               buttonStyle={{backgroundColor:'green',borderRadius:0}}/>
-              <Button title="Cancel" onPress={()=>setScanned(false)} containerStyle={{flex:1}}
-               buttonStyle={{backgroundColor:'#CA0909',borderRadius:0}}/>
-            </View>
+              {requestInfo && 
+              <>
+              <View style={{paddingTop:20}}>
+                <Text style={{textAlign:'center',fontSize:25,fontWeight:'bold'}}>{requestInfo.application.name}</Text>
+                <Text style={{textAlign:'center',fontWeight:'bold',marginBottom:10,marginTop:10}}>Is requesting</Text>
+                {requestInfo.credentials.map((credential,index)=><CredentialCard credential={credential} key={index}/>)}
+              </View>
+              <View style={{flexDirection:'row',alignItems: 'stretch',margin:10}}>
+                <Button title="Approve" onPress={()=>approveRequest()} containerStyle={{flex:1}}
+                buttonStyle={{backgroundColor:'green',borderRadius:0}} />
+                <Button title="Cancel" onPress={()=>setRequestInfo(null)} containerStyle={{flex:1}}
+                buttonStyle={{backgroundColor:'#CA0909',borderRadius:0}}/>
+              </View>
+              </>
+              }
           </ScrollView>
         </Modal>
     </View>

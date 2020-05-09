@@ -36,7 +36,6 @@ export default function LoginScreen({navigation}) {
 
     agent.Auth.login(email,password)
     .then((data)=>{
-        console.log(data);
         AsyncStorage.setItem('token', data.token,(error)=>{
           console.log(error);
         });

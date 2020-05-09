@@ -18,10 +18,10 @@ export default function CredentialDetailScreen({route,navigation}) {
       <ScrollView>
         <View style={styles.table}>
           <View style={styles.tableColumn}>
-              {labels.map(label =><Text style={styles.tableCell}>{label}</Text>)}
+              {labels.map(label =><Text style={styles.tableCell} key={label}>{label}</Text>)}
           </View>
           <View>
-              {values.map(value =><Text style={styles.tableCell}>{value}</Text>)}
+              {values.map(value =><Text style={styles.tableCell} key={value}>{value}</Text>)}
           </View>
         </View>
         <Text style={{textAlign:'center',fontStyle:'italic',marginBottom:10}}>Issued By</Text>

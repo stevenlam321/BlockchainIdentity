@@ -91,8 +91,6 @@ function App(props) {
           });
     }
   });
-   
-
   }, []);
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
