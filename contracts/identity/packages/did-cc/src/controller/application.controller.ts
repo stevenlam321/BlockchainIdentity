@@ -149,6 +149,8 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
     var personCredentials = person.credentials;
 
     var formatedCredentials = [];
+    var totalFieldCount = 0;
+    var totalValidFieldCount = 0;
 
     for(var i = 0; i < credentials.length; i++){
       const credential = await Credential.getOne(credentials[i].credential_id);
@@ -164,12 +166,14 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
             exists:false,
             attributes:[],
           };
+          totalFieldCount++;
       }
 
       for(var j = 0; j < personCredentials.length; j++){
         if(credentials[i].credential_id == personCredentials[j].credential_id){
           //credential exists in this person
           formatedCredential.exists = true;
+          totalValidFieldCount++;
 
           //check attributes
           var formatedAttributes = [];
@@ -183,11 +187,13 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
                   name:attribute.name,
                   exists:false,
                 };
+                totalFieldCount++;
             }
 
             for(var l = 0; l < personCredentials[j].attributes.length; l++){
               if(credentials[i].attribute_ids[k] == personCredentials[j].attributes[l].attribute_id){
                 formatedAttribute.exists = true;
+                totalValidFieldCount++;
               }
             }
             formatedAttributes.push(formatedAttribute);
@@ -197,12 +203,15 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
       formatedCredential.attributes = formatedAttributes;
       formatedCredentials.push(formatedCredential);
     }
+
+    const valid =  totalValidFieldCount == totalFieldCount;
     
     var data = {
       application:{
         name: application.name,
       },
-      credentials:formatedCredentials
+      credentials:formatedCredentials,
+      valid
     }
     return data;
   }

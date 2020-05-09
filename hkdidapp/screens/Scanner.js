@@ -15,50 +15,6 @@ import {setLoading} from '../redux/actions';
 
 const qrSize = layoutConstants.window.width * 0.75;
 
-const credentials = [
-  {
-    exist:true,
-    name: 'Hong Kong Identity Card',
-    attributes:[
-      {
-          id: '123',
-          name: "First Name",
-          exist:true,
-      },
-      {
-        id: '123423',
-        name: "Last Name",
-        exist:false,
-      },
-      {
-        id: '456',
-        name: "Gender",
-        exist:true,
-    },
-    ]
-  },
-  {
-    exist:false,
-    name: 'Hong Kong Identity Card',
-    attributes:[
-      {
-          id: '12334567',
-          name: "First Name",
-          exist:true,
-      },
-      {
-        id: '12334567123',
-        name: "Last Name",
-        exist:false,
-      },
-      {
-        id: '12334567123123',
-        name: "Gender",
-        exist:true,
-    },
-    ]
-  }
-];
 export default function Scanner() {
   const person = useSelector(state => state.common.person);
   const loading = useSelector(state => state.common.loading);
@@ -82,10 +38,9 @@ export default function Scanner() {
     const request = JSON.parse(data);
     const app_id = request.app_id;
     const person_id = person.id;
-    const credentials_ = request.credentials;
+    const credentials = request.credentials;
     dispatch(setLoading(true));
-   // setRequested(true);
-   agent.Application.showApplicationRequest(app_id,person_id,credentials_).then(data=>{
+   agent.Application.showApplicationRequest(app_id,person_id,credentials).then(data=>{
      setRequestInfo(data);
      console.log(data);
    }).catch(error=> {
@@ -93,18 +48,27 @@ export default function Scanner() {
       Alert.alert(error.response.data.message);
     }, 100);
    }).finally(()=>{
-      //setRequesting(false);
       dispatch(setLoading(false));
    });
 
   };
 
   const approveRequest = () =>{
-    
-  }
+    const data = requestInfo;
+    setRequestInfo(null);
+    dispatch(setLoading(true));
 
-  const cancelScan = () =>{
-    console.log('scan scan');
+    fetch('https://jsonplaceholder.typicode.com/todos/1')
+  .then(response => response.json())
+  .then(json => {
+    setTimeout(() => {
+      Alert.alert('Approved!');
+    }, 2000);
+    console.log(json);
+     console.log(data);
+  }).finally(()=>{
+    dispatch(setLoading(false));
+ });
   }
 
   if (hasPermission === null) {
@@ -141,7 +105,7 @@ export default function Scanner() {
               </View>
               <View style={{flexDirection:'row',alignItems: 'stretch',margin:10}}>
                 <Button title="Approve" onPress={()=>approveRequest()} containerStyle={{flex:1}}
-                buttonStyle={{backgroundColor:'green',borderRadius:0}} />
+                buttonStyle={{backgroundColor:'green',borderRadius:0}} disabled={!requestInfo.valid} />
                 <Button title="Cancel" onPress={()=>setRequestInfo(null)} containerStyle={{flex:1}}
                 buttonStyle={{backgroundColor:'#CA0909',borderRadius:0}}/>
               </View>
