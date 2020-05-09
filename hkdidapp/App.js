@@ -14,14 +14,14 @@ import ErrorBoundary from './components/ErrorBoundary';
 import LoadingMask from './components/LoadingMask';
 
 import { ThemeProvider, Button } from 'react-native-elements';
-import {setToken} from './redux/actions';
+import {setToken,setPerson} from './redux/actions';
 import MainService from './services/MainService';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Provider,useDispatch,useSelector} from 'react-redux';
 import store from './redux/store';
-
-import { AsyncStorage } from 'react-native';
-
+import agent from './services/agent';
+import { AsyncStorage,Alert } from 'react-native';
+import axios from 'axios';
 
 const Stack = createStackNavigator();
 
@@ -47,7 +47,7 @@ function App(props) {
   const containerRef = React.useRef();
 
   const token = useSelector(state => state.common.token);
-
+  const initialRouteName = token? 'Root' : 'Login';
   const { getInitialState } = useLinking(containerRef);
 
  // Load any resources or data that we need prior to rendering the app
@@ -79,8 +79,18 @@ function App(props) {
     AsyncStorage.getItem('token',(error,token)=>{
       if(token){
           dispatch(setToken(token));
-      }
-    });
+          axios.defaults.headers.common = {'Authorization': `Bearer ${token}`};
+          agent.Auth.me()
+          .then((person)=>{
+              dispatch(setPerson(person));
+          })
+          .catch((error)=>{
+            setTimeout(() => {
+              Alert.alert(error.message);
+            }, 100);
+          });
+    }
+  });
    
 
   }, []);
@@ -94,7 +104,7 @@ function App(props) {
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
             <LoadingMask/>
             <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
-              <Stack.Navigator initialRouteName="Login">
+              <Stack.Navigator initialRouteName={initialRouteName}>
                 <Stack.Screen name="Root" component={BottomTabNavigator}/>
                 <Stack.Screen name="Login" component={LoginScreen}/>
                 <Stack.Screen name="Register" component={RegisterScreen}/>

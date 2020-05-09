@@ -1,4 +1,4 @@
-import { SET_LOADING,LOGIN,SET_TOKEN } from "../actionTypes";
+import { SET_LOADING,LOGIN,SET_TOKEN,SET_PERSON } from "../actionTypes";
 
 
 const initialState = {
@@ -15,8 +15,8 @@ export default function (state = initialState,action){
         case SET_TOKEN:{
             return {...state,token:action.payload.token};
         }
-        case LOGIN:{
-            return {...state,loading:action.payload.loading};
+        case SET_PERSON:{
+            return {...state,person:action.payload.person};
         }
         default:
             return state;    

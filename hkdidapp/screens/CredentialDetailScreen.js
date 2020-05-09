@@ -1,15 +1,16 @@
 import * as React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View,Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Image } from 'react-native-elements';
+// import { Image } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import agent,{imagePath} from '../services/agent';
 
 export default function CredentialDetailScreen({route,navigation}) {
-  const { itemId } = route.params;
-  const { otherParam } = route.params;
+  const { item } = route.params;
   const { name } = route.params;
-  const logo = 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg';
+
+  const labels = item.attributes.map((attribute)=>attribute.name);
+  const values = item.attributes.map((attribute)=>attribute.value);
 
   return (
    
@@ -17,22 +18,19 @@ export default function CredentialDetailScreen({route,navigation}) {
       <ScrollView>
         <View style={styles.table}>
           <View style={styles.tableColumn}>
-              <Text style={styles.tableCell}>Person ID</Text>
-              <Text style={styles.tableCell}>Email</Text>
-              <Text style={styles.tableCell}>Mobile</Text>
+              {labels.map(label =><Text style={styles.tableCell}>{label}</Text>)}
           </View>
           <View>
-              <Text style={styles.tableCell}>P-ABCJSH1</Text>
-              <Text style={styles.tableCell}>stevenlam123@yahoo.com.hk</Text>
-              <Text style={styles.tableCell}>12345</Text>
+              {values.map(value =><Text style={styles.tableCell}>{value}</Text>)}
           </View>
         </View>
-        <Text style={{textAlign:'center',fontStyle:'italic',marginBottom:20}}>Issued By Hong Kong Immigration Department</Text>
+        <Text style={{textAlign:'center',fontStyle:'italic',marginBottom:10}}>Issued By</Text>
+        <Text style={{textAlign:'center',marginBottom:20}}>{item.organization_name}</Text>
+
         <View style={{ justifyContent: 'center',alignItems: 'center'}}>
           <Image
-            source={{ uri: logo }}
-            style={{ width: 100, height: 100}}
-            containerStyle={{alignItems:'center'}}
+            source={{ uri: imagePath(item.organization_logo) }}
+            style={{ width: 100, height: 100,resizeMode: 'contain'}}
           />
         </View>
       </ScrollView>

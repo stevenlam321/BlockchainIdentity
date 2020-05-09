@@ -5,4 +5,5 @@ export const SET_LOADING = "SET_LOADING";
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
 export const SET_TOKEN = 'SET_TOKEN';
+export const SET_PERSON = 'SET_PERSON';
 

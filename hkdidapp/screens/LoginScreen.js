@@ -8,9 +8,11 @@ import { useForm, Controller } from "react-hook-form";
 import mainStyle from '../themes/main';
 import * as yup from "yup";
 import {useSelector,useDispatch } from 'react-redux';
-import {setLoading,setToken} from '../redux/actions';
+import {setLoading,setToken,setPerson} from '../redux/actions';
 import MainService from '../services/MainService';
 import { AsyncStorage } from 'react-native';
+import agent from '../services/agent';
+
 const schema = yup.object().shape({
   email: yup.string().required().email(),
   password: yup.string().required(),
@@ -23,33 +25,36 @@ export default function LoginScreen({navigation}) {
     validationSchema: schema,
     mode: "onChange",
     defaultValues:{
-      email:'stevenlam123@yahoo.com.hk',
+      email:'user1@hkdid.com',
       password: '12345678'
     }
   });
   const onSubmit = async (data) => {
    const {email,password} = data;
    
-    dispatch(setLoading(true));
-    MainService.login(email,password)
+   dispatch(setLoading(true));
+
+    agent.Auth.login(email,password)
     .then((data)=>{
+        console.log(data);
         AsyncStorage.setItem('token', data.token,(error)=>{
           console.log(error);
         });
         dispatch(setToken(data.token));
-        // navigation.navigate('Root');
+        dispatch(setPerson(data.person));
         navigation.reset({
           index: 0,
           routes: [{ name: 'Root' }],
         });
-        console.log(data);
     })
     .catch((error)=>{
-      dispatch(setLoading(false));
+      console.log(error);
+    //  dispatch(setLoading(false));
       setTimeout(() => {
         Alert.alert(error.message);
       }, 100);
     }).finally(()=>dispatch(setLoading(false)));
+
     };
 
   useEffect(() => {

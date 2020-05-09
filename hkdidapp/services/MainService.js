@@ -4,7 +4,7 @@ export default class MainService{
     }
     static login(email,password){
         return new Promise((resolve,reject) => {
-            if(email == 'stevenlam123@yahoo.com.hk' && password == '12345678'){
+            if(email == 'user1@hkdid.com' && password == '12345678'){
                 setTimeout(()=>{
                     resolve({
                         'token':Math.random().toString(36).substring(7)
