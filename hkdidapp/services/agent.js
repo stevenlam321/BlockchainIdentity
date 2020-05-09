@@ -20,13 +20,13 @@ const tokenPlugin = req => {
 
 const requests = {
   del: url =>
-    axios.del(`${API_ROOT}${url}`).then(responseBody).catch(x=>x.response.data),
+    axios.del(`${API_ROOT}${url}`).then(responseBody),
   get: url =>
-    axios.get(`${API_ROOT}${url}`).then(responseBody).catch(x=>x.response.data),
+    axios.get(`${API_ROOT}${url}`).then(responseBody),
   put: (url, body) =>
-    axios.put(`${API_ROOT}${url}`, body).then(responseBody).catch(x=>x.response.data),
+    axios.put(`${API_ROOT}${url}`, body).then(responseBody),
   post: (url, body) =>
-    axios.post(`${API_ROOT}${url}`, body).then(responseBody).catch(x=>x.response.data)
+    axios.post(`${API_ROOT}${url}`, body).then(responseBody)
 };
 
 const Auth = {

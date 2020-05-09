@@ -47,10 +47,8 @@ export default function LoginScreen({navigation}) {
         });
     })
     .catch((error)=>{
-      console.log(error);
-    //  dispatch(setLoading(false));
       setTimeout(() => {
-        Alert.alert(error.message);
+        Alert.alert(error.response.data.message);
       }, 100);
     }).finally(()=>dispatch(setLoading(false)));
 

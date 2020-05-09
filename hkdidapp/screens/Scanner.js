@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import {useState,useEffect} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View ,Alert} from 'react-native';
 import {ScrollView } from 'react-native-gesture-handler';
 import { Button,Image} from 'react-native-elements';
 import Modal from 'react-native-modal';
@@ -86,10 +86,12 @@ export default function Scanner() {
     dispatch(setLoading(true));
    // setRequested(true);
    agent.Application.showApplicationRequest(app_id,person_id,credentials_).then(data=>{
-      setRequestInfo(data);
+     setRequestInfo(data);
      console.log(data);
    }).catch(error=> {
-      console.log(error);
+    setTimeout(() => {
+      Alert.alert(error.response.data.message);
+    }, 100);
    }).finally(()=>{
       //setRequesting(false);
       dispatch(setLoading(false));
