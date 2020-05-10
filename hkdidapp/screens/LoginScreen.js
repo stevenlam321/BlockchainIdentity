@@ -9,7 +9,6 @@ import mainStyle from '../themes/main';
 import * as yup from "yup";
 import {useSelector,useDispatch } from 'react-redux';
 import {setLoading,setToken,setPerson} from '../redux/actions';
-import MainService from '../services/MainService';
 import { AsyncStorage } from 'react-native';
 import agent from '../services/agent';
 
