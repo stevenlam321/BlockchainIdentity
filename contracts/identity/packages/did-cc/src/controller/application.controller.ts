@@ -208,6 +208,7 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
     
     var data = {
       application:{
+        id:app_id,
         name: application.name,
       },
       credentials:formatedCredentials,

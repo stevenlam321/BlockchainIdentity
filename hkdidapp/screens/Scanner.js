@@ -24,6 +24,7 @@ export default function Scanner() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned,setScanned] = useState(false);
   const [requestInfo,setRequestInfo] = useState(null);
+  const [originalRequestInfo,setOriginalRequestInfo] = useState(null);
 
 
   useEffect(() => {
@@ -39,10 +40,12 @@ export default function Scanner() {
     const app_id = request.app_id;
     const person_id = person.id;
     const credentials = request.credentials;
+    setOriginalRequestInfo(request);
+
     dispatch(setLoading(true));
+
    agent.Application.showApplicationRequest(app_id,person_id,credentials).then(data=>{
      setRequestInfo(data);
-     console.log(data);
    }).catch(error=> {
     setTimeout(() => {
       Alert.alert(error.response.data.message);
@@ -54,21 +57,23 @@ export default function Scanner() {
   };
 
   const approveRequest = () =>{
-    const data = requestInfo;
     setRequestInfo(null);
     dispatch(setLoading(true));
 
-    fetch('https://jsonplaceholder.typicode.com/todos/1')
-  .then(response => response.json())
-  .then(json => {
-    setTimeout(() => {
-      Alert.alert('Approved!');
-    }, 2000);
-    console.log(json);
-     console.log(data);
-  }).finally(()=>{
-    dispatch(setLoading(false));
- });
+    const {app_id,credentials} = originalRequestInfo;
+    agent.Application.approveApplicationRequest(app_id,credentials).then(data=>{
+      setOriginalRequestInfo(null);
+      setTimeout(() => {
+        Alert.alert('Approved');
+      }, 100);
+    }).catch(error=> {
+     setTimeout(() => {
+       Alert.alert(error.response.data.message);
+     }, 100);
+    }).finally(()=>{
+       dispatch(setLoading(false));
+    });
+
   }
 
   if (hasPermission === null) {
