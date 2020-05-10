@@ -23,12 +23,10 @@ export class ApplicationRequest extends ConvectorModel<ApplicationRequest> {
   public person_id: string;
 
   @Required()
-  @Default(false)
-  @Validate(yup.boolean())
-  public approved: boolean;
-
-  @Validate(yup.array(ApplicationCredential.schema()))
-  public credentials: Array<FlatConvectorModel<ApplicationCredential>>;
+  @Validate(yup.string())
+  public data: string;
+  // @Validate(yup.array(ApplicationCredential.schema()))
+  // public credentials: Array<FlatConvectorModel<ApplicationCredential>>;
 
   // @Required()
   // @Default(new Date())

@@ -58,7 +58,12 @@ const validation = {
   ],
   applicationRequestInfoRules:[
     check('app_id').exists().withMessage('app_id is required'),
-    check('person_id').exists().withMessage('app_id is required'),
+    check('person_id').exists().withMessage('person_id is required'),
+    check('credentials').exists().withMessage('credentials is required')
+    .isArray().withMessage('credentials must be an array')
+  ],
+  appproveApplicationRequestRules:[
+    check('app_id').exists().withMessage('app_id is required'),
     check('credentials').exists().withMessage('credentials is required')
     .isArray().withMessage('credentials must be an array')
   ],
