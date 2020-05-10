@@ -43,38 +43,18 @@ router.post('/', authed,validation.createApplicationRules, async (req, res, next
     }
 });
 
-// router.post('/create_request', authed,validation.createApplicationRequestRules, async (req, res, next) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//         return next(createError(400,{ errors: errors.array()}));
-//     }
-//     try {
-//         const {app_id,person_id,credentials} = req.body;
-//         const id = "APPR-"+ Math.random().toString(36).substr(2,10); 
-//        // const expired_at = new Date();
-//         let applicationRequestObj = new ApplicationRequest({id,app_id,person_id,credentials});
-//         const ctrls = req.ctrls;
-//         await ctrls.application.createRequest(applicationRequestObj);
-//         const applicationRequest = new ApplicationRequest(await ctrls.application.showApplicationRequest(id));
-//         res.status(200).json(applicationRequest);
-//     } catch (err) {
-//         next(createError(400,err.responses[0].error.message));
-//     }
-// });
 
-router.get('/request/:id', authed, async (req, res, next) => {
+router.get('/request_data/:id/:secret',validation.applicationRequestInfoRules, async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return next(createError(400,{ errors: errors.array()}));
     }
     try {
-        const {app_id,credentials} = req.body;
-
+        let { id,secret } = req.params;
         const ctrls = req.ctrls;
-    //     const person_id = req.user.identityID;
 
-    //    const applicationRequest = new ApplicationRequest(await ctrls.application.showApplicationRequest(id));
-    //    res.status(200).json("OK");
+       const applicationRequest = new ApplicationRequest(await ctrls.application.getApplicationRequestData(id,secret));
+       res.status(200).json(applicationRequest);
     } catch (err) {
         res.status(200).json(err);
        // next(createError(400,err.responses[0].error.message));

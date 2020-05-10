@@ -326,18 +326,18 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
   @Invokable()
   public async getApplicationRequestData( 
     @Param(yup.string())
-    id: string
+    id: string,
+    @Param(yup.string())
+    secret: string
   ) {   
     const applicationRequest = await ApplicationRequest.getOne(id);
     if (!applicationRequest || !applicationRequest.id) {
-      throw new Error('ApplicationRequest does not exist');
+      throw new Error('Application Request does not exist');
     }
     const application = await Application.getOne(applicationRequest.app_id);
-    const person = await Person.getOne(applicationRequest.person_id);
-    
-    var publicKey =  new NodeRSA(application.public_key);
-    var data = publicKey.encrypt(person.credentials,'base64');
-    return data;
+    if (application.secret != secret) {
+      throw new Error('Application secret does not exist');
+    }
     return applicationRequest;
   }
 }
