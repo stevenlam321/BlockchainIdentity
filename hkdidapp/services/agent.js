@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-//  export const API_ROOT = 'http://localhost:8080';
-export const API_ROOT = 'http://192.168.1.183:8080';
+ export const API_ROOT = 'http://localhost:8080';
+// export const API_ROOT = 'http://192.168.1.183:8080';
 //const API_ROOT = 'https://conduit.productionready.io/api';
 
 export function imagePath(path){

@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View,FlatList } from 'react-native';
+import { Image, Platform, StyleSheet, Text, TouchableOpacity, View,FlatList,Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Button, ThemeProvider,CheckBox,ListItem } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import agent,{imagePath} from '../services/agent';
 import {useSelector,useDispatch } from 'react-redux';
+import {useState,useEffect} from 'react';
+import {setPerson} from '../redux/actions';
 
 const list = [
   {
@@ -35,7 +37,27 @@ const renderItem = (item,navigation) => (
   />
 )
 export default function HomeScreen({navigation}) {
+  const dispatch = useDispatch();
+  const [refreshing,setRefreshing] = useState(false);
+
   const person = useSelector(state => state.common.person);
+
+  const refresh = ()=>{
+    setRefreshing(true);
+
+    agent.Auth.me()
+    .then((person)=>{
+        dispatch(setPerson(person));
+        console.log('refreshed');
+    })
+    .catch((error)=>{
+      setTimeout(() => {
+        Alert.alert(error.message);
+      }, 100);
+    }).finally(x=>setRefreshing(false));
+   
+  }
+
   return (
     <View style={styles.container}>
        {person && 
@@ -43,6 +65,8 @@ export default function HomeScreen({navigation}) {
         data={person.credentials}
         renderItem={({ item }) => renderItem(item,navigation)}
         keyExtractor={item => item.id + ""}
+        refreshing={refreshing}
+        onRefresh={refresh}
       />}
     </View>
   );
