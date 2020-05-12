@@ -9,6 +9,7 @@ import Modal from 'react-native-modal';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import layoutConstants from '../constants/Layout';
 import CredentialCard from '../components/CredentialCard';
+import BasicCredentialCard from '../components/BasicCredentialCard';
 import {useSelector,useDispatch } from 'react-redux';
 import agent from '../services/agent';
 import {setLoading} from '../redux/actions';
@@ -37,14 +38,15 @@ export default function Scanner() {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     const request = JSON.parse(data);
-    const app_id = request.app_id;
+
     const person_id = person.id;
-    const credentials = request.credentials;
+    const {app_id,credentials,email,mobile} = request;
+    console.log(request);
     setOriginalRequestInfo(request);
 
     dispatch(setLoading(true));
 
-   agent.Application.showApplicationRequest(app_id,person_id,credentials).then(data=>{
+   agent.Application.showApplicationRequest(app_id,person_id,email,mobile,credentials).then(data=>{
      setRequestInfo(data);
    }).catch(error=> {
     setTimeout(() => {
@@ -60,8 +62,9 @@ export default function Scanner() {
     setRequestInfo(null);
     dispatch(setLoading(true));
 
-    const {app_id,credentials} = originalRequestInfo;
-    agent.Application.approveApplicationRequest(app_id,credentials).then(data=>{
+    const {app_id,credentials,email,mobile} = originalRequestInfo;
+    agent.Application.approveApplicationRequest(app_id,email,mobile,credentials).then(data=>{
+      console.log(data);
       setOriginalRequestInfo(null);
       setTimeout(() => {
         Alert.alert('Approved');
@@ -106,6 +109,7 @@ export default function Scanner() {
               <View style={{paddingTop:20}}>
                 <Text style={{textAlign:'center',fontSize:25,fontWeight:'bold'}}>{requestInfo.application.name}</Text>
                 <Text style={{textAlign:'center',fontWeight:'bold',marginBottom:10,marginTop:10}}>Is requesting</Text>
+                <BasicCredentialCard credential={{"email":requestInfo.person.email,"mobile":requestInfo.person.mobile}}/>
                 {requestInfo.credentials.map((credential,index)=><CredentialCard credential={credential} key={index}/>)}
               </View>
               <View style={{flexDirection:'row',alignItems: 'stretch',margin:10}}>

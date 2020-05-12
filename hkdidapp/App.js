@@ -85,9 +85,12 @@ function App(props) {
               dispatch(setPerson(person));
           })
           .catch((error)=>{
-            setTimeout(() => {
-              Alert.alert(error.message);
-            }, 100);
+            AsyncStorage.removeItem('token');
+            dispatch(setToken(null));
+            dispatch(setPerson(null));
+            // setTimeout(() => {
+            //   Alert.alert(error.message);
+            // }, 100);
           });
     }
   });

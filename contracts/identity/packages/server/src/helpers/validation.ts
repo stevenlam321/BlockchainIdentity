@@ -59,11 +59,15 @@ const validation = {
   applicationRequestInfoRules:[
     check('app_id').exists().withMessage('app_id is required'),
     check('person_id').exists().withMessage('person_id is required'),
+    check('email').exists().withMessage('email is required').isBoolean().withMessage('email must be boolean'),
+    check('mobile').exists().withMessage('mobile is required').isBoolean().withMessage('mobile must be boolean'),
     check('credentials').exists().withMessage('credentials is required')
     .isArray().withMessage('credentials must be an array')
   ],
   appproveApplicationRequestRules:[
     check('app_id').exists().withMessage('app_id is required'),
+    check('email').exists().withMessage('email is required').isBoolean().withMessage('email must be boolean'),
+    check('mobile').exists().withMessage('mobile is required').isBoolean().withMessage('mobile must be boolean'),
     check('credentials').exists().withMessage('credentials is required')
     .isArray().withMessage('credentials must be an array')
   ],

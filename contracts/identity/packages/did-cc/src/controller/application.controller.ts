@@ -131,6 +131,10 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
     app_id: string,
     @Param(yup.string())
     person_id: string,
+    @Param(yup.boolean())
+    email: boolean = false,
+    @Param(yup.boolean())
+    mobile: boolean = false,
     @Param(yup.array(ApplicationCredential.schema()))
     credentials:Array<ApplicationCredential>
   ) { 
@@ -207,6 +211,11 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
     const valid =  totalValidFieldCount == totalFieldCount;
     
     var data = {
+      person:{
+        id:person_id,
+        email:email,
+        mobile:mobile
+      },
       application:{
         id:app_id,
         name: application.name,
@@ -226,6 +235,10 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
     app_id: string,
     @Param(yup.string())
     person_id: string,
+    @Param(yup.boolean())
+    email: boolean,
+    @Param(yup.boolean())
+    mobile: boolean,
     @Param(yup.array(ApplicationCredential.schema()))
     credentials:Array<ApplicationCredential>
   ) { 
@@ -305,7 +318,15 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
     if(!valid){
       throw new Error('You have insufficient credential(s)/attribute(s) in your personal profile');
     }else{
-      var credentialData = {credentials:formatedCredentials};
+      var credentialData = 
+      {
+        credentials:formatedCredentials,
+        person:{
+          id:person_id,
+          email:email?person.email:null,
+          mobile:mobile?person.mobile:null
+        }
+      };
       var credentialDataString = JSON.stringify(credentialData);
       var publicKey =  new NodeRSA(application.public_key);
       var data =  publicKey.encrypt(credentialDataString,'base64');

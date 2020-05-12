@@ -1,7 +1,7 @@
 import axios from 'axios';
 
- export const API_ROOT = 'http://localhost:8080';
-// export const API_ROOT = 'http://192.168.1.183:8080';
+//  export const API_ROOT = 'http://localhost:8080';
+export const API_ROOT = 'http://192.168.1.183:8080';
 //const API_ROOT = 'https://conduit.productionready.io/api';
 
 export function imagePath(path){
@@ -38,11 +38,11 @@ const Auth = {
     requests.post('/persons/register', {email,mobile, password})
 };
 const Application = {
-  showApplicationRequest: (app_id,person_id,credentials) =>{
-    return requests.post('/applications/request_info',{app_id,person_id,credentials})
+  showApplicationRequest: (app_id,person_id,email,mobile,credentials) =>{
+    return requests.post('/applications/request_info',{app_id,person_id,email,mobile,credentials})
   },
-  approveApplicationRequest: (app_id,credentials) =>{
-    return requests.post('/applications/approve_request',{app_id,credentials})
+  approveApplicationRequest: (app_id,email,mobile,credentials) =>{
+    return requests.post('/applications/approve_request',{app_id,email,mobile,credentials})
   }
 };
 

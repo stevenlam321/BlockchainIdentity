@@ -63,17 +63,18 @@ router.get('/request_data/:id/:secret',validation.applicationRequestInfoRules, a
 
 router.post('/request_info/',validation.applicationRequestInfoRules, async (req, res, next) => {
   
-    const {app_id,person_id,credentials} = req.body;
+    const {app_id,person_id,credentials,email,mobile} = req.body;
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return next(createError(400,{ errors: errors.array()}));
     }
     try {
         const ctrls = req.ctrls;
-       const request_info =  await ctrls.application.showApplicationRequestInfo(app_id,person_id,credentials);
+       const request_info =  await ctrls.application.showApplicationRequestInfo(app_id,person_id,email,mobile,credentials);
        res.status(200).json(request_info);
     } catch (err) {
-       next(createError(400,err.responses[0].error.message));
+        next(createError(400,err.responses[0].error.message));
      }
 });
 
@@ -84,10 +85,10 @@ router.post('/approve_request/',validation.appproveApplicationRequestRules, auth
     }
     try {
         const id = "REQ-"+ Math.random().toString(36).substr(2,10); 
-        const {app_id,credentials} = req.body;
+        const {app_id,credentials,email,mobile} = req.body;
         const person_id = req.user.identityID;
         const ctrls = req.ctrls;
-        const data = await ctrls.application.approveApplicationRequest(id,app_id,person_id,credentials)
+        const data = await ctrls.application.approveApplicationRequest(id,app_id,person_id,email,mobile,credentials)
     
         res.status(200).json("OK");
     } catch (err) {
