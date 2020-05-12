@@ -88,4 +88,4 @@ Private LEY
 
 
 
-{"app_id":"APP-ABC123","credentials":[{"credential_id":"C-hkidcard","attribute_ids":["A-dob","A-first_name"]}]}
+{"app_id":"APP-ABC123","email":"1","mobile":"0","credentials":[{"credential_id":"C-hkidcard","attribute_ids":["A-dob","A-first_name"]}]}
