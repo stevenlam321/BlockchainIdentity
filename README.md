@@ -1,3 +1,22 @@
+# Developer console
+cd api/packages/server
+npm run start
+http://localhost:8080/
+
+# Admin console
+cd admin-console
+npm run start
+http://localhost:8081/
+
+
+# Thirty party client
+cd third-party-client
+npm run start
+http://localhost:8082/
+
+
+
+
 # Start mongo db docker container
 docker run --name  mongodb  -p 27017:27017 -d mongo
 docker run mongodb
