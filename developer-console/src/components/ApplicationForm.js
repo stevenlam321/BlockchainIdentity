@@ -7,6 +7,7 @@ import axios from 'axios';
 
 const createSchema = yup.object().shape({
     name: yup.string().required().max(30),
+    post_back_url: yup.string().required(),
     public_key: yup.string().required().test(
         'is-public-key',
         '${path} is not a valid format',
@@ -57,6 +58,11 @@ export default function ApplicationForm(props){
                         <Form.Label htmlFor="name">App Name</Form.Label>
                         <Form.Control type="text" name='name' placeholder="App Name" id="name" ref={register}/>
                         <DisplayErrors errors={errors.name}/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label htmlFor="name">Post Back Url</Form.Label>
+                        <Form.Control type="text" name='post_back_url' placeholder="Post Back Url" id="post_back_url" ref={register}/>
+                        <DisplayErrors errors={errors.post_back_url}/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label htmlFor="public_key">Public Key</Form.Label>

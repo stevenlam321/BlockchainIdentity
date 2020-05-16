@@ -29,4 +29,8 @@ export class Application extends ConvectorModel<Application> {
   @Required()
   @Validate(yup.string())
   public public_key: string;
+
+  @Required()
+  @Validate(yup.string())
+  public post_back_url: string;
 }

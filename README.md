@@ -1,18 +1,24 @@
-# Developer console
+# APi Server
 cd api/packages/server
 npm run start
 http://localhost:8080/
+
 
 # Admin console
 cd admin-console
 npm run start
 http://localhost:8081/
 
+# Developer console
+cd developer-console
+npm run start
+http://localhost:8082/
+
 
 # Thirty party client
 cd third-party-client
 npm run start
-http://localhost:8082/
+http://localhost:8083/
 
 
 
@@ -47,7 +53,7 @@ npm run cc:package -- did
 
 # Start API Server
 cd contracts/packages/server
-nodemon src/app.ts
+nodemon src/app.tsq
 
 ## Seeding
 cd contracts/packages/server

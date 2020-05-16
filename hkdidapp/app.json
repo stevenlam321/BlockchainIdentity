@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "hkdidapp",
-    "slug": "hkdidapp",
+    "name": "HKDID",
+    "slug": "hkdid",
     "platforms": [
       "ios",
       "android",
@@ -23,7 +23,9 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.codefifa.hkdid",
+      "buildNumber": "1.0.0"
     }
   }
 }

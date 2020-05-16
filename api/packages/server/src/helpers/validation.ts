@@ -46,10 +46,12 @@ const validation = {
   createApplicationRules:[
     check('name').exists().withMessage('name is required'),
     check('public_key').exists().withMessage('public_key is required'),
+    check('post_back_url').exists().withMessage('post_back_url is required'),
   ],
   updateApplicationRules:[
     check('name').exists().withMessage('name is required'),
     check('public_key').exists().withMessage('public_key is required'),
+    check('post_back_url').exists().withMessage('post_back_url is required'),
   ],
   createApplicationRequestRules:[
     check('app_id').exists().withMessage('app_id is required'),

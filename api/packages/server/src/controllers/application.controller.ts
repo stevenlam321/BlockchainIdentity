@@ -5,6 +5,7 @@ import validation from '../helpers/validation';
 import {check, validationResult } from 'express-validator';
 import authed from '../middlewares/authed';
 import * as crypto from 'crypto';
+import axios from 'axios';
 const router: Router = Router();
 
 router.get('/', authed,async (req, res, next) => {
@@ -28,12 +29,12 @@ router.post('/', authed,validation.createApplicationRules, async (req, res, next
         return next(createError(400,{ errors: errors.array()}));
     }
     try {
-        const {name,public_key} = req.body;
+        const {name,public_key,post_back_url} = req.body;
         const id = "APP-"+ Math.random().toString(36).substr(2,10); 
         const secret = crypto.randomBytes(20).toString('hex');
         const person_id = req.user.identityID;
 
-        let applicationObj = new Application({id,name,person_id,public_key,secret});
+        let applicationObj = new Application({id,name,person_id,public_key,post_back_url,secret});
         const ctrls = req.ctrls;
         await ctrls.application.create(applicationObj);
         const application = new Application(await ctrls.application.show(id));
@@ -88,8 +89,11 @@ router.post('/approve_request/',validation.appproveApplicationRequestRules, auth
         const {app_id,credentials,email,mobile} = req.body;
         const person_id = req.user.identityID;
         const ctrls = req.ctrls;
-        const data = await ctrls.application.approveApplicationRequest(id,app_id,person_id,email,mobile,credentials)
-    
+        const application = new Application(await ctrls.application.show(app_id));
+  
+        var applicationRequest = new ApplicationRequest(await ctrls.application.approveApplicationRequest(id,app_id,person_id,email,mobile,credentials));
+
+        axios.post(application.post_back_url,applicationRequest).then().catch();
         res.status(200).json("OK");
     } catch (err) {
         res.status(400).json(err.responses[0].error.message);
@@ -99,7 +103,7 @@ router.post('/approve_request/',validation.appproveApplicationRequestRules, auth
 
 router.put('/:id',authed,validation.updateApplicationRules, async (req, res, next) => {
     let { id } = req.params;
-    const {name,public_key} = req.body;
+    const {name,public_key,post_back_url} = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return next(createError(400,{ errors: errors.array()}));
@@ -113,6 +117,7 @@ router.put('/:id',authed,validation.updateApplicationRules, async (req, res, nex
         }
         application.name = name;
         application.public_key = public_key;
+        application.post_back_url = post_back_url;
         await ctrls.application.update(application);
         res.status(200).json(application);
     } catch (err) {
