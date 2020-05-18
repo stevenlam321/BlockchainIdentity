@@ -8,7 +8,9 @@ app.use(cors());
 app.use(bodyParser.json());
 
 
-app.get('/', (req, res) => res.send('Hello World!'));
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
 
 app.post('/post', (req, res) => {
     console.log(req.body);

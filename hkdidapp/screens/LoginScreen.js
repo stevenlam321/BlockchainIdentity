@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import {useEffect} from 'react';
-import { StyleSheet, Text, View,Alert,TextInput,Button as LinkButton } from 'react-native';
+import { StyleSheet, Text, View,Alert,TextInput,Button as LinkButton,Image } from 'react-native';
 import { Button,Input} from 'react-native-elements';
 import { useForm, Controller } from "react-hook-form";
 import mainStyle from '../themes/main';
@@ -24,8 +24,8 @@ export default function LoginScreen({navigation}) {
     validationSchema: schema,
     mode: "onChange",
     defaultValues:{
-      email:'user1@hkdid.com',
-      password: '12345678'
+      email:'',
+      password: ''
     }
   });
   const onSubmit = async (data) => {
@@ -61,6 +61,12 @@ export default function LoginScreen({navigation}) {
   
   return (
     <View style={styles.container}>
+      <View style={{ justifyContent: 'center',alignItems: 'center',paddingTop:15,paddingBottom:15}}>
+          <Image
+            source={require('../assets/images/logo.png')}
+            style={{ width: 120, height: 120}}
+          />
+    </View>
     <Input
       label="Email"
       placeholder='Enter email'

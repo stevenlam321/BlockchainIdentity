@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import {useEffect} from 'react';
-import { StyleSheet, Text,Alert, View } from 'react-native';
+import { StyleSheet, Text,Alert, View ,Image} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import { Button,Input} from 'react-native-elements';
 import mainStyle from '../themes/main';
@@ -53,7 +53,13 @@ export default function RegisterScreen({navigation}) {
   }, [register]);
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
+        <View style={{ justifyContent: 'center',alignItems: 'center',paddingTop:15,paddingBottom:15}}>
+          <Image
+            source={require('../assets/images/logo.png')}
+            style={{ width: 120, height: 120}}
+        />
+    </View>
     <Input
       label="Email"
       placeholder='Enter email'
@@ -98,7 +104,7 @@ export default function RegisterScreen({navigation}) {
       disabled={!formState.isValid}
     />
     <Text onPress={()=>navigation.navigate('Login')} style={{textAlign:'center',marginTop:20}}>Login</Text>
-    </ScrollView>
+    </View>
   );
 }
 const styles = StyleSheet.create({

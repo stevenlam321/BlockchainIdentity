@@ -94,8 +94,9 @@ export default {
         },
         show: true,
         qrcode_data: {
-          app_id: 'APP-k9p42u3jov',
-          email:true,
+          app_id: 'APP-ABC123',
+          email:"1",
+          mobile:"0",
           credentials:[
             {
               credential_id: 'C-hkidcard',

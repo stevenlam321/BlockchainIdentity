@@ -53,7 +53,7 @@ npm run cc:package -- did
 
 # Start API Server
 cd contracts/packages/server
-nodemon src/app.tsq
+nodemon src/app.ts
 
 ## Seeding
 cd contracts/packages/server
