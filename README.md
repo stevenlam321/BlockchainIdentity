@@ -45,6 +45,7 @@ docker rmi $(docker images -q)
 ## Start debug
 hurl new (Reset first)
 npm run cc:start:debug -- did
+npm run cc:start -- did
 hurl invoke did did_init
 
 

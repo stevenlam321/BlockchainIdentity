@@ -38,15 +38,16 @@ export default function Scanner() {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     const request = JSON.parse(data);
-
+    console.log(request);
     const person_id = person.id;
     const {app_id,credentials,email,mobile} = request;
-    console.log(request);
+    // console.log(request);
     setOriginalRequestInfo(request);
 
     dispatch(setLoading(true));
 
    agent.Application.showApplicationRequest(app_id,person_id,email,mobile,credentials).then(data=>{
+     console.log(data);
      setRequestInfo(data);
    }).catch(error=> {
     setTimeout(() => {

@@ -236,6 +236,26 @@ async function setup(){
       {
         id: "A-issue_date",
         name: "Issue Date" 
+      },
+      {
+        id: "A-valid_to",
+        name: "Valid To" 
+      },
+      {
+        id: "A-driving_license_no",
+        name: "Driving License Number" 
+      },
+      {
+        id: "A-vehicle_classification_code",
+        name: "Vehicle Classification Code" 
+      },
+      {
+        id:"A-place_of_birth",
+        name: "Place of Birth"
+      },
+      {
+        id:"A-passport_no",
+        name: "Passport Number"
       }
     ];
 
@@ -260,7 +280,37 @@ async function setup(){
             "A-last_name",
             "A-gender",
             "A-dob",
-            "A-issue_date"
+            "A-issue_date",
+          ]
+        },
+        {
+          id:"C-passport",
+          organization_id: "O-hkimmd",
+          person_id:"P-hkimmd_admin",
+          name: "Hong Kong Passport",
+          attribute_ids: [
+            "A-passport_no",
+            "A-first_name",
+            "A-last_name",
+            "A-gender",
+            "A-dob",
+            "A-place_of_birth",
+            "A-issue_date",
+            "A-valid_to"
+          ]
+        },
+        {
+          id:"C-driving_lisense",
+          organization_id: "O-hktd",
+          person_id:"P-hktd_admin",
+          name: "Hong Kong Driving Lisense",
+          attribute_ids: [
+            "A-driving_license_no",
+            "A-first_name",
+            "A-last_name",
+            "A-vehicle_classification_code",
+            "A-issue_date",
+            "A-valid_to"
           ]
         }
     ];

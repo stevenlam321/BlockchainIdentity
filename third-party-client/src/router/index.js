@@ -10,14 +10,14 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'ManualFill',
-    component: ManualFill
-  },
-  {
-    path: '/hkdidfill',
     name: 'HKDIDFill',
     component: HKDIDFill
   },
+  // {
+  //   path: '/hkdidfill',
+  //   name: 'HKDIDFill',
+  //   component: HKDIDFill
+  // },
   {
     path: '*',
     name: 'NotFound',

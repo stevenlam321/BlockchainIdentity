@@ -155,6 +155,8 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
     var formatedCredentials = [];
     var totalFieldCount = 0;
     var totalValidFieldCount = 0;
+    console.log('line1:credentials');
+    console.log(credentials);
 
     for(var i = 0; i < credentials.length; i++){
       const credential = await Credential.getOne(credentials[i].credential_id);
@@ -171,41 +173,47 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
             attributes:[],
           };
           totalFieldCount++;
-      }
-
-      for(var j = 0; j < personCredentials.length; j++){
-        if(credentials[i].credential_id == personCredentials[j].credential_id){
-          //credential exists in this person
-          formatedCredential.exists = true;
-          totalValidFieldCount++;
-
-          //check attributes
           var formatedAttributes = [];
-          for(var k = 0; k < credentials[i].attribute_ids.length; k++){
-            const attribute = await Attribute.getOne(credentials[i].attribute_ids[k]);
+          for(var j = 0; j < credentials[i].attribute_ids.length; j++){
+            const attribute = await Attribute.getOne(credentials[i].attribute_ids[j]);
             if (!attribute || !attribute.id) {
-              throw new Error('Invalid Request, attribute_id:' + credentials[i].attribute_ids[k] +' does not exists');
+              throw new Error('Invalid Request, attribute_id:' + credentials[i].attribute_ids[j] +' does not exists');
             }else{
                  var formatedAttribute = {
                   attribute_id: attribute.id,
                   name:attribute.name,
                   exists:false,
                 };
+                formatedAttributes.push(formatedAttribute);
                 totalFieldCount++;
             }
+            formatedCredential.attributes = formatedAttributes;
+      }
+      formatedCredentials.push(formatedCredential);
+    }
+  }
+    //test existings
 
-            for(var l = 0; l < personCredentials[j].attributes.length; l++){
-              if(credentials[i].attribute_ids[k] == personCredentials[j].attributes[l].attribute_id){
-                formatedAttribute.exists = true;
-                totalValidFieldCount++;
+    for(var i = 0; i < formatedCredentials.length; i++){
+      for(var j = 0; j < personCredentials.length; j++){
+        if(formatedCredentials[i].credential_id == personCredentials[j].credential_id){
+          //credential exists in this person
+          formatedCredentials[i].exists = true;
+          totalValidFieldCount++;
+
+            for(var l = 0; l < formatedCredentials[i].attributes.length; l++){
+              for(var k = 0; k < personCredentials[j].attributes.length; k++){
+                if(formatedCredentials[i].attributes[l].attribute_id == personCredentials[j].attributes[k].attribute_id){
+                  formatedCredentials[i].attributes[l].exists = true;
+                  totalValidFieldCount++;
+                }
               }
+            
             }
-            formatedAttributes.push(formatedAttribute);
-          }
+          
+
         }
       }
-      formatedCredential.attributes = formatedAttributes;
-      formatedCredentials.push(formatedCredential);
     }
 
     const valid =  totalValidFieldCount == totalFieldCount;

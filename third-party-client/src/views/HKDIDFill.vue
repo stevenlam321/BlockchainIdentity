@@ -1,8 +1,8 @@
 <template>
   <DefaultLayout>
-      <div class="links">
+      <!-- <div class="links">
         <a href="/" class="link">Manually Fill</a>
-      </div>
+      </div> -->
   <b-card
       header="Application Form (Fill by HKDID)"
     >  
@@ -105,7 +105,23 @@ export default {
                 "A-last_name",
                 "A-hkidno"
               ]
-            }
+            },
+            //  {
+            //   credential_id: 'C-passport',
+            //   attribute_ids:[
+            //     "A-first_name",
+            //     "A-last_name",
+            //     "A-passport_no"
+            //   ]
+           // },
+            //  {
+            //   credential_id: 'C-driving_lisense',
+            //   attribute_ids:[
+            //     "A-first_name",
+            //     "A-last_name",
+            //     "A-driving_license_no"
+            //   ]
+            // }
           ]
         },
         size: 300,
