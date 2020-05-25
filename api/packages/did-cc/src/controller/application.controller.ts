@@ -155,8 +155,6 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
     var formatedCredentials = [];
     var totalFieldCount = 0;
     var totalValidFieldCount = 0;
-    console.log('line1:credentials');
-    console.log(credentials);
 
     for(var i = 0; i < credentials.length; i++){
       const credential = await Credential.getOne(credentials[i].credential_id);
@@ -192,12 +190,10 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
       formatedCredentials.push(formatedCredential);
     }
   }
-    //test existings
 
     for(var i = 0; i < formatedCredentials.length; i++){
       for(var j = 0; j < personCredentials.length; j++){
         if(formatedCredentials[i].credential_id == personCredentials[j].credential_id){
-          //credential exists in this person
           formatedCredentials[i].exists = true;
           totalValidFieldCount++;
 
@@ -279,7 +275,6 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
             name:credential.name,
             organization_logo:credential.organization_logo,
             organization_name:credential.organization_name,
-            //exists:false,
             attributes:[],
           };
           totalFieldCount++;
@@ -287,11 +282,8 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
 
       for(var j = 0; j < personCredentials.length; j++){
         if(credentials[i].credential_id == personCredentials[j].credential_id){
-          //credential exists in this person
-         // formatedCredential.exists = true;
           totalValidFieldCount++;
 
-          //check attributes
           var formatedAttributes = [];
           for(var k = 0; k < credentials[i].attribute_ids.length; k++){
             const attribute = await Attribute.getOne(credentials[i].attribute_ids[k]);
@@ -302,14 +294,12 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
                   attribute_id: attribute.id,
                   name:attribute.name,
                   value: null,
-                  // exists:false,
                 };
                 totalFieldCount++;
             }
 
             for(var l = 0; l < personCredentials[j].attributes.length; l++){
               if(credentials[i].attribute_ids[k] == personCredentials[j].attributes[l].attribute_id){
-                //formatedAttribute.exists = true;
                 formatedAttribute.value = personCredentials[j].attributes[l].value;
                 totalValidFieldCount++;
               }
@@ -339,13 +329,6 @@ export class ApplicationController extends ConvectorController<ChaincodeTx> {
       var publicKey =  new NodeRSA(application.public_key);
       var data =  publicKey.encrypt(credentialDataString,'base64');
 
-      // var dataObj = {
-      //   application:{
-      //     name: application.name,
-      //   },
-      //   data:encryptedCredentialData
-      // }
-     
       const applictionRequest = new ApplicationRequest({id,app_id,person_id,data});
       applictionRequest.save();
       return applictionRequest;

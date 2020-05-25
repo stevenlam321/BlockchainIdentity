@@ -93,8 +93,7 @@ export default {
           hkidno: '',
         },
         show: true,
-        qrcode_data: 
-        {
+        qrcode_data: {
           app_id: 'APP-ABC123',
           email:"1",
           mobile:"0",
@@ -107,17 +106,24 @@ export default {
                 "A-hkidno"
               ]
             },
-             {
-              credential_id: 'C-passport',
-              attribute_ids:[
-                "A-first_name",
-                "A-last_name",
-                "A-passport_no"
-              ]
-            }
+            //  {
+            //   credential_id: 'C-passport',
+            //   attribute_ids:[
+            //     "A-first_name",
+            //     "A-last_name",
+            //     "A-passport_no"
+            //   ]
+           // },
+            //  {
+            //   credential_id: 'C-driving_lisense',
+            //   attribute_ids:[
+            //     "A-first_name",
+            //     "A-last_name",
+            //     "A-driving_license_no"
+            //   ]
+            // }
           ]
-        }
-        ,
+        },
         size: 300,
         }
     },

@@ -1,8 +1,4 @@
 <template>
-  <DefaultLayout>
-      <!-- <div class="links">
-        <a href="/" class="link">Manually Fill</a>
-      </div> -->
   <b-card
       header="Application Form (Fill by HKDID)"
     >  
@@ -70,18 +66,18 @@
       <b-button type="reset"  class='reset' variant="danger">Reset</b-button>
     </b-form>
     </b-card>
-    
-  </DefaultLayout>
+  
 </template>
 
 <script>
-import DefaultLayout from "../layout/DefaultLayout";
-import {mapGetters,mapActions,mapState} from 'vuex';
 import QrcodeVue from 'qrcode.vue'
+import openSocket from "socket.io-client";
+import axios from 'axios';
+const socket = openSocket("http://localhost:3000/");
+
 export default {
   name: "HKDIDFill",
   components: {
-    DefaultLayout,
     QrcodeVue
   },
    data() {
@@ -124,10 +120,7 @@ export default {
    computed: {
      qrcode (){
         return JSON.stringify(this.qrcode_data)
-     },
-    ...mapState({
-     
-    })
+     }
     },
     methods: {
       onSubmit(evt) {
@@ -147,6 +140,13 @@ export default {
           this.show = true
         })
       }
+    },
+    created(){
+       socket.on("chat", result => {
+         this.form.email = result.email;
+         this.form.first_name = result.first_name;
+        console.log(result);
+      });
     }
   
 };

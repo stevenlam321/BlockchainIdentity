@@ -25,11 +25,4 @@ export class ApplicationRequest extends ConvectorModel<ApplicationRequest> {
   @Required()
   @Validate(yup.string())
   public data: string;
-  // @Validate(yup.array(ApplicationCredential.schema()))
-  // public credentials: Array<FlatConvectorModel<ApplicationCredential>>;
-
-  // @Required()
-  // @Default(new Date())
-  // @Validate(yup.date())
-  // public readonly created: Date;
 }

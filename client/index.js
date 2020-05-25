@@ -12,9 +12,8 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-app.post('/post', (req, res) => {
+app.post('/', (req, res) => {
     console.log(req.body);
-    console.log('data reached');
     res.send('ok')
 });
 
