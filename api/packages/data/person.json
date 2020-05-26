@@ -1,0 +1,31 @@
+{
+    "id":"P-user1",
+    "type":"did.person",
+    "email":"user1@hkdid.com",
+    "mobile":"12345678",
+    "role": "user",
+    "credentials": [
+      {
+        "attributes": [
+          {
+            "attribute_id": "A-hkidno",
+            "name": "HK ID Card Number",
+            "type": "did.person.credential.attribute",
+            "value": "A123456(7)"
+          },
+          {
+            "attribute_id": "A-first_name",
+            "name": "First Name",
+            "type": "did.person.credential.attribute",
+            "value": "Steven"
+          }
+        ],
+        "credential_id": "C-hkidcard",
+        "name": "Hong Kong Identity Card",
+        "organization_logo": "hkimmd.png",
+        "organization_name": "Hong Kong Immigration Department",
+        "type": "did.person.credential"
+      }
+    ]
+}
+
