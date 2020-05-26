@@ -8,14 +8,15 @@
 <script>
 export default {
     name: "Loading",
+    props:['loading'],
     methods:{
        
     },
-    data (){
-        return {
-            loading:false
-        }
-    }
+//     data (){
+//         return {
+//             loading:true
+//         }
+//     }
 }
 </script>
 
@@ -30,5 +31,9 @@ export default {
   text-align: center;
   justify-content: center;
   align-items: center;
+    top: 0;
+    left:0;
+    right: 0;
+    bottom: 0;
 }
 </style>

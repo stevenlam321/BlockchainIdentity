@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <Header/>
-    <Loading/>
+    <Loading v-bind:loading="loading"/>
     <b-container class="content">
-        <Home/>
+        <Home @setLoading="setLoading"/>
     </b-container>
   </div>
 </template>
@@ -17,6 +17,16 @@ export default {
   name: 'App',
   components: {
    Header,Loading,Home
+  },
+  data(){
+    return {
+      loading:false
+    };
+  },
+  methods:{
+    setLoading(loading){
+      this.loading = loading;
+    }
   }
 }
 </script>

@@ -103,14 +103,14 @@ export default {
                 "A-hkidno"
               ]
             },
-             {
-              credential_id: 'C-passport',
-              attribute_ids:[
-                "A-first_name",
-                "A-last_name",
-                "A-passport_no"
-              ]
-            }
+            //  {
+            //   credential_id: 'C-passport',
+            //   attribute_ids:[
+            //     "A-first_name",
+            //     "A-last_name",
+            //     "A-passport_no"
+            //   ]
+            // }
           ]
         }
         ,
@@ -141,11 +141,25 @@ export default {
         })
       }
     },
-    created(){
-       socket.on("chat", result => {
-         this.form.email = result.email;
-         this.form.first_name = result.first_name;
-        console.log(result);
+    created(){ 
+       socket.on("sync-data", result => {
+         result = JSON.parse(result);
+         for(const credential of result.credentials){
+          if(credential.credential_id == 'C-hkidcard'){
+             for(const attribute of credential.attributes){
+               if(attribute.attribute_id == 'A-first_name'){
+                    this.form.first_name = attribute.value;
+                }
+               if(attribute.attribute_id == 'A-last_name'){
+                    this.form.last_name = attribute.value;
+                }
+                if(attribute.attribute_id == 'A-hkidno'){
+                    this.form.hkidno = attribute.value;
+                }
+              }
+          }
+      }
+       this.form.email = result.person.email;
       });
     }
   

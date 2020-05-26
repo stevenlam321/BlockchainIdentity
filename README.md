@@ -15,12 +15,15 @@ npm run start
 http://localhost:8082/
 
 
-# Thirty party client
-cd third-party-client
+# Thirty party server
+cd third-party/server
 npm run start
 http://localhost:8083/
 
-
+# Thirty party client
+cd third-party/client
+npm run start
+http://localhost:8083/
 
 
 # Start mongo db docker container
